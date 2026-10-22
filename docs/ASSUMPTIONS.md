@@ -18,8 +18,10 @@ Each one is tagged `ASSUMPTION` in code and must be checked before any real use.
 | A10 | Which category each demo drug belongs to (e.g. 펜터민 → 마약·향정, 이소트레티노인 → 오·남용 우려) is a demo assignment | `src/data/drugs.ts` | The official lists: 마약류 품목허가, 식약처 오·남용 우려 의약품 고시, and the not-yet-published MOHW notice on 비만치료제 성분 (제31조의10②) | 식약처 고시; MOHW 고시 |
 | A11 | The narrow exceptions that allow 마약류 by telehealth (제31조의10③: 희귀질환자, 호스피스 통증관리, 중단 시 중대한 위해) are not modeled; those orders are blocked and handled outside the tool | `src/domain/prescription.ts` | Whether a real tool must support the exception flow and what proof it needs | Final text / MOHW 고시 |
 | A12 | Day limits apply only to first-visit telehealth; follow-up telehealth has no day limit in the draft | `src/domain/prescription.ts` | That the final text keeps 제31조의3 limited to 제34조의2제2항제2호 (초진) | Final text |
+| A13 | `minConfidence = 0.8` is a starting point for when a suggestion may be pre-selected | `config/ai.json` | Tune from the M4 evaluation (calibration and error cost), not from regulation | `eval/results/` |
+| A14 | The rule-based matcher's probabilities (0.9 / 0.7 / ...) are hand-set confidence levels | `src/ai/rule-based-matcher.ts` | Whether they are calibrated: M4 calibration table | `eval/results/` |
 
-Rows are added as new assumptions appear (AI confidence threshold in M4).
+Rows are added as new assumptions appear.
 
 ## Source check: 2026-10-22 (primary source)
 

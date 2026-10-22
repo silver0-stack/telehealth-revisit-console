@@ -66,3 +66,24 @@ the exact rules that produced it. Admin-saved versions live in memory for the de
 `checkEligibility` and `checkPrescription` return codes like `EXTENSION_ALREADY_USED`, never sentences.
 `src/components/labels.ts` turns codes into UI text. Tests stay stable when wording changes, the same reason
 always reads the same way on every screen, and the domain stays free of UI concerns.
+
+## D14. The matcher compares with each recent in-person visit, then suggests the best (2026-10-22)
+A patient may have visits for several conditions. Comparing today's text only with the latest visit would miss
+"sore throat again" when the latest visit was for back pain. We compare with the latest in-person visit per KCD
+code (up to five) and suggest the one most likely to be "same". With an AI matcher this costs up to five calls
+per request, which is why the result is computed once and cached (D15).
+
+## D15. A suggestion is computed once per request and kept (2026-10-22)
+The review page and the approve action must refer to the same suggestion, or the audit log could record numbers
+the clinician never saw. `getSuggestion` caches the promise per request id. A failed call is removed from the
+cache so the next page view retries instead of showing a stale error.
+
+## D16. Rule-based suggestions are labeled differently from AI ones (2026-10-22)
+Every automatic suggestion shows probabilities and "최종 판단은 의사". Only model output is labeled "AI 제안";
+the keyword matcher says "자동 제안(규칙 기반)". Its probabilities are fixed confidence levels per rule, not
+learned, and M4's calibration table measures how well they match reality.
+
+## D17. An approved review is final (2026-10-22)
+`applyReviewAction` refuses any change after approval. Eligibility is computed from the approved code and stored
+with it; allowing edits would silently change the basis of a decision already acted on. A held review can still be
+approved. Correcting an approved decision would need a new, separately audited action (not built).

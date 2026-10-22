@@ -1,4 +1,5 @@
 import { CATEGORY_LABEL, periodLabel } from "@/components/labels";
+import { formatSeoul } from "@/components/format";
 import { StatusLine } from "@/components/StatusLine";
 import { DRUGS, findDrug } from "@/data/drugs";
 import { getRules, listRuleVersions } from "@/data/rules";
@@ -19,12 +20,6 @@ const ERROR_TEXT: Record<string, string> = {
 
 const RESTRICTED_CATEGORIES = DrugCategorySchema.options.filter((c) => c !== "general");
 const inputClass = "mt-1 block w-full rounded border border-border bg-surface px-3 py-2 text-text";
-
-function formatSeoul(iso: string): string {
-  return new Intl.DateTimeFormat("ko-KR", { timeZone: "Asia/Seoul", dateStyle: "short", timeStyle: "short" }).format(
-    new Date(iso),
-  );
-}
 
 function prescriptionSummary(rules: Rules): string {
   const p = rules.prescription;

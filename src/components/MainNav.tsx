@@ -5,7 +5,9 @@ import { usePathname } from "next/navigation";
 
 const LINKS = [
   { href: "/", label: "환자 목록" },
+  { href: "/reviews", label: "검토" },
   { href: "/prescriptions", label: "처방 확인" },
+  { href: "/audit", label: "감사 로그" },
   { href: "/admin/rules", label: "규칙 관리" },
 ] as const;
 

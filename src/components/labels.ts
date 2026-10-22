@@ -1,6 +1,9 @@
 import type { EligibilityResult, NotFollowUpReason, RegionCheck } from "@/domain/eligibility";
 import type { PrescriptionCheck } from "@/domain/prescription";
+import type { AuditAction } from "@/domain/audit";
+import type { ReviewError, ReviewState } from "@/domain/review";
 import type { Period } from "@/domain/rules";
+import type { MatchLabel, MatcherInfo } from "@/domain/symptom";
 import type { DrugCategory } from "@/domain/types";
 
 // All user-facing wording for domain codes lives here, so the domain stays language-free
@@ -59,7 +62,7 @@ export function prescriptionText(check: PrescriptionCheck, categoryLabel: string
     case "TELEHEALTH_NOT_ALLOWED":
       return "비대면진료가 불가한 요청이라 처방할 수 없어요.";
     case "BLOCKED_CATEGORY":
-      return `${categoryLabel}은(는) 비대면진료로 처방할 수 없어요.`;
+      return `비대면진료로 처방할 수 없는 분류예요: ${categoryLabel}.`;
     case "BLOCKED_DRUG":
       return "이 약은 규칙 관리 화면의 차단 목록에 있어요.";
     case "FIRST_VISIT_OVER_MAX_DAYS":
@@ -72,3 +75,35 @@ export function prescriptionText(check: PrescriptionCheck, categoryLabel: string
       return `이 환자는 초진 예외를 이미 사용했어요${extensionUsedOn ? ` (${extensionUsedOn})` : ""}. ${max}일 이내로 줄이세요.`;
   }
 }
+
+export const MATCH_LABEL_TEXT: Record<MatchLabel, string> = {
+  same: "같은 증상",
+  related: "관련 있음",
+  different: "다른 증상",
+};
+
+/** Required label on every automatic suggestion. AI output always says so explicitly. */
+export function suggestionBadge(matcher: Pick<MatcherInfo, "kind">): string {
+  return matcher.kind === "ai" ? "AI 제안 · 최종 판단은 의사" : "자동 제안(규칙 기반) · 최종 판단은 의사";
+}
+
+export const REVIEW_STATUS: Record<ReviewState["status"], { icon: string; text: string }> = {
+  pending: { icon: "○", text: "검토 대기" },
+  held: { icon: "‖", text: "보류" },
+  approved: { icon: "✓", text: "승인" },
+};
+
+export const REVIEW_ERROR_TEXT: Record<ReviewError | "INVALID_INPUT" | "NOT_FOUND", string> = {
+  ALREADY_APPROVED: "이미 승인한 요청이라 바꿀 수 없어요.",
+  NO_SUGGESTION_TO_APPROVE: "미리 고른 제안이 없어요. 진단 코드를 고르고 \"수정하고 승인\"을 누르세요.",
+  HOLD_REASON_REQUIRED: "보류 이유를 적어 주세요.",
+  INVALID_INPUT: "입력값이 올바르지 않아요. 진단 코드를 목록에서 다시 고르세요.",
+  NOT_FOUND: "요청을 찾을 수 없어요. 검토 목록에서 다시 고르세요.",
+};
+
+export const AUDIT_ACTION_TEXT: Record<AuditAction, string> = {
+  "review.approve": "승인",
+  "review.edit_approve": "수정하고 승인",
+  "review.hold": "보류",
+  "rules.save": "규칙 새 버전 저장",
+};

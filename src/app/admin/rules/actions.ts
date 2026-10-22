@@ -3,6 +3,7 @@
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { z } from "zod";
+import { appendAuditEvent } from "@/data/audit-log";
 import { getRules, saveRuleVersion } from "@/data/rules";
 import { DrugCategorySchema, DrugSchema } from "@/domain/types";
 
@@ -51,6 +52,15 @@ export async function saveRulesAction(formData: FormData) {
     },
     "데모 관리자",
   );
+  appendAuditEvent({
+    actor: "데모 관리자",
+    action: "rules.save",
+    subject: { type: "rules", id: saved.version },
+    before: { version: baseVersion, prescription: base.prescription },
+    after: { version: saved.version, prescription: saved.prescription },
+    suggestion: null,
+    decision: d.note,
+  });
 
   revalidatePath("/admin/rules");
   revalidatePath("/prescriptions");
