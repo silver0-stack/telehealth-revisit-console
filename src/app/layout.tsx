@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import type { ReactNode } from "react";
 import { DemoBanner } from "@/components/DemoBanner";
+import { MainNav } from "@/components/MainNav";
 import { TextSizeToggle } from "@/components/TextSizeToggle";
 import "./globals.css";
 
@@ -23,6 +24,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
         <header className="border-b border-border bg-surface">
           <div className="mx-auto flex max-w-6xl flex-wrap items-center justify-between gap-2 px-4 py-3">
             <p className="text-lg font-bold text-accent">재진 확인 콘솔</p>
+            <MainNav />
             <TextSizeToggle />
           </div>
         </header>

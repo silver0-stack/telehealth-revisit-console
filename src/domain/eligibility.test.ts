@@ -10,6 +10,7 @@ const draftRules: Rules = {
   assumptions: [],
   followUp: { window: { amount: 6, unit: "month" } },
   firstVisit: { requireSameRegion: true, outsideRegionExceptions: ["rare_disease"] },
+  prescription: { blockedCategories: [], blockedDrugCodes: [], firstVisitLimit: null },
 };
 
 const legacyRules: Rules = {
@@ -18,6 +19,7 @@ const legacyRules: Rules = {
   assumptions: [],
   followUp: { window: { amount: 30, unit: "day" } },
   firstVisit: { requireSameRegion: false, outsideRegionExceptions: [] },
+  prescription: { blockedCategories: [], blockedDrugCodes: [], firstVisitLimit: null },
 };
 
 let nextId = 1;

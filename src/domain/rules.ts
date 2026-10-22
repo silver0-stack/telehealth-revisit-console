@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { DrugCategorySchema, DrugSchema } from "./types.ts";
 
 // Shape of config/rules/*.json. Every rule value lives in these files, never in components,
 // so a new rule version is a new file that can be diffed against the old one (M5).
@@ -24,6 +25,21 @@ export const RulesSchema = z.object({
     requireSameRegion: z.boolean(),
     // Patient categories allowed to use first-visit telehealth outside their region.
     outsideRegionExceptions: z.array(z.string().regex(/^[a-z0-9_]+$/)),
+  }),
+  prescription: z.object({
+    // Never prescribable through telehealth, by category (draft 제31조의10①).
+    blockedCategories: z.array(DrugCategorySchema),
+    // Extra single drugs blocked by the clinic or by a later notice. Edited on the admin screen.
+    blockedDrugCodes: z.array(DrugSchema.shape.code),
+    // Day limits for first-visit telehealth (draft 제31조의3②~④). null = no limit in this version.
+    firstVisitLimit: z
+      .object({
+        maxDays: z.number().int().positive(),
+        extendedMaxDays: z.number().int().positive(),
+        // ASSUMPTION (A8): counted per patient, across clinics and conditions.
+        extendedTimesPerPatient: z.number().int().nonnegative(),
+      })
+      .nullable(),
   }),
 });
 export type Rules = z.infer<typeof RulesSchema>;

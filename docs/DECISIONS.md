@@ -51,3 +51,18 @@ assumption (A3) with tests for month ends and leap years, so changing the readin
 `rules.v1.json` (30-day placeholder) is kept next to `rules.v2.json` (draft). `getRules()` returns the newest.
 Keeping both shows how rules evolve and gives the M5 impact preview a real pair to compare:
 on the demo data, moving from v1 to v2 turns 2 follow-up requests into 11.
+
+## D11. The prescription check screen is a GET form (2026-10-22)
+`/prescriptions` submits with `method="get"`, so the URL holds every input and the server computes the result.
+It works without JavaScript, a result can be bookmarked or shared in a bug report, and there is no client state
+to keep in sync. The cost: inputs are visible in the URL, which is acceptable only because all data is synthetic.
+
+## D12. Rule versions are never edited in place (2026-10-22)
+Saving on the admin screen creates a new version (v3, v4, ...) instead of changing the current one. Every
+eligibility and prescription result records its `ruleVersion`, so an old decision can always be explained with
+the exact rules that produced it. Admin-saved versions live in memory for the demo and vanish on restart.
+
+## D13. Domain returns codes; Korean sentences live in one labels file (2026-10-22)
+`checkEligibility` and `checkPrescription` return codes like `EXTENSION_ALREADY_USED`, never sentences.
+`src/components/labels.ts` turns codes into UI text. Tests stay stable when wording changes, the same reason
+always reads the same way on every screen, and the domain stays free of UI concerns.

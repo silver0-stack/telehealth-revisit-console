@@ -25,18 +25,29 @@ pnpm dev                     # http://localhost:3000
 | `pnpm test` | Vitest unit tests |
 | `pnpm seed` | Regenerate `src/data/seed.json` (fixed seed, same output every time) |
 
+## Screens
+
+| Path | What it does |
+|------|--------------|
+| `/` | Synthetic patient list |
+| `/prescriptions` | Checks whether a request is follow-up (일반) or first-visit (초진) telehealth, and whether a drug and day count are allowed |
+| `/admin/rules` | Edits the telehealth prescription blocklist and day limits; every save becomes a new rule version |
+
 ## Demo limitations
 
 - **In-memory storage.** Data lives in the server process and resets on every restart.
   The app reads records through the `RecordSource` interface, so a real store can replace it later.
 - **Placeholder rules.** Eligibility windows and drug lists are assumptions, not the law.
-- **No authentication.** There is a single implied clinician user.
+- **No authentication.** There is a single implied clinician user, and anyone who can reach the server can
+  save a rule version from `/admin/rules`.
+- **Admin-saved rule versions are in memory** and disappear on restart. Shipped versions are in `config/rules/`.
+- **Demo drug catalog.** Drug categories are demo assignments, not the official 식약처/MOHW lists.
 
 ## Status
 
 - [x] M0 Scaffold
 - [x] M1 Eligibility engine (follow-up / first-visit, based on the 2026-10-19 draft)
-- [ ] M2 Restricted drugs
+- [x] M2 Restricted drugs (blocklist, first-visit day limits, versioned admin screen)
 - [ ] M3 Review flow
 - [ ] M4 Jev + evaluation
 - [ ] M5 Rule-change impact preview

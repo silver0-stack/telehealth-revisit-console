@@ -1,5 +1,14 @@
 import { format, parseISO, subDays } from "date-fns";
-import { SIDO, type Dataset, type Patient, type Sido, type TelehealthRequest, type Visit } from "../../domain/types.ts";
+import {
+  SIDO,
+  type Dataset,
+  type Patient,
+  type PrescriptionRecord,
+  type Sido,
+  type TelehealthRequest,
+  type Visit,
+} from "../../domain/types.ts";
+import { TYPICAL_DRUG_BY_KCD } from "../drugs.ts";
 
 // Small seeded PRNG (mulberry32) so `pnpm seed` gives the same data every run
 // without adding a faker dependency.
@@ -64,6 +73,9 @@ export function generateDataset({ seed, today, patientCount, clinicRegion }: Gen
   const patients: Patient[] = [];
   const visits: Visit[] = [];
   const requests: TelehealthRequest[] = [];
+  const prescriptions: PrescriptionRecord[] = [];
+  const addPrescription = (rx: Omit<PrescriptionRecord, "id">) =>
+    prescriptions.push({ id: `RX-${String(prescriptions.length + 1).padStart(4, "0")}`, ...rx });
 
   for (let i = 1; i <= patientCount; i++) {
     const patient: Patient = {
@@ -91,6 +103,30 @@ export function generateDataset({ seed, today, patientCount, clinicRegion }: Gen
         note: pick(random, condition.notes),
       });
       lastCondition = condition;
+      const drugCode = TYPICAL_DRUG_BY_KCD[condition.kcdCode];
+      const visit = visits.at(-1);
+      if (drugCode && visit && random() < 0.7) {
+        addPrescription({
+          patientId: patient.id,
+          date: visit.date,
+          drugCode,
+          days: visit.mode === "in_person" ? pick(random, [3, 5, 7, 14, 30]) : pick(random, [3, 5, 7]),
+          setting: visit.mode === "in_person" ? "in_person" : "telehealth_follow_up",
+          usedFirstVisitExtension: false,
+        });
+      }
+    }
+
+    // A few patients already used the once-only 30-day first-visit extension at another clinic.
+    if (random() < 0.12) {
+      addPrescription({
+        patientId: patient.id,
+        date: format(subDays(todayDate, intBetween(random, 10, 200)), "yyyy-MM-dd"),
+        drugCode: "DRG-003",
+        days: 30,
+        setting: "telehealth_first_visit",
+        usedFirstVisitExtension: true,
+      });
     }
 
     if (random() < 0.7) {
@@ -107,5 +143,5 @@ export function generateDataset({ seed, today, patientCount, clinicRegion }: Gen
     }
   }
 
-  return { generatedFrom: { seed, today }, patients, visits, requests };
+  return { generatedFrom: { seed, today }, patients, visits, requests, prescriptions };
 }

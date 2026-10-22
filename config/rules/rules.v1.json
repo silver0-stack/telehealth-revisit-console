@@ -2,13 +2,25 @@
   "version": "v1",
   "source": "Early placeholder modeled on the 2023 비대면진료 시범사업 (30-day follow-up). Not current law.",
   "assumptions": [
-    "A1: followUp.window = 30 days is an outdated placeholder. See docs/ASSUMPTIONS.md."
+    "A1: followUp.window = 30 days is an outdated placeholder. See docs/ASSUMPTIONS.md.",
+    "prescription: blocked categories and no first-visit day limit are placeholders, not current law."
   ],
   "followUp": {
-    "window": { "amount": 30, "unit": "day" }
+    "window": {
+      "amount": 30,
+      "unit": "day"
+    }
   },
   "firstVisit": {
     "requireSameRegion": false,
     "outsideRegionExceptions": []
+  },
+  "prescription": {
+    "blockedCategories": [
+      "narcotic_psychotropic",
+      "misuse_risk"
+    ],
+    "blockedDrugCodes": [],
+    "firstVisitLimit": null
   }
 }

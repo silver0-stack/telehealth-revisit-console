@@ -13,10 +13,13 @@ Each one is tagged `ASSUMPTION` in code and must be checked before any real use.
 | A5 | "Same clinic" is implied because the app models one clinic; other clinics' visits are never stored | `src/domain/eligibility.ts` | Supported by the draft ("해당 의료기관") | Same as A1 |
 | A6 | The window starts at the **latest same-symptom** in-person visit (see the source check below for the competing reading) | `src/domain/eligibility.ts` | Which reading of 제31조의2① + 제31조의5⑤1 MOHW intends | MOHW guidance |
 | A7 | "동일한 증상" is decided by a clinician (helped by the matcher); eligibility receives a confirmed KCD code | `src/domain/eligibility.ts` | Whether MOHW defines "same symptom" (code level, body system, or clinical judgment) | MOHW guidance |
-| A8 | The once-only 30-day first-visit prescription (제31조의3④) counts once **per patient**, across all clinics and conditions | M2 (not implemented yet) | Whether "1회" is per patient, per condition, or per period | Final text / MOHW 고시 on 진료이력·처방이력 확인 |
+| A8 | The once-only 30-day first-visit prescription (제31조의3④) counts once **per patient**, across all clinics and conditions | `src/domain/prescription.ts`, `rules.v2.json` (`extendedTimesPerPatient`) | Whether "1회" is per patient, per condition, or per period | Final text / MOHW 고시 on 진료이력·처방이력 확인 |
 | A9 | The demo clinic is 의원급, so the 병원급 limits (제31조의4) do not apply | `src/data/clinic.ts` | n/a for a demo; real use must check the facility type | — |
+| A10 | Which category each demo drug belongs to (e.g. 펜터민 → 마약·향정, 이소트레티노인 → 오·남용 우려) is a demo assignment | `src/data/drugs.ts` | The official lists: 마약류 품목허가, 식약처 오·남용 우려 의약품 고시, and the not-yet-published MOHW notice on 비만치료제 성분 (제31조의10②) | 식약처 고시; MOHW 고시 |
+| A11 | The narrow exceptions that allow 마약류 by telehealth (제31조의10③: 희귀질환자, 호스피스 통증관리, 중단 시 중대한 위해) are not modeled; those orders are blocked and handled outside the tool | `src/domain/prescription.ts` | Whether a real tool must support the exception flow and what proof it needs | Final text / MOHW 고시 |
+| A12 | Day limits apply only to first-visit telehealth; follow-up telehealth has no day limit in the draft | `src/domain/prescription.ts` | That the final text keeps 제31조의3 limited to 제34조의2제2항제2호 (초진) | Final text |
 
-Rows are added as new assumptions appear (restricted drug list in M2, AI confidence threshold in M4).
+Rows are added as new assumptions appear (AI confidence threshold in M4).
 
 ## Source check: 2026-10-22 (primary source)
 

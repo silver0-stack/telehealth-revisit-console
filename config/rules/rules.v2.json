@@ -5,10 +5,15 @@
     "A1: followUp.window = 6 months follows the draft, not final law.",
     "A3: the window end uses 민법 기간 계산 (first day not counted). Verify.",
     "A6: reads the draft as 'a same-symptom in-person visit within 6 months'. Verify.",
-    "outsideRegionExceptions mirrors 제31조의2③ 1~14 of the draft."
+    "outsideRegionExceptions mirrors 제31조의2③ 1~14 of the draft.",
+    "prescription.blockedCategories mirrors draft 제31조의10①; which drugs belong to each category is set by 고시 (A10).",
+    "A8: firstVisitLimit.extendedTimesPerPatient = 1 is counted per patient. Verify."
   ],
   "followUp": {
-    "window": { "amount": 6, "unit": "month" }
+    "window": {
+      "amount": 6,
+      "unit": "month"
+    }
   },
   "firstVisit": {
     "requireSameRegion": true,
@@ -28,5 +33,18 @@
       "overseas_national",
       "mohw_notice"
     ]
+  },
+  "prescription": {
+    "blockedCategories": [
+      "narcotic_psychotropic",
+      "misuse_risk",
+      "obesity_treatment"
+    ],
+    "blockedDrugCodes": [],
+    "firstVisitLimit": {
+      "maxDays": 7,
+      "extendedMaxDays": 30,
+      "extendedTimesPerPatient": 1
+    }
   }
 }

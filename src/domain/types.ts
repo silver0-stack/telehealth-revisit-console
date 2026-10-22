@@ -52,10 +52,41 @@ export const TelehealthRequestSchema = z.object({
 });
 export type TelehealthRequest = z.infer<typeof TelehealthRequestSchema>;
 
+// Telehealth prescription limits are set per category (draft 제31조의10), so each drug carries one.
+export const DrugCategorySchema = z.enum(["general", "narcotic_psychotropic", "misuse_risk", "obesity_treatment"]);
+export type DrugCategory = z.infer<typeof DrugCategorySchema>;
+
+export const DrugSchema = z.object({
+  code: z.string().regex(/^DRG-\d{3}$/),
+  /** Generic (ingredient) name, not a brand. */
+  name: z.string().min(1),
+  /** What it is commonly used for, in plain words for the UI. */
+  use: z.string().min(1),
+  category: DrugCategorySchema,
+});
+export type Drug = z.infer<typeof DrugSchema>;
+
+export const PrescriptionSettingSchema = z.enum(["in_person", "telehealth_follow_up", "telehealth_first_visit"]);
+export type PrescriptionSetting = z.infer<typeof PrescriptionSettingSchema>;
+
+/** A past prescription. Used to check prior history and the once-only 30-day first-visit exception. */
+export const PrescriptionRecordSchema = z.object({
+  id: z.string().regex(/^RX-\d{4}$/),
+  patientId: PatientSchema.shape.id,
+  date: IsoDateSchema,
+  drugCode: DrugSchema.shape.code,
+  days: z.number().int().positive(),
+  setting: PrescriptionSettingSchema,
+  /** True when this used the once-only extended first-visit allowance (draft 제31조의3③). */
+  usedFirstVisitExtension: z.boolean(),
+});
+export type PrescriptionRecord = z.infer<typeof PrescriptionRecordSchema>;
+
 export const DatasetSchema = z.object({
   generatedFrom: z.object({ seed: z.number().int(), today: IsoDateSchema }),
   patients: z.array(PatientSchema),
   visits: z.array(VisitSchema),
   requests: z.array(TelehealthRequestSchema),
+  prescriptions: z.array(PrescriptionRecordSchema),
 });
 export type Dataset = z.infer<typeof DatasetSchema>;

@@ -11,6 +11,10 @@ export class MockRecordSource implements RecordSource {
     this.data = DatasetSchema.parse(raw);
   }
 
+  async getToday() {
+    return this.data.generatedFrom.today;
+  }
+
   async listPatients() {
     return this.data.patients;
   }
@@ -25,5 +29,9 @@ export class MockRecordSource implements RecordSource {
 
   async listRequests() {
     return this.data.requests;
+  }
+
+  async listPrescriptions(patientId: string) {
+    return this.data.prescriptions.filter((r) => r.patientId === patientId);
   }
 }
