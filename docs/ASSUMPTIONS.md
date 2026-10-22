@@ -14,35 +14,49 @@ Each one is tagged `ASSUMPTION` in code and must be checked before any real use.
 
 Rows are added as new assumptions appear (restricted drug list in M2, AI confidence threshold in M4).
 
-## Source check: 2026-10-22
+## Source check: 2026-10-22 (primary source)
 
-On 2026-10-19 the Ministry of Health and Welfare published a **draft** (입법예고, comment period until 2026-11-09)
-of amendments to the 의료법 시행규칙 and 의료관계 행정처분 규칙. It is a draft, not final; re-check after 2026-11-09.
-Summary of what news reports say it contains:
+**Source:** 의료법 시행규칙 일부개정령안, 보건복지부공고 제2026-780호, 입법예고 2026-10-19 ~ 2026-11-09.
+Notice page: https://opinion.lawmaking.go.kr/gcom/ogLmPp/89052 (attached draft text, read in full for the articles below).
+Parent law: 의료법 법률 제21238호 (공포 2025-12-23, 시행 2026-12-24).
+**This is a draft.** The text can change after the comment period. Re-check after 2026-11-09 and again before 2026-12-24.
 
-- **일반 (follow-up) telehealth:** the patient had an in-person visit **at the same clinic, for the same symptom,
-  within the last 6 months.**
-- **초진 (first-visit) telehealth** applies otherwise (different symptom, or more than 6 months since the last
-  in-person visit). It is **allowed**, at a 의원급 clinic in the same 시·도 as the patient's registered address.
-  Exceptions that may use another 시·도: 희귀질환자, 제1형 당뇨병 환자, 등록장애인, 장기요양수급자.
-- **Prescriptions after 초진 telehealth:** 7 days at most; once, up to 30 days if there is a prior history for the
-  condition and the doctor judges continued treatment necessary.
-- **Not prescribable via telehealth (in principle):** 마약·향정신성의약품, 오·남용 우려 의약품, 비만치료제.
-- **Volume caps:** a clinic's telehealth visits ≤ 30% of all visits per half-year; per clinician, a monthly average
-  per half-year of ≤ 500 (doctors) or ≤ 130 (dentists, Korean medicine doctors).
+What the draft says (article numbers are from the draft):
+
+- **제31조의2①, 일반 (follow-up) telehealth window:** "환자가 해당 의료기관에서 마지막으로 대면하여 진료를 받은 날부터
+  6개월이 되는 날까지의 기간".
+- **제31조의5⑤1, how to check it:** look in this clinic's records for an in-person visit **for the same symptom**
+  (동일한 증상으로 대면하여 진료받은 기록) within that window. Telehealth visits do not count; the text says 대면.
+- **제31조의2②, 초진 (first-visit) telehealth:** allowed when the patient's registered address (or a 실거주지 registered in
+  the 비대면진료지원시스템) is in the same 시·도 as the clinic.
+- **제31조의2③, exceptions allowed outside the 시·도:** 14 categories, including 희귀질환자, 제1형 당뇨병 환자, 등록장애인,
+  장기요양 수급자, 수용자, 호스피스대상환자, isolated 1st/2nd-class infectious disease patients, 선원, 군인, 경찰·소방공무원,
+  국가보훈 희생·공헌자, 재외국민 abroad, plus others set by notice (고시).
+- **제31조의3, 초진 prescriptions:** at most 7 days; up to 30 days if prior care and prescription history for the condition is
+  confirmed and the clinician judges continuing treatment necessary, but **only once**, counting other clinics too.
+- **제31조의10, never prescribable by telehealth:** 마약·향정신성의약품; drugs MFDS lists as high misuse risk; **비만치료제**;
+  others set by MOHW notice. Narrow exception for 마약류 with the same ingredient previously prescribed in person
+  (희귀질환자, 호스피스 pain control, stopping would seriously harm the patient, others by notice).
+- **제31조의7, volume caps:** telehealth ≤ 30/100 of a clinic's visits per half-year; per clinician, monthly average per
+  half-year ≤ 500 (doctors) or ≤ 130 (dentists, Korean medicine doctors). Visits after 20:00 on weekdays, after 18:00 on
+  Saturdays, and on holidays are excluded from the count.
+- **제31조의5①, method:** video by default; voice is allowed for 일반 telehealth if the clinician judges it enough, unless the
+  condition needs visual information (제31조의11: under-13 patients, skin, eye, ENT, injuries).
 
 How this affects the assumptions above:
 
-| ID | Status after the draft |
-|----|------------------------|
-| A1 | **Differs.** Draft says 6 months, not 30 days. "6 months" is a calendar-month window, not a fixed day count. |
-| A2 | **Matches the draft** for 일반 telehealth (in-person, same symptom, same clinic). Reports do not mention prior telehealth visits counting. |
-| A3 | Not addressed in reports. Still unverified. |
-| A4 | Not addressed in reports. Still unverified. |
-| A5 | Matches ("해당 의료기관"). |
-| new | Failing the follow-up check does **not** mean "refuse": it means the request is 초진 telehealth, which has its own conditions. The app's model of eligible / not eligible is incomplete. |
+| ID | Status after reading the draft |
+|----|--------------------------------|
+| A1 | **Differs.** The draft window is 6 months, counted in calendar months from the last in-person visit, not 30 days. |
+| A2 | **Supported by the draft.** Only an in-person (대면) visit for the same symptom at the same clinic counts. |
+| A3 | **Partly answered.** "6개월이 되는 날까지" includes the end date. Exact day arithmetic (e.g. a visit on 08-31) is not spelled out; it likely follows 민법 기간 계산 (제157조, 제160조). Verify. |
+| A4 | Still open. The draft speaks in dates (날), which fits calendar days, but does not say which timezone or clock. |
+| A5 | **Supported.** "해당 의료기관" = the same clinic. |
+| A6 (new) | **Open question in the draft text:** 제31조의2① anchors the window on the *last* in-person visit (any symptom), while 제31조의5⑤1 asks for a same-symptom in-person visit *within* that window. The app reads it as "a same-symptom in-person visit within 6 months". Verify which reading MOHW intends. |
+| A7 (new) | "동일한 증상" has no definition in the draft. Deciding it stays with the clinician; the app only suggests. |
+| new | Failing the follow-up check does **not** mean "refuse". It means the request is 초진 telehealth, which has its own conditions (same 시·도 or an exception, 7-day prescriptions). The app's eligible / not eligible model is incomplete. |
 
-Sources (news reports, not the official text; read the 입법예고 itself on 국민참여입법센터 before relying on any number):
-- 청년의사, "비대면진료 세부기준 윤곽…6개월 내 진료기관 원칙·비만약 제외": http://www.docdocdoc.co.kr/news/articleView.html?idxno=3043716
-- 경향신문, "비대면진료 초진 처방 7일로 제한···진료도 거주지 시·도 내에서": https://www.khan.co.kr/article/202610181200021/
-- 이투데이, "비대면진료 기준 구체화…초진 처방 7일 이내": https://www.etoday.co.kr/news/view/2636828
+News reports used before finding the primary source (they match the draft text):
+- 청년의사: http://www.docdocdoc.co.kr/news/articleView.html?idxno=3043716
+- 경향신문: https://www.khan.co.kr/article/202610181200021/
+- 보건복지부 보도자료 (2026-10-18): https://www.mohw.go.kr/board.es?mid=a10503010100&bid=0027&act=view&list_no=1492252
