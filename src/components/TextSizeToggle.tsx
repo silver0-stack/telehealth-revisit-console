@@ -20,12 +20,7 @@ export function TextSizeToggle() {
       onClick={toggle}
       className="rounded border border-border bg-surface px-3 py-1 text-text hover:border-accent"
     >
-      {/* A small and a large "가" side by side is the common Korean icon for text size. */}
-      <span aria-hidden="true" className="mr-1.5 font-bold">
-        <span className="text-sm">가</span>
-        <span className="text-lg">가</span>
-      </span>
-      큰 글씨 {large ? "켜짐" : "꺼짐"}
+      큰 글씨: {large ? "켜짐" : "꺼짐"}
     </button>
   );
 }
