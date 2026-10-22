@@ -120,6 +120,13 @@ export const PRESCRIPTION_REASON_SHORT: Record<PrescriptionCheck["reason"], stri
   EXTENSION_ALREADY_USED: "예외 이미 사용",
 };
 
+export const NOT_FOLLOW_UP_SHORT: Record<NotFollowUpReason, string> = {
+  NO_VISIT: "진료 기록 없음",
+  ONLY_TELEHEALTH_VISITS: "비대면 기록만 있음",
+  NO_MATCHING_SYMPTOM: "같은 증상 대면 기록 없음",
+  OUTSIDE_WINDOW: "기간 지남",
+};
+
 export const ELIGIBILITY_SHORT: Record<EligibilityResult["kind"], string> = {
   follow_up: "일반(재진)",
   first_visit: "초진",

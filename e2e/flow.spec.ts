@@ -71,6 +71,8 @@ test("감사 로그: every decision above was recorded with the suggestion shown
   const rows = page.locator("tbody tr");
   await expect(rows).toHaveCount(3);
   await expect(rows.filter({ hasText: "R-0012" })).toContainText("미리 선택");
+  await expect(rows.filter({ hasText: "R-0012" })).toContainText("검토 대기 → 승인");
+  await expect(rows.filter({ hasText: "R-0012" })).toContainText("재진 판단");
   await expect(rows.filter({ hasText: "R-0001" })).toContainText("수정하고 승인");
   await expect(rows.filter({ hasText: "R-0002" })).toContainText("보류: 환자에게 증상 추가 확인 필요");
 });

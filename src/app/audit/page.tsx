@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { connection } from "next/server";
+import { describeChange } from "@/components/audit-change";
 import { formatSeoul } from "@/components/format";
 import { AUDIT_ACTION_TEXT, MATCH_LABEL_TEXT } from "@/components/labels";
 import { listAuditEvents } from "@/data/audit-log";
@@ -15,6 +16,32 @@ function suggestionSummary(s: AuditEvent["suggestion"]): string {
   const label = s.label ? MATCH_LABEL_TEXT[s.label] : "";
   const head = s.outcome === "preselect" ? "미리 선택" : "의사 확인 필요";
   return `${head}: ${s.kcdCode ?? ""} ${label}${probs}`;
+}
+
+function ChangeSummary({ event }: { event: AuditEvent }) {
+  const rows = describeChange(event);
+  return (
+    <>
+      {rows === null ? (
+        <p className="text-text-muted">요약할 수 없는 형식이에요. 원본을 확인하세요.</p>
+      ) : (
+        <dl className="grid grid-cols-[auto_1fr] gap-x-3 gap-y-1">
+          {rows.map((r) => (
+            <div key={r.label} className="contents">
+              <dt className="font-semibold whitespace-nowrap">{r.label}</dt>
+              <dd>{r.before === null ? r.after : `${r.before} → ${r.after}`}</dd>
+            </div>
+          ))}
+        </dl>
+      )}
+      <details className="mt-1">
+        <summary className="cursor-pointer text-accent underline">원본 보기</summary>
+        <pre className="mt-2 max-w-md overflow-x-auto whitespace-pre-wrap font-mono text-sm">
+          {JSON.stringify({ before: event.before, after: event.after }, null, 2)}
+        </pre>
+      </details>
+    </>
+  );
 }
 
 export default async function AuditPage() {
@@ -48,7 +75,7 @@ export default async function AuditPage() {
                 <th scope="col" className="px-3 py-2">대상</th>
                 <th scope="col" className="px-3 py-2">자동 제안 (판단 도구)</th>
                 <th scope="col" className="px-3 py-2">결정</th>
-                <th scope="col" className="px-3 py-2">변경 전/후</th>
+                <th scope="col" className="px-3 py-2">바뀐 내용</th>
               </tr>
             </thead>
             <tbody>
@@ -76,12 +103,7 @@ export default async function AuditPage() {
                   </td>
                   <td className="px-3 py-2">{e.decision ?? "—"}</td>
                   <td className="px-3 py-2">
-                    <details>
-                      <summary className="cursor-pointer text-accent underline">보기</summary>
-                      <pre className="mt-2 max-w-md overflow-x-auto whitespace-pre-wrap font-mono text-sm">
-                        {JSON.stringify({ before: e.before, after: e.after }, null, 2)}
-                      </pre>
-                    </details>
+                    <ChangeSummary event={e} />
                   </td>
                 </tr>
               ))}
