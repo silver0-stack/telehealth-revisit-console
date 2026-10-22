@@ -1,4 +1,4 @@
-// Required on every screen (CLAUDE.md hard rule 1). Rendered once in the root layout.
+// Required on every screen: all data in this app is synthetic. Rendered once in the root layout.
 export function DemoBanner() {
   return (
     <div role="note" className="border-b border-border bg-banner-bg px-4 py-2 text-banner-text">

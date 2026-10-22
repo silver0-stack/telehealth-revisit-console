@@ -13,3 +13,7 @@ next-env.d.ts
 # test output
 playwright-report/
 test-results/
+
+# AI agent instructions (local only)
+CLAUDE.md
+AGENTS.md
