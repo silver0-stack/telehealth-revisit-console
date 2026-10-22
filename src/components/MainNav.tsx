@@ -4,7 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 
 const LINKS = [
-  { href: "/", label: "환자 목록" },
+  { href: "/", label: "오늘 할 일" },
   { href: "/reviews", label: "검토" },
   { href: "/prescriptions", label: "처방 확인" },
   { href: "/audit", label: "감사 로그" },

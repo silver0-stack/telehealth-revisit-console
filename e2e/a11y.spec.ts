@@ -3,7 +3,7 @@ import { expect, test } from "@playwright/test";
 
 // Every main screen, checked against WCAG 2.0/2.1 A and AA. Runs on desktop and on a phone-sized viewport.
 const PAGES = [
-  { name: "환자 목록", path: "/" },
+  { name: "오늘 할 일", path: "/" },
   { name: "검토 목록", path: "/reviews" },
   { name: "검토 상세", path: "/reviews/R-0012" },
   { name: "처방 확인 (빈 화면)", path: "/prescriptions" },

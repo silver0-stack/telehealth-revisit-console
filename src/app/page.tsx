@@ -44,7 +44,7 @@ export default async function HomePage() {
         <h2 id="summary-heading" className="sr-only">
           검토 현황
         </h2>
-        <dl className="grid grid-cols-3 divide-x divide-border rounded border border-border bg-surface">
+        <dl className="grid grid-cols-3 divide-x divide-border self-start rounded border border-border bg-surface">
           <div className="p-4">
             <dt className="text-text-muted">검토 대기</dt>
             <dd className="mt-1 text-3xl font-bold tabular-nums text-accent">{pending.length}</dd>
