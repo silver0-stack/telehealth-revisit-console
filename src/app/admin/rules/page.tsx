@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { formatSeoul } from "@/components/format";
+import { Icon } from "@/components/Icon";
 import { ImpactReport } from "@/components/ImpactReport";
 import { getRole } from "@/app/role";
 import { CATEGORY_LABEL, periodLabel, ROLE_LABEL } from "@/components/labels";
@@ -313,7 +314,10 @@ export default async function RulesAdminPage({ searchParams }: { searchParams: S
                     <th scope="row" className="px-3 py-2 font-mono">
                       {r.version}
                       {r.version === rules.version ? (
-                        <span className="block font-sans text-sm text-status-ok">✓ 적용 중</span>
+                        <span className="flex items-center gap-1 font-sans text-sm text-status-ok">
+                          <Icon name="check" />
+                          적용 중
+                        </span>
                       ) : null}
                     </th>
                     <td className="px-3 py-2">

@@ -3,6 +3,7 @@ import type { PrescriptionCheck } from "@/domain/prescription";
 import type { AuditAction } from "@/domain/audit";
 import type { ReviewError, ReviewState } from "@/domain/review";
 import type { Role } from "@/domain/roles";
+import type { IconName } from "./Icon";
 import type { Period } from "@/domain/rules";
 import type { MatchLabel, MatcherInfo } from "@/domain/symptom";
 import type { DrugCategory } from "@/domain/types";
@@ -88,10 +89,10 @@ export function suggestionBadge(matcher: Pick<MatcherInfo, "kind">): string {
   return matcher.kind === "ai" ? "AI 제안 · 최종 판단은 의사" : "자동 제안(규칙 기반) · 최종 판단은 의사";
 }
 
-export const REVIEW_STATUS: Record<ReviewState["status"], { icon: string; text: string }> = {
-  pending: { icon: "○", text: "검토 대기" },
-  held: { icon: "‖", text: "보류" },
-  approved: { icon: "✓", text: "승인" },
+export const REVIEW_STATUS: Record<ReviewState["status"], { icon: IconName; text: string }> = {
+  pending: { icon: "pending", text: "검토 대기" },
+  held: { icon: "pause", text: "보류" },
+  approved: { icon: "check", text: "승인" },
 };
 
 export const REVIEW_ERROR_TEXT: Record<ReviewError | "INVALID_INPUT" | "NOT_FOUND" | "FORBIDDEN_ROLE", string> = {

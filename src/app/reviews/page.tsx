@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { connection } from "next/server";
 import { formatSeoul } from "@/components/format";
+import { Icon } from "@/components/Icon";
 import { ELIGIBILITY_TITLE, REVIEW_STATUS } from "@/components/labels";
 import { getRecordSource } from "@/data";
 import { listReviews, type ReviewRecord } from "@/data/reviews";
@@ -50,8 +51,10 @@ export default async function ReviewsPage() {
               return (
                 <tr key={request.id} className="border-b border-border last:border-0">
                   <td className="px-3 py-2 whitespace-nowrap">
-                    <span aria-hidden="true">{status.icon} </span>
-                    {status.text}
+                    <span className="inline-flex items-center gap-1.5">
+                      <Icon name={status.icon} />
+                      {status.text}
+                    </span>
                   </td>
                   <td className="px-3 py-2 whitespace-nowrap">{formatSeoul(request.requestedAt)}</td>
                   <td className="px-3 py-2 whitespace-nowrap">

@@ -12,6 +12,7 @@ import {
   suggestionBadge,
 } from "@/components/labels";
 import { getRole } from "@/app/role";
+import { Icon } from "@/components/Icon";
 import { can } from "@/domain/roles";
 import { ProbabilityList } from "@/components/ProbabilityList";
 import { StatusLine, type Tone } from "@/components/StatusLine";
@@ -68,15 +69,16 @@ export default async function ReviewDetailPage({ params, searchParams }: Props) 
   return (
     <>
       <p>
-        <Link href="/reviews" className="text-accent underline">
-          ← 검토 목록
+        <Link href="/reviews" className="inline-flex items-center gap-1 text-accent underline">
+          <Icon name="arrow-left" />
+          검토 목록
         </Link>
       </p>
       <h1 className="mt-2 text-2xl font-bold">
         {patient.displayName} 님의 비대면진료 요청 <span className="font-mono text-lg text-text-muted">{request.id}</span>
       </h1>
-      <p className="mt-1">
-        <span aria-hidden="true">{status.icon} </span>
+      <p className="mt-1 flex items-center gap-1.5">
+        <Icon name={status.icon} />
         {status.text}
         {review.state.status === "held" ? ` · 이유: ${review.state.reason}` : null}
       </p>
@@ -174,7 +176,10 @@ export default async function ReviewDetailPage({ params, searchParams }: Props) 
                   <li key={c.visitId} className="border-t border-border pt-3">
                     <p className="font-semibold">
                       {visitById.get(c.visitId)?.date} 대면 · {kcdLabel(c.kcdCode)}
-                      <span className="font-normal text-text-muted"> → {MATCH_LABEL_TEXT[c.match.label]}</span>
+                      <span className="font-normal text-text-muted">
+                        {" "}
+                        <Icon name="arrow-right" /> {MATCH_LABEL_TEXT[c.match.label]}
+                      </span>
                     </p>
                     <div className="mt-1">
                       <ProbabilityList probabilities={c.match.probabilities} top={c.match.label} />

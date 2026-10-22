@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { Icon } from "@/components/Icon";
 import { ImpactReport } from "@/components/ImpactReport";
 import { StatusLine } from "@/components/StatusLine";
 import { getRecordSource } from "@/data";
@@ -26,8 +27,9 @@ export default async function RuleImpactPage({ searchParams }: { searchParams: S
   return (
     <>
       <p>
-        <Link href="/admin/rules" className="text-accent underline">
-          ← 규칙 관리
+        <Link href="/admin/rules" className="inline-flex items-center gap-1 text-accent underline">
+          <Icon name="arrow-left" />
+          규칙 관리
         </Link>
       </p>
       <h1 className="mt-2 text-2xl font-bold">규칙 버전 비교</h1>
