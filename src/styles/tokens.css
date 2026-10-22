@@ -1,0 +1,33 @@
+/*
+ * Design tokens. Components use these (through the Tailwind theme in globals.css),
+ * never raw hex values. One accent; status colors are for status only.
+ * All text/background pairs below meet WCAG AA (4.5:1) on --color-surface.
+ */
+:root {
+  --color-bg: #f6f7f8;
+  --color-surface: #ffffff;
+  --color-border: #d4d8dd;
+  --color-text: #1b1f24;
+  --color-text-muted: #4a525c;
+
+  --color-accent: #0b5f6b;
+  --color-accent-contrast: #ffffff;
+  --color-focus: #b4530a;
+
+  --color-status-ok: #1d6b34;
+  --color-status-warn: #8a5300;
+  --color-status-danger: #a4161a;
+
+  --color-banner-bg: #fff4d6;
+  --color-banner-text: #5c3d00;
+
+  --font-sans: "Pretendard", "Apple SD Gothic Neo", "Malgun Gothic", "Noto Sans KR", system-ui, sans-serif;
+  --font-mono: ui-monospace, "Cascadia Mono", Consolas, monospace;
+
+  /* Base size. The "큰 글씨" toggle raises it; Tailwind sizes are rem, so everything scales. */
+  --font-root: 100%;
+}
+
+:root[data-text-size="large"] {
+  --font-root: 125%;
+}
