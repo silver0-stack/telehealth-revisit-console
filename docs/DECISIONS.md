@@ -122,3 +122,9 @@ The edit form only offers "영향 미리보기" (GET). Saving is a second button
 values as hidden fields plus the version the preview was based on. If another version was saved in between,
 the save is refused (`STALE_PREVIEW`) because the impact shown is no longer true. The audit entry for the save
 includes the impact counts.
+
+## D24. E2E runs against its own production server with MATCHER=rules (2026-10-22)
+`pnpm test:e2e` builds the app and starts it on port 3100 instead of reusing the dev server. Every run starts
+from empty in-memory state, so the flow tests can assert exact audit-log contents, and they never touch the
+developer's session. `MATCHER=rules` keeps the run deterministic and free; Jev is measured separately by
+`pnpm eval:symptom`. The flow tests run in order on one worker because each step builds on the previous one.
