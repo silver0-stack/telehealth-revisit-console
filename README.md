@@ -1,124 +1,186 @@
-# 재진 확인 콘솔 (Telehealth Clinic Console)
+# 재진 확인 콘솔 (Telehealth Revisit Console)
 
-A portfolio demo of a web console for small clinics that offer 비대면 (non-face-to-face) care:
-decide whether a telehealth request is a follow-up (일반) or first-visit (초진) visit, block restricted
-prescriptions, review AI-suggested symptom matches, preview the impact of rule changes, and keep an audit trail
-of every decision.
+비대면 진료를 하는 작은 의원을 위한 웹 콘솔입니다.
+의원 직원과 의사가 **"이 환자를 비대면으로 진료해도 되는가?"**, **"이 약을 비대면으로 처방해도 되는가?"**를
+빠르고 일관되게 확인하도록 돕습니다. 헬스케어 IT 포트폴리오로 만든 데모입니다.
 
-> **All data is synthetic.** No real patient data is used anywhere. This is not medical advice: the tool
-> organizes information and every decision belongs to a clinician. Legal thresholds follow a **draft** rule
-> and are listed as assumptions in [docs/ASSUMPTIONS.md](docs/ASSUMPTIONS.md).
+> ⚠ **모든 데이터는 가상입니다.** 실제 환자 정보는 어디에도 쓰지 않습니다.
+> 이 도구는 의료 조언이 아닙니다. 정보를 정리해 보여 줄 뿐이고, 최종 판단은 사람인 의사가 합니다.
+> 법적 기준값은 아직 확정되지 않은 **입법예고 초안**을 따릅니다 ([docs/ASSUMPTIONS.md](docs/ASSUMPTIONS.md)).
 
-## Why this project
+---
 
-Korea's revised Medical Act makes telehealth permanent from **2026-12-24**. On 2026-10-19 the Ministry of Health
-and Welfare published the draft enforcement rule (보건복지부공고 제2026-780호). This project reads that draft
-(article numbers are cited in the code and docs) and turns it into tested code:
+## 1. 어떤 문제를 푸나요?
 
-- **Follow-up vs first visit** (제31조의2, 제31조의5): an in-person visit at the same clinic for the same symptom
-  within 6 months makes a request a follow-up; otherwise it is a first visit, allowed only in the patient's own
-  시·도 or for 14 exception groups.
-- **Prescription limits** (제31조의3, 제31조의10): narcotics, high-misuse drugs and obesity treatments are blocked;
-  first-visit prescriptions are limited to 7 days, or 30 days once per patient with confirmed history.
-- Where the draft is unclear (how to count "6 months", what "same symptom" means), the code makes an explicit,
-  tested choice and records it as an assumption to verify.
+한국에서 비대면 진료(화상·전화 진료)는 코로나 시기에 임시로 허용되다가, 개정 의료법으로
+**2026년 12월 24일부터 정식 제도**가 됩니다. 2026년 10월 19일에는 세부 기준을 담은
+의료법 시행규칙 개정안(보건복지부공고 제2026-780호)이 입법예고되었습니다.
 
-## Design in one paragraph
+이 초안에 따르면 의원은 비대면 진료 요청이 들어올 때마다 다음을 따져야 합니다.
 
-**Rules are code, AI only suggests.** Eligibility, prescription checks and the rule-change diff are pure
-TypeScript functions in `src/domain/` with unit tests. Rule values live in versioned files (`config/rules/`),
-never in components; every result records the rule version it used. The only AI task is comparing the
-patient's own words ("목이 따가워요") with an earlier visit note ("인후통"). A suggestion is pre-selected only when
-the model is at least 80% sure, the clinician always approves or edits it, and the audit log records the
-probabilities and model version the clinician saw. The app works fully without AI (`MATCHER=rules`).
+- 이 환자가 **최근 6개월 안에 같은 증상으로 우리 의원에 직접 와서 진료받은 적이 있나?** → 있으면 **재진**
+- 없으면 **초진**인데, 초진은 환자가 **의원과 같은 시·도에 살거나** 희귀질환자, 등록 장애인, 군인 같은 **예외 대상**(초안 기준 14종)일 때만 가능
+- 처방하려는 약이 **비대면으로 처방할 수 없는 약**(마약류, 오남용 우려 약, 비만치료제)은 아닌가?
+- 초진이면 처방 일수가 **7일**을 넘지 않나? (조건에 따라 한 번은 30일까지)
 
-## Where the AI was wrong, and how that was handled
+사람이 매번 기록을 넘겨 보며 판단하면 실수하기 쉽고, 기준이 바뀌면 혼란이 생깁니다.
+이 프로젝트는 이 판단을 **테스트된 코드**로 만들고, 그 결과와 사람의 결정을 모두 기록으로 남깁니다.
 
-Measured on 102 synthetic cases with tags for synonyms, typos, look-alikes and vague complaints
-([eval/README.md](eval/README.md)):
+### 용어 정리
 
-| | Rule-based keywords | Jev (`typesafe-ai/jev-1.14.0`) |
+| 용어 | 뜻 |
+|------|----|
+| 재진 | 같은 의원에서 같은 증상으로 이미 **대면 진료**를 받은 적이 있는 환자의 다시 진료. 비대면으로 받은 진료는 인정하지 않음 |
+| 초진 | 위에 해당하지 않는 첫 진료 |
+| KCD 코드 | 한국표준질병·사인분류 코드. 예: `J02.9` 급성 인두염 |
+| 감사 기록 (audit log) | 누가, 언제, 무엇을 보고, 어떻게 결정했는지 남기는 기록. 나중에 결정을 검증할 때 씀 |
+| 규칙 버전 | 기준값을 담은 설정 파일의 버전. 예: `v1` 30일 기준(옛 임시값), `v2` 6개월 기준(2026-10-19 초안) |
+
+---
+
+## 2. 무엇을 할 수 있나요?
+
+### 사용 흐름 예시
+
+> 가상 환자 "조도토리" 님이 비대면 진료를 요청하며 **"침 삼킬 때 목이 아파요"** 라고 적었습니다.
+
+1. **검토 화면**이 이 환자의 지난 대면 진료 기록을 보여 줍니다. 3개월 전 기록은 `J02.9 급성 인두염 · 인후통, 발열 없음`입니다.
+2. AI가 오늘 증상과 지난 기록을 비교해 **"같은 증상일 확률 90%"**라고 제안합니다.
+   화면에는 항상 "AI 제안 · 최종 판단은 의사" 라벨이 붙습니다.
+3. 의사가 **승인**, **수정하고 승인**(다른 진단 코드 선택), **보류** 중 하나를 누릅니다.
+4. 승인된 진단 코드로 **재진 여부를 코드가 계산**합니다. 6개월 안의 같은 증상 대면 진료가 있으므로 재진입니다.
+5. 이 모든 과정, 곧 AI가 낸 확률과 모델 버전, 의사가 고른 답이 **감사 기록**에 남습니다.
+
+### 화면
+
+| 주소 | 하는 일 |
+|------|---------|
+| `/` | 가상 환자 목록 |
+| `/reviews` | 비대면 진료 요청 목록과 검토 화면. AI 증상 비교 제안을 보고 승인 / 수정하고 승인 / 보류 |
+| `/audit` | 모든 결정의 감사 기록. 그때 화면에 보였던 제안, 확률, 판단 도구 버전까지 기록 |
+| `/prescriptions` | 재진·초진 판단과 처방 가능 여부(금지 약물, 처방 일수) 확인 |
+| `/admin/rules` | 처방 금지 목록과 일수 제한 편집. **저장 전에 누가 영향을 받는지 먼저 보여 주고**, 저장하면 새 버전으로 남음 |
+| `/admin/rules/impact` | 두 규칙 버전 비교. 예: v1(30일) → v2(6개월)로 바꾸면 초진이던 사례 27건이 재진이 됨 |
+
+---
+
+## 3. 설계에서 가장 중요한 원칙: "규칙은 코드, AI는 제안만"
+
+이 프로젝트에서 판단의 종류에 따라 역할을 나눴습니다.
+
+| 판단 | 누가 하나 | 이유 |
+|------|----------|------|
+| 재진·초진 판단, 처방 금지, 일수 제한 | **코드** (`src/domain/`) | 법 규칙은 정답이 하나입니다. 같은 입력엔 항상 같은 답이 나와야 하고, 테스트로 검증할 수 있어야 합니다. |
+| "목이 따가워요"와 "인후통"이 같은 증상인가 | **AI가 제안 → 의사가 결정** | 사람이 자유롭게 쓴 말은 규칙으로 다 처리하기 어렵습니다. 그래서 AI에게 제안만 맡깁니다. |
+
+구체적으로는 이렇게 지킵니다.
+
+- **규칙 값은 설정 파일에 둡니다** (`config/rules/rules.v2.json`). 화면 코드에 숫자를 박아 넣지 않습니다.
+  모든 판단 결과에는 어떤 규칙 버전을 썼는지가 함께 기록됩니다.
+- **초안에서 애매한 부분은 숨기지 않습니다.** 예를 들어 "6개월"을 180일로 볼지 달력 기준으로 볼지 같은 문제입니다.
+  코드에서 하나를 명시적으로 고르고, 테스트를 붙이고, 확인할 가정으로 [ASSUMPTIONS.md](docs/ASSUMPTIONS.md)에 적었습니다.
+  기간은 민법의 기간 계산 방식을 따르고, 월말과 윤년 경계까지 테스트합니다.
+- **AI가 80% 이상 확신할 때만 답을 미리 골라 둡니다.** 그보다 낮으면 "의사 확인 필요"를 표시하고 아무것도 미리 고르지 않습니다.
+- **AI 없이도 앱 전체가 동작합니다** (`MATCHER=rules`). AI는 있으면 더 좋은 부품일 뿐, 꼭 필요한 부품이 아닙니다.
+
+설계 결정 하나하나의 이유는 [docs/DECISIONS.md](docs/DECISIONS.md)에 3~5줄씩 적어 두었습니다.
+
+---
+
+## 4. AI는 얼마나 맞았고, 틀린 건 어떻게 다뤘나요?
+
+증상 비교에 쓴 AI는 **Jev**(`typesafe-ai/jev`)입니다. Vercel AI Gateway로 호출하는 결정 전용 모델로,
+긴 글 대신 `같음 / 관련 있음 / 다름` 중 하나를 **확률과 함께** 돌려줍니다.
+비교 기준으로 **키워드 규칙**(진단 코드 일치 + 작은 동의어 목록)도 만들어 두었습니다.
+
+동의어, 오타, 비슷해 보이지만 다른 질환 같은 어려운 사례를 섞은 **가상 사례 102건**으로 둘을 평가했습니다
+(자세한 내용: [eval/README.md](eval/README.md)).
+
+| | 키워드 규칙 | Jev (`jev-1.14.0`) |
 |---|---|---|
-| Accuracy | 77.5% | 84.3% |
-| **Wrong pre-selections** (a different condition shown as "same") | **7** | **0** |
-| "90–100% sure" answers that were right | 85% | 97% |
+| 정확도 | 77.5% | 84.3% |
+| **잘못된 미리 선택** (다른 질환인데 "같음"으로 미리 골라 둔 경우) | **7건** | **0건** |
+| "90~100% 확신"이라고 한 답이 실제로 맞은 비율 | 85% | 97% |
 
-- The keyword baseline confidently matched "머리카락이 많이 빠져요" to migraine (it contains "머리") and
-  "목이 아파서 고개를 못 돌리겠어요" (neck) to a sore throat. Jev did not call any of those 7 "same".
-- Jev still called three non-matching complaints "same", but each at 49–63% confidence. The 0.8 threshold,
-  chosen from the calibration table rather than guessed, kept all three from being pre-selected.
-- Both matchers fail when two complaints are mixed in one sentence ("목도 따갑고 허리도 아파요").
-  The review screen shows the probabilities, so the clinician sees the uncertainty.
-- The evaluation labels were written by the author, not a clinician (assumption A15), so these numbers compare
-  two matchers on the same set; they are not clinical accuracy.
+이 표에서 가장 중요한 줄은 **잘못된 미리 선택**입니다. 의사가 바쁘면 미리 골라진 답을 그대로 승인할 수 있기 때문입니다.
 
-## Run it
+- 키워드 규칙은 "머리카락이 많이 빠져요"를 편두통과 같다고 판단했습니다("머리"라는 글자 때문입니다).
+  "목이 아파서 고개를 못 돌리겠어요"(목 근육)도 인후통과 같다고 판단했습니다. Jev는 이런 7건을 하나도 "같음"으로 고르지 않았습니다.
+- Jev도 서로 다른 증상 3건을 "같음"이라고 답했지만, 확신도가 49~63%로 낮았습니다.
+  80% 기준값은 짐작이 아니라 평가 결과의 보정표를 보고 정했고, 덕분에 이 3건은 미리 선택되지 않았습니다.
+- 한 문장에 증상이 두 개 섞이면("목도 따갑고 허리도 아파요") 둘 다 약합니다. 검토 화면에 확률이 그대로 보이므로 의사가 불확실성을 알 수 있습니다.
+- 평가 정답은 의사가 아니라 개발자가 붙였습니다. 따라서 이 숫자는 **두 방식의 비교**이지, 임상적 정확도가 아닙니다.
 
-Requires Node 24+. pnpm comes through corepack (see [D1](docs/DECISIONS.md)).
+---
+
+## 5. 직접 실행해 보기
+
+Node 24 이상이 필요합니다. pnpm은 Node에 포함된 corepack으로 실행됩니다.
 
 ```bash
 pnpm install
-cp .env.example .env.local   # defaults work as-is: MATCHER=rules needs no key
+cp .env.example .env.local   # 그대로 두면 MATCHER=rules로 동작합니다. API 키가 필요 없습니다.
 pnpm dev                     # http://localhost:3000
 ```
 
-| Command | What it does |
-|---------|--------------|
-| `pnpm dev` | Local dev server |
-| `pnpm typecheck` | `tsc --noEmit` |
-| `pnpm lint` | ESLint |
-| `pnpm test` | Vitest unit tests (domain rules, matchers, metrics) |
-| `pnpm test:e2e` | Playwright: the clinician flow end to end, plus axe WCAG 2.1 A/AA checks on every screen at desktop and phone size. Starts its own server on port 3100 with `MATCHER=rules`. First run: `pnpm exec playwright install chromium` |
-| `pnpm eval:symptom` | Evaluate the symptom matcher on 102 synthetic cases (`--matcher rules` or `--matcher jev`) |
-| `pnpm seed` | Regenerate `src/data/seed.json` (fixed seed, same output every time) |
+Jev로 실행하려면 `.env.local`에서 `MATCHER=jev`로 바꾸고 `AI_GATEWAY_API_KEY`를 넣습니다.
+Jev는 AI Gateway 무료 등급에서는 쓸 수 없고(403 오류), 유료 크레딧이 필요합니다.
 
-## Screens
+| 명령 | 하는 일 |
+|------|---------|
+| `pnpm dev` | 개발 서버 실행 |
+| `pnpm typecheck` | 타입 검사 |
+| `pnpm lint` | 코드 스타일 검사 |
+| `pnpm test` | 단위 테스트 (재진 판단, 처방 검사, 규칙 비교, 증상 비교, 평가 지표) |
+| `pnpm test:e2e` | 브라우저 자동 테스트. 의사 검토 흐름 전체와, 모든 화면의 접근성(WCAG 2.1 A/AA) 검사를 데스크톱·모바일 크기에서 실행. 처음 한 번은 `pnpm exec playwright install chromium` 필요 |
+| `pnpm eval:symptom` | 102건으로 증상 비교 평가 (`--matcher rules` 또는 `--matcher jev`) |
+| `pnpm seed` | 가상 데이터 다시 만들기. 고정 seed라 항상 같은 결과 |
 
-| Path | What it does |
-|------|--------------|
-| `/` | Synthetic patient list |
-| `/reviews` | Telehealth requests. Each one compares the patient's words with earlier in-person visits and suggests a match; the clinician chooses 승인 / 수정하고 승인 / 보류 |
-| `/audit` | Append-only log of every human decision, with the suggestion, probabilities and matcher version shown at the time |
-| `/prescriptions` | Checks whether a request is follow-up (일반) or first-visit (초진) telehealth, and whether a drug and day count pass the rules |
-| `/admin/rules` | Edits the telehealth prescription blocklist and day limits. Shows who is affected first; only then can it be saved as a new rule version |
-| `/admin/rules/impact` | Compares any two rule versions (e.g. v1 → v2: 30 days → 6 months turns 27 first-visit scenarios into follow-ups) |
+---
 
-Accessibility: base font 16px with a "큰 글씨" toggle, visible keyboard focus, a skip link, status shown with
-icon and text (never color alone), `prefers-reduced-motion` respected, layouts down to phone width.
+## 6. 기술 스택과 폴더 구조
 
-## Project map
+- **Next.js** (App Router) + **TypeScript** strict + **Tailwind CSS**
+- **zod**: 설정 파일과 입력값 검증 · **date-fns**: 날짜 계산 (시간대 Asia/Seoul)
+- **Vitest**: 단위 테스트 · **Playwright + axe**: 브라우저 테스트와 접근성 검사
+- **Vercel AI SDK + AI Gateway**: Jev 호출
 
 ```
-src/domain/   pure rules: eligibility, prescription, rule-diff, review state, dates. No React or Next.
-src/ai/       SymptomMatcher interface, RuleBasedMatcher, JevMatcher (the only code that calls AI Gateway)
-src/data/     RecordSource + in-memory mock, rules store, audit log, review store
-src/app/      routes;  src/components/  UI and all Korean wording (labels.ts)
-config/       rules.v1.json (old 30-day placeholder), rules.v2.json (2026-10-19 draft), ai.json
-eval/         cases, metrics, results;  e2e/  Playwright specs;  docs/  DECISIONS.md, ASSUMPTIONS.md
+src/domain/   순수 규칙 로직: 재진 판단, 처방 검사, 규칙 비교, 검토 상태, 날짜 계산. React·Next 없음
+src/ai/       증상 비교 인터페이스와 두 구현(키워드 규칙, Jev). AI를 호출하는 유일한 곳
+src/data/     진료 기록 읽기(인터페이스 + 가상 데이터), 규칙 저장, 감사 기록, 검토 저장
+src/app/      화면(라우트)        src/components/  UI 부품과 화면 문구
+config/       rules.v1.json(30일, 옛 임시값), rules.v2.json(2026-10-19 초안), ai.json(AI 기준값)
+eval/         평가 사례, 지표 계산, 결과        e2e/  브라우저 테스트
+docs/         DECISIONS.md(설계 결정), ASSUMPTIONS.md(확인이 필요한 가정)
 ```
 
-## Demo limitations
+접근성: 기본 글자 16px과 "큰 글씨" 버튼, 키보드 포커스 표시, 본문 바로가기 링크를 갖췄습니다.
+상태는 색만이 아니라 아이콘과 글자로 표시하고, 움직임 줄이기 설정을 존중하며, 모바일 화면에서도 쓸 수 있습니다.
 
-- **In-memory storage.** Review decisions, admin-saved rule versions and the audit log live in the server
-  process and disappear on restart. Records are read through the `RecordSource` interface, so a real store
-  can replace the mock. A real audit log needs append-only, tamper-evident storage.
-- **Draft rules.** Thresholds follow a draft that may change after its comment period (ends 2026-11-09).
-- **No authentication.** One implied clinician and admin; anyone who can reach the server can save a rule
-  version. Server actions mark where authorization checks belong.
-- **Demo drug catalog.** Drug categories are demo assignments, not the official 식약처/MOHW lists.
-- **Other clinics' records are not visible.** The real check uses the government 비대면진료지원시스템.
-- **Jev needs paid AI Gateway credits.** The free tier returns 403 for `typesafe-ai/jev`. Without credits,
-  run with `MATCHER=rules`.
-- **No zero data retention.** Not available on the Hobby plan. Acceptable only because every request is
-  synthetic; real patient text would need ZDR and a legal review before any of it left the clinic.
+---
 
-## Status
+## 7. 데모의 한계
 
-- [x] M0 Scaffold
-- [x] M1 Eligibility engine (follow-up / first-visit, based on the 2026-10-19 draft)
-- [x] M2 Restricted drugs (blocklist, first-visit day limits, versioned admin screen)
-- [x] M3 Review flow (rule-based matcher, clinician review, audit log)
-- [x] M4 Jev + evaluation (Jev: 0 wrong pre-selections vs 7 for the rule-based baseline)
-- [x] M5 Rule-change impact preview (`diffRules`, preview before save, version comparison)
-- [x] M6 E2E (8 flow tests), axe checks on 8 screens × 2 viewports, this write-up
-- [ ] M7 (optional) FHIR-backed `RecordSource` with Synthea data
+- **저장은 메모리에만 합니다.** 검토 결정, 새로 저장한 규칙 버전, 감사 기록은 서버를 다시 켜면 사라집니다.
+  진료 기록은 인터페이스(`RecordSource`)를 거쳐 읽으므로 실제 DB로 바꿔 끼울 수 있습니다.
+  실제 감사 기록이라면 지울 수 없고 위조를 알아챌 수 있는 저장소가 필요합니다.
+- **기준은 초안입니다.** 의견 수렴(2026-11-09 마감) 뒤 바뀔 수 있습니다.
+- **로그인이 없습니다.** 서버에 접속할 수 있으면 누구나 규칙을 저장할 수 있습니다. 권한 검사가 들어갈 자리는 코드에 표시해 두었습니다.
+- **약물 분류는 데모용입니다.** 식약처나 보건복지부의 공식 목록이 아닙니다.
+- **다른 의원의 진료 기록은 볼 수 없습니다.** 실제로는 정부의 비대면진료지원시스템으로 확인합니다.
+- **데이터 미보관(ZDR) 옵션을 쓰지 않았습니다.** 사용 중인 Vercel 요금제에서 제공하지 않습니다.
+  모든 데이터가 가상이라 괜찮지만, 실제 환자 정보를 보내려면 ZDR과 법률 검토가 먼저 필요합니다.
+
+---
+
+## 8. 진행 상황
+
+- [x] M0 기본 골격 (가상 환자 약 40명, 고정 seed)
+- [x] M1 재진 판단 엔진 (2026-10-19 초안 기준, 경계 사례 테스트)
+- [x] M2 처방 제한 (금지 목록, 초진 일수 제한, 버전 관리 화면)
+- [x] M3 검토 흐름 (키워드 규칙 비교, 의사 검토, 감사 기록)
+- [x] M4 Jev와 평가 (잘못된 미리 선택: Jev 0건, 키워드 규칙 7건)
+- [x] M5 규칙 변경 영향 미리보기 (저장 전 미리보기, 버전 비교)
+- [x] M6 품질 (브라우저 흐름 테스트 8개, 화면 8개 × 화면 크기 2종 접근성 검사)
+- [ ] M7 (선택) Synthea 가상 데이터를 쓰는 FHIR 기반 진료 기록 소스
