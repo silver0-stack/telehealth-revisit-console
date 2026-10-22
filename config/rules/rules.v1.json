@@ -1,9 +1,14 @@
 {
   "version": "v1",
+  "source": "Early placeholder modeled on the 2023 비대면진료 시범사업 (30-day follow-up). Not current law.",
   "assumptions": [
-    "A1: eligibility.revisitWindowDays = 30 is a placeholder, not the legal rule. See docs/ASSUMPTIONS.md."
+    "A1: followUp.window = 30 days is an outdated placeholder. See docs/ASSUMPTIONS.md."
   ],
-  "eligibility": {
-    "revisitWindowDays": 30
+  "followUp": {
+    "window": { "amount": 30, "unit": "day" }
+  },
+  "firstVisit": {
+    "requireSameRegion": false,
+    "outsideRegionExceptions": []
   }
 }

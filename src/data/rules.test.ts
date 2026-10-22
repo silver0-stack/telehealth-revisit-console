@@ -1,14 +1,16 @@
 import { describe, expect, it } from "vitest";
-import { getRules } from "./rules.ts";
+import { getRules, listRuleVersions } from "./rules.ts";
 
-describe("getRules", () => {
-  it("loads and validates the current rules file", () => {
-    const rules = getRules();
-    expect(rules.version).toBe("v1");
-    expect(rules.eligibility.revisitWindowDays).toBeGreaterThan(0);
+describe("rules config", () => {
+  it("uses the newest version as the current rules", () => {
+    expect(getRules().version).toBe("v2");
+    expect(listRuleVersions().map((r) => r.version)).toEqual(["v1", "v2"]);
   });
 
-  it("lists the placeholder values it contains", () => {
-    expect(getRules().assumptions.length).toBeGreaterThan(0);
+  it("every version says where its values come from and what is assumed", () => {
+    for (const rules of listRuleVersions()) {
+      expect(rules.source.length).toBeGreaterThan(0);
+      expect(rules.assumptions.length).toBeGreaterThan(0);
+    }
   });
 });

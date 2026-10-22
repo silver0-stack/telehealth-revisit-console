@@ -7,812 +7,780 @@
     {
       "id": "P-0001",
       "displayName": "박달래",
-      "birthYear": 2005
+      "birthYear": 2005,
+      "region": "서울특별시",
+      "telehealthException": null
     },
     {
       "id": "P-0002",
-      "displayName": "김달래",
-      "birthYear": 1997
+      "displayName": "윤솔잎",
+      "birthYear": 1990,
+      "region": "서울특별시",
+      "telehealthException": "rare_disease"
     },
     {
       "id": "P-0003",
-      "displayName": "김자두",
-      "birthYear": 1966
+      "displayName": "강머루",
+      "birthYear": 1977,
+      "region": "서울특별시",
+      "telehealthException": null
     },
     {
       "id": "P-0004",
-      "displayName": "강머루",
-      "birthYear": 1977
+      "displayName": "이들깨",
+      "birthYear": 1994,
+      "region": "부산광역시",
+      "telehealthException": null
     },
     {
       "id": "P-0005",
-      "displayName": "박냉이",
-      "birthYear": 1954
+      "displayName": "이솔잎",
+      "birthYear": 1953,
+      "region": "서울특별시",
+      "telehealthException": null
     },
     {
       "id": "P-0006",
       "displayName": "정보리",
-      "birthYear": 2004
+      "birthYear": 2004,
+      "region": "서울특별시",
+      "telehealthException": null
     },
     {
       "id": "P-0007",
-      "displayName": "임호두",
-      "birthYear": 1974
+      "displayName": "임다래",
+      "birthYear": 1998,
+      "region": "서울특별시",
+      "telehealthException": null
     },
     {
       "id": "P-0008",
-      "displayName": "강호두",
-      "birthYear": 1965
+      "displayName": "김보리",
+      "birthYear": 1941,
+      "region": "서울특별시",
+      "telehealthException": null
     },
     {
       "id": "P-0009",
-      "displayName": "김솔잎",
-      "birthYear": 1989
+      "displayName": "조유자",
+      "birthYear": 1953,
+      "region": "서울특별시",
+      "telehealthException": null
     },
     {
       "id": "P-0010",
-      "displayName": "임달래",
-      "birthYear": 2005
+      "displayName": "박모과",
+      "birthYear": 1960,
+      "region": "서울특별시",
+      "telehealthException": null
     },
     {
       "id": "P-0011",
-      "displayName": "이단풍",
-      "birthYear": 1967
+      "displayName": "정자두",
+      "birthYear": 1981,
+      "region": "서울특별시",
+      "telehealthException": null
     },
     {
       "id": "P-0012",
-      "displayName": "조다래",
-      "birthYear": 1987
+      "displayName": "장앵두",
+      "birthYear": 1993,
+      "region": "서울특별시",
+      "telehealthException": null
     },
     {
       "id": "P-0013",
-      "displayName": "이쑥갓",
-      "birthYear": 2006
+      "displayName": "정보리",
+      "birthYear": 1949,
+      "region": "서울특별시",
+      "telehealthException": null
     },
     {
       "id": "P-0014",
-      "displayName": "조솔잎",
-      "birthYear": 1982
+      "displayName": "윤냉이",
+      "birthYear": 2003,
+      "region": "서울특별시",
+      "telehealthException": null
     },
     {
       "id": "P-0015",
-      "displayName": "윤다래",
-      "birthYear": 1954
+      "displayName": "임호두",
+      "birthYear": 1961,
+      "region": "서울특별시",
+      "telehealthException": null
     },
     {
       "id": "P-0016",
-      "displayName": "김단풍",
-      "birthYear": 1963
+      "displayName": "정달래",
+      "birthYear": 1972,
+      "region": "서울특별시",
+      "telehealthException": null
     },
     {
       "id": "P-0017",
-      "displayName": "최유자",
-      "birthYear": 1962
+      "displayName": "임단풍",
+      "birthYear": 1954,
+      "region": "인천광역시",
+      "telehealthException": null
     },
     {
       "id": "P-0018",
-      "displayName": "윤달래",
-      "birthYear": 1948
+      "displayName": "박앵두",
+      "birthYear": 1940,
+      "region": "서울특별시",
+      "telehealthException": null
     },
     {
       "id": "P-0019",
-      "displayName": "박유자",
-      "birthYear": 1983
+      "displayName": "강앵두",
+      "birthYear": 2006,
+      "region": "인천광역시",
+      "telehealthException": "type1_diabetes"
     },
     {
       "id": "P-0020",
-      "displayName": "임머루",
-      "birthYear": 1944
+      "displayName": "이호두",
+      "birthYear": 2002,
+      "region": "서울특별시",
+      "telehealthException": null
     },
     {
       "id": "P-0021",
-      "displayName": "김들깨",
-      "birthYear": 1962
+      "displayName": "조단풍",
+      "birthYear": 2013,
+      "region": "서울특별시",
+      "telehealthException": "type1_diabetes"
     },
     {
       "id": "P-0022",
-      "displayName": "정단풍",
-      "birthYear": 2008
+      "displayName": "임녹두",
+      "birthYear": 1957,
+      "region": "충청남도",
+      "telehealthException": null
     },
     {
       "id": "P-0023",
-      "displayName": "윤달래",
-      "birthYear": 1954
+      "displayName": "이자두",
+      "birthYear": 1978,
+      "region": "서울특별시",
+      "telehealthException": null
     },
     {
       "id": "P-0024",
-      "displayName": "윤앵두",
-      "birthYear": 1975
+      "displayName": "장다래",
+      "birthYear": 1997,
+      "region": "서울특별시",
+      "telehealthException": null
     },
     {
       "id": "P-0025",
-      "displayName": "이솔잎",
-      "birthYear": 1960
+      "displayName": "강모과",
+      "birthYear": 1972,
+      "region": "서울특별시",
+      "telehealthException": null
     },
     {
       "id": "P-0026",
-      "displayName": "강호두",
-      "birthYear": 1993
+      "displayName": "박쑥갓",
+      "birthYear": 2011,
+      "region": "서울특별시",
+      "telehealthException": null
     },
     {
       "id": "P-0027",
-      "displayName": "강유자",
-      "birthYear": 1960
+      "displayName": "장자두",
+      "birthYear": 1989,
+      "region": "서울특별시",
+      "telehealthException": null
     },
     {
       "id": "P-0028",
-      "displayName": "김보리",
-      "birthYear": 1984
+      "displayName": "최도토리",
+      "birthYear": 1991,
+      "region": "서울특별시",
+      "telehealthException": null
     },
     {
       "id": "P-0029",
-      "displayName": "강자두",
-      "birthYear": 1971
+      "displayName": "강유자",
+      "birthYear": 1953,
+      "region": "서울특별시",
+      "telehealthException": null
     },
     {
       "id": "P-0030",
-      "displayName": "최도토리",
-      "birthYear": 1991
+      "displayName": "윤보리",
+      "birthYear": 2009,
+      "region": "충청북도",
+      "telehealthException": null
     },
     {
       "id": "P-0031",
-      "displayName": "임단풍",
-      "birthYear": 1981
+      "displayName": "박달래",
+      "birthYear": 1944,
+      "region": "서울특별시",
+      "telehealthException": null
     },
     {
       "id": "P-0032",
-      "displayName": "조도토리",
-      "birthYear": 1979
+      "displayName": "김다래",
+      "birthYear": 2014,
+      "region": "경기도",
+      "telehealthException": null
     },
     {
       "id": "P-0033",
-      "displayName": "박냉이",
-      "birthYear": 1952
+      "displayName": "임앵두",
+      "birthYear": 1968,
+      "region": "서울특별시",
+      "telehealthException": null
     },
     {
       "id": "P-0034",
-      "displayName": "윤들깨",
-      "birthYear": 1952
+      "displayName": "정자두",
+      "birthYear": 2004,
+      "region": "경상남도",
+      "telehealthException": null
     },
     {
       "id": "P-0035",
-      "displayName": "정보리",
-      "birthYear": 1971
+      "displayName": "이단풍",
+      "birthYear": 1973,
+      "region": "서울특별시",
+      "telehealthException": null
     },
     {
       "id": "P-0036",
-      "displayName": "정앵두",
-      "birthYear": 1978
+      "displayName": "정냉이",
+      "birthYear": 2000,
+      "region": "서울특별시",
+      "telehealthException": null
     },
     {
       "id": "P-0037",
-      "displayName": "이냉이",
-      "birthYear": 1983
+      "displayName": "임단풍",
+      "birthYear": 1952,
+      "region": "서울특별시",
+      "telehealthException": null
     },
     {
       "id": "P-0038",
-      "displayName": "임단풍",
-      "birthYear": 2009
+      "displayName": "김자두",
+      "birthYear": 1981,
+      "region": "서울특별시",
+      "telehealthException": null
     },
     {
       "id": "P-0039",
-      "displayName": "이단풍",
-      "birthYear": 1973
+      "displayName": "강보리",
+      "birthYear": 1969,
+      "region": "울산광역시",
+      "telehealthException": null
     },
     {
       "id": "P-0040",
-      "displayName": "윤보리",
-      "birthYear": 1970
+      "displayName": "강달래",
+      "birthYear": 1957,
+      "region": "서울특별시",
+      "telehealthException": null
     }
   ],
   "visits": [
     {
       "id": "V-00001",
       "patientId": "P-0001",
-      "date": "2026-08-13",
-      "mode": "in_person",
-      "kcdCode": "I10",
-      "note": "혈압 관리, 기존 약 유지"
+      "date": "2026-07-01",
+      "mode": "telehealth",
+      "kcdCode": "J02.9",
+      "note": "인후통 및 연하통"
     },
     {
       "id": "V-00002",
       "patientId": "P-0001",
-      "date": "2026-08-27",
-      "mode": "telehealth",
+      "date": "2026-08-03",
+      "mode": "in_person",
       "kcdCode": "G43.9",
-      "note": "편두통 반복"
+      "note": "편측 두통, 빛 과민"
     },
     {
       "id": "V-00003",
       "patientId": "P-0002",
-      "date": "2026-07-31",
-      "mode": "telehealth",
-      "kcdCode": "J06.9",
-      "note": "상기도 감염 증상"
-    },
-    {
-      "id": "V-00004",
-      "patientId": "P-0002",
-      "date": "2026-09-11",
-      "mode": "telehealth",
-      "kcdCode": "L20.9",
-      "note": "아토피 피부염 악화"
-    },
-    {
-      "id": "V-00005",
-      "patientId": "P-0002",
-      "date": "2026-10-16",
+      "date": "2026-01-03",
       "mode": "in_person",
       "kcdCode": "J30.4",
       "note": "알레르기 비염 증상 지속"
     },
     {
+      "id": "V-00004",
+      "patientId": "P-0002",
+      "date": "2026-01-04",
+      "mode": "in_person",
+      "kcdCode": "G43.9",
+      "note": "편측 두통, 빛 과민"
+    },
+    {
+      "id": "V-00005",
+      "patientId": "P-0002",
+      "date": "2026-01-06",
+      "mode": "in_person",
+      "kcdCode": "I10",
+      "note": "혈압 관리, 기존 약 유지"
+    },
+    {
       "id": "V-00006",
-      "patientId": "P-0003",
-      "date": "2026-09-07",
+      "patientId": "P-0002",
+      "date": "2026-02-03",
       "mode": "in_person",
       "kcdCode": "E11.9",
       "note": "혈당 관리, 식이 상담"
     },
     {
       "id": "V-00007",
-      "patientId": "P-0004",
-      "date": "2026-08-15",
+      "patientId": "P-0006",
+      "date": "2026-01-14",
       "mode": "in_person",
-      "kcdCode": "J06.9",
-      "note": "상기도 감염 증상"
+      "kcdCode": "J30.4",
+      "note": "알레르기 비염 증상 지속"
     },
     {
       "id": "V-00008",
-      "patientId": "P-0005",
-      "date": "2026-07-07",
+      "patientId": "P-0006",
+      "date": "2026-01-26",
       "mode": "in_person",
-      "kcdCode": "J06.9",
-      "note": "상기도 감염 증상"
+      "kcdCode": "J30.4",
+      "note": "재채기, 맑은 콧물, 코막힘"
     },
     {
       "id": "V-00009",
-      "patientId": "P-0005",
-      "date": "2026-07-26",
-      "mode": "telehealth",
-      "kcdCode": "L20.9",
-      "note": "아토피 피부염 악화"
-    },
-    {
-      "id": "V-00010",
-      "patientId": "P-0005",
-      "date": "2026-07-27",
-      "mode": "telehealth",
-      "kcdCode": "J06.9",
-      "note": "콧물, 기침, 미열"
-    },
-    {
-      "id": "V-00011",
-      "patientId": "P-0005",
-      "date": "2026-10-10",
-      "mode": "in_person",
-      "kcdCode": "K21.9",
-      "note": "속쓰림, 야간 악화"
-    },
-    {
-      "id": "V-00012",
       "patientId": "P-0006",
-      "date": "2026-07-02",
-      "mode": "telehealth",
-      "kcdCode": "L20.9",
-      "note": "아토피 피부염 악화"
-    },
-    {
-      "id": "V-00013",
-      "patientId": "P-0007",
-      "date": "2026-09-18",
+      "date": "2026-01-31",
       "mode": "telehealth",
       "kcdCode": "J02.9",
       "note": "인후통, 발열 없음"
     },
     {
-      "id": "V-00014",
-      "patientId": "P-0007",
-      "date": "2026-09-22",
+      "id": "V-00010",
+      "patientId": "P-0006",
+      "date": "2026-03-05",
       "mode": "in_person",
       "kcdCode": "K21.9",
       "note": "속쓰림, 야간 악화"
     },
     {
-      "id": "V-00015",
+      "id": "V-00011",
       "patientId": "P-0007",
-      "date": "2026-10-11",
+      "date": "2026-05-13",
+      "mode": "in_person",
+      "kcdCode": "E11.9",
+      "note": "혈당 관리, 식이 상담"
+    },
+    {
+      "id": "V-00012",
+      "patientId": "P-0008",
+      "date": "2026-09-12",
+      "mode": "in_person",
+      "kcdCode": "G43.9",
+      "note": "편측 두통, 빛 과민"
+    },
+    {
+      "id": "V-00013",
+      "patientId": "P-0010",
+      "date": "2026-02-25",
       "mode": "telehealth",
-      "kcdCode": "J06.9",
-      "note": "상기도 감염 증상"
+      "kcdCode": "J30.4",
+      "note": "알레르기 비염 증상 지속"
+    },
+    {
+      "id": "V-00014",
+      "patientId": "P-0010",
+      "date": "2026-02-25",
+      "mode": "telehealth",
+      "kcdCode": "I10",
+      "note": "혈압 관리, 기존 약 유지"
+    },
+    {
+      "id": "V-00015",
+      "patientId": "P-0010",
+      "date": "2026-07-12",
+      "mode": "in_person",
+      "kcdCode": "L20.9",
+      "note": "아토피 피부염 악화"
     },
     {
       "id": "V-00016",
-      "patientId": "P-0008",
-      "date": "2026-08-22",
+      "patientId": "P-0011",
+      "date": "2026-10-16",
       "mode": "in_person",
-      "kcdCode": "J06.9",
-      "note": "콧물, 기침, 미열"
+      "kcdCode": "J02.9",
+      "note": "인후통, 발열 없음"
     },
     {
       "id": "V-00017",
-      "patientId": "P-0008",
-      "date": "2026-10-12",
+      "patientId": "P-0012",
+      "date": "2026-07-14",
       "mode": "in_person",
-      "kcdCode": "J02.9",
-      "note": "인후통 및 연하통"
+      "kcdCode": "E11.9",
+      "note": "혈당 관리, 식이 상담"
     },
     {
       "id": "V-00018",
-      "patientId": "P-0009",
-      "date": "2026-07-02",
-      "mode": "telehealth",
-      "kcdCode": "J06.9",
-      "note": "콧물, 기침, 미열"
+      "patientId": "P-0015",
+      "date": "2026-03-12",
+      "mode": "in_person",
+      "kcdCode": "G43.9",
+      "note": "편두통 반복"
     },
     {
       "id": "V-00019",
-      "patientId": "P-0009",
-      "date": "2026-08-13",
+      "patientId": "P-0015",
+      "date": "2026-08-06",
       "mode": "in_person",
       "kcdCode": "E11.9",
       "note": "공복혈당 측정 결과 확인"
     },
     {
       "id": "V-00020",
-      "patientId": "P-0009",
-      "date": "2026-09-28",
+      "patientId": "P-0015",
+      "date": "2026-09-22",
       "mode": "in_person",
-      "kcdCode": "L20.9",
-      "note": "아토피 피부염 악화"
+      "kcdCode": "K21.9",
+      "note": "속쓰림, 야간 악화"
     },
     {
       "id": "V-00021",
-      "patientId": "P-0010",
-      "date": "2026-07-24",
-      "mode": "telehealth",
-      "kcdCode": "E11.9",
-      "note": "혈당 관리, 식이 상담"
+      "patientId": "P-0015",
+      "date": "2026-09-23",
+      "mode": "in_person",
+      "kcdCode": "L20.9",
+      "note": "아토피 피부염 악화"
     },
     {
       "id": "V-00022",
-      "patientId": "P-0010",
-      "date": "2026-07-26",
+      "patientId": "P-0017",
+      "date": "2026-08-10",
       "mode": "in_person",
-      "kcdCode": "J06.9",
-      "note": "콧물, 기침, 미열"
+      "kcdCode": "G43.9",
+      "note": "편측 두통, 빛 과민"
     },
     {
       "id": "V-00023",
-      "patientId": "P-0010",
-      "date": "2026-09-06",
-      "mode": "in_person",
-      "kcdCode": "E11.9",
-      "note": "혈당 관리, 식이 상담"
-    },
-    {
-      "id": "V-00024",
-      "patientId": "P-0011",
-      "date": "2026-08-18",
-      "mode": "in_person",
-      "kcdCode": "L20.9",
-      "note": "아토피 피부염 악화"
-    },
-    {
-      "id": "V-00025",
-      "patientId": "P-0011",
-      "date": "2026-08-31",
-      "mode": "in_person",
-      "kcdCode": "M54.5",
-      "note": "요통, 방사통 없음"
-    },
-    {
-      "id": "V-00026",
-      "patientId": "P-0012",
-      "date": "2026-08-31",
-      "mode": "in_person",
-      "kcdCode": "E11.9",
-      "note": "혈당 관리, 식이 상담"
-    },
-    {
-      "id": "V-00027",
-      "patientId": "P-0012",
-      "date": "2026-10-02",
-      "mode": "in_person",
-      "kcdCode": "E11.9",
-      "note": "혈당 관리, 식이 상담"
-    },
-    {
-      "id": "V-00028",
-      "patientId": "P-0012",
-      "date": "2026-10-04",
-      "mode": "in_person",
-      "kcdCode": "G43.9",
-      "note": "편두통 반복"
-    },
-    {
-      "id": "V-00029",
-      "patientId": "P-0012",
-      "date": "2026-10-14",
-      "mode": "telehealth",
-      "kcdCode": "J30.4",
-      "note": "알레르기 비염 증상 지속"
-    },
-    {
-      "id": "V-00030",
-      "patientId": "P-0013",
-      "date": "2026-07-01",
-      "mode": "in_person",
-      "kcdCode": "J30.4",
-      "note": "재채기, 맑은 콧물, 코막힘"
-    },
-    {
-      "id": "V-00031",
-      "patientId": "P-0013",
-      "date": "2026-08-05",
-      "mode": "telehealth",
-      "kcdCode": "G43.9",
-      "note": "편측 두통, 빛 과민"
-    },
-    {
-      "id": "V-00032",
-      "patientId": "P-0013",
-      "date": "2026-08-14",
-      "mode": "in_person",
-      "kcdCode": "K21.9",
-      "note": "속쓰림, 야간 악화"
-    },
-    {
-      "id": "V-00033",
-      "patientId": "P-0015",
-      "date": "2026-06-23",
-      "mode": "in_person",
-      "kcdCode": "J06.9",
-      "note": "콧물, 기침, 미열"
-    },
-    {
-      "id": "V-00034",
-      "patientId": "P-0015",
-      "date": "2026-08-16",
-      "mode": "in_person",
-      "kcdCode": "E11.9",
-      "note": "혈당 관리, 식이 상담"
-    },
-    {
-      "id": "V-00035",
-      "patientId": "P-0015",
-      "date": "2026-08-29",
-      "mode": "in_person",
-      "kcdCode": "L20.9",
-      "note": "팔 오금 가려움, 건조"
-    },
-    {
-      "id": "V-00036",
-      "patientId": "P-0015",
-      "date": "2026-09-23",
-      "mode": "telehealth",
-      "kcdCode": "J30.4",
-      "note": "알레르기 비염 증상 지속"
-    },
-    {
-      "id": "V-00037",
-      "patientId": "P-0016",
-      "date": "2026-07-02",
-      "mode": "telehealth",
-      "kcdCode": "E11.9",
-      "note": "혈당 관리, 식이 상담"
-    },
-    {
-      "id": "V-00038",
-      "patientId": "P-0016",
-      "date": "2026-07-27",
-      "mode": "in_person",
-      "kcdCode": "I10",
-      "note": "혈압 145/92, 생활습관 상담"
-    },
-    {
-      "id": "V-00039",
       "patientId": "P-0017",
-      "date": "2026-07-16",
-      "mode": "in_person",
-      "kcdCode": "G43.9",
-      "note": "편두통 반복"
-    },
-    {
-      "id": "V-00040",
-      "patientId": "P-0017",
-      "date": "2026-08-30",
-      "mode": "telehealth",
-      "kcdCode": "L20.9",
-      "note": "팔 오금 가려움, 건조"
-    },
-    {
-      "id": "V-00041",
-      "patientId": "P-0018",
-      "date": "2026-09-18",
-      "mode": "in_person",
-      "kcdCode": "G43.9",
-      "note": "편두통 반복"
-    },
-    {
-      "id": "V-00042",
-      "patientId": "P-0018",
-      "date": "2026-09-27",
-      "mode": "in_person",
-      "kcdCode": "J30.4",
-      "note": "재채기, 맑은 콧물, 코막힘"
-    },
-    {
-      "id": "V-00043",
-      "patientId": "P-0019",
-      "date": "2026-09-10",
-      "mode": "in_person",
-      "kcdCode": "L20.9",
-      "note": "팔 오금 가려움, 건조"
-    },
-    {
-      "id": "V-00044",
-      "patientId": "P-0020",
-      "date": "2026-08-27",
-      "mode": "in_person",
-      "kcdCode": "J06.9",
-      "note": "콧물, 기침, 미열"
-    },
-    {
-      "id": "V-00045",
-      "patientId": "P-0021",
-      "date": "2026-06-30",
-      "mode": "in_person",
-      "kcdCode": "G43.9",
-      "note": "편측 두통, 빛 과민"
-    },
-    {
-      "id": "V-00046",
-      "patientId": "P-0021",
-      "date": "2026-07-01",
-      "mode": "in_person",
-      "kcdCode": "L20.9",
-      "note": "아토피 피부염 악화"
-    },
-    {
-      "id": "V-00047",
-      "patientId": "P-0021",
-      "date": "2026-09-23",
-      "mode": "in_person",
-      "kcdCode": "J02.9",
-      "note": "인후통 및 연하통"
-    },
-    {
-      "id": "V-00048",
-      "patientId": "P-0023",
-      "date": "2026-08-20",
-      "mode": "telehealth",
-      "kcdCode": "G43.9",
-      "note": "편두통 반복"
-    },
-    {
-      "id": "V-00049",
-      "patientId": "P-0023",
-      "date": "2026-08-21",
-      "mode": "in_person",
-      "kcdCode": "M54.5",
-      "note": "허리 통증, 물리치료 권유"
-    },
-    {
-      "id": "V-00050",
-      "patientId": "P-0024",
-      "date": "2026-09-23",
-      "mode": "in_person",
-      "kcdCode": "I10",
-      "note": "혈압 145/92, 생활습관 상담"
-    },
-    {
-      "id": "V-00051",
-      "patientId": "P-0025",
-      "date": "2026-08-12",
-      "mode": "in_person",
-      "kcdCode": "J30.4",
-      "note": "알레르기 비염 증상 지속"
-    },
-    {
-      "id": "V-00052",
-      "patientId": "P-0025",
-      "date": "2026-08-18",
-      "mode": "in_person",
-      "kcdCode": "J06.9",
-      "note": "콧물, 기침, 미열"
-    },
-    {
-      "id": "V-00053",
-      "patientId": "P-0027",
-      "date": "2026-06-29",
-      "mode": "in_person",
-      "kcdCode": "K21.9",
-      "note": "속쓰림, 야간 악화"
-    },
-    {
-      "id": "V-00054",
-      "patientId": "P-0027",
-      "date": "2026-08-07",
-      "mode": "in_person",
-      "kcdCode": "M54.5",
-      "note": "허리 통증, 물리치료 권유"
-    },
-    {
-      "id": "V-00055",
-      "patientId": "P-0027",
       "date": "2026-10-06",
-      "mode": "in_person",
-      "kcdCode": "G43.9",
-      "note": "편측 두통, 빛 과민"
-    },
-    {
-      "id": "V-00056",
-      "patientId": "P-0028",
-      "date": "2026-07-10",
-      "mode": "in_person",
-      "kcdCode": "G43.9",
-      "note": "편측 두통, 빛 과민"
-    },
-    {
-      "id": "V-00057",
-      "patientId": "P-0028",
-      "date": "2026-07-23",
-      "mode": "in_person",
-      "kcdCode": "J06.9",
-      "note": "콧물, 기침, 미열"
-    },
-    {
-      "id": "V-00058",
-      "patientId": "P-0028",
-      "date": "2026-08-02",
-      "mode": "in_person",
-      "kcdCode": "L20.9",
-      "note": "아토피 피부염 악화"
-    },
-    {
-      "id": "V-00059",
-      "patientId": "P-0028",
-      "date": "2026-09-04",
-      "mode": "in_person",
-      "kcdCode": "L20.9",
-      "note": "팔 오금 가려움, 건조"
-    },
-    {
-      "id": "V-00060",
-      "patientId": "P-0030",
-      "date": "2026-07-07",
-      "mode": "in_person",
-      "kcdCode": "J06.9",
-      "note": "콧물, 기침, 미열"
-    },
-    {
-      "id": "V-00061",
-      "patientId": "P-0031",
-      "date": "2026-08-28",
-      "mode": "in_person",
-      "kcdCode": "J06.9",
-      "note": "콧물, 기침, 미열"
-    },
-    {
-      "id": "V-00062",
-      "patientId": "P-0031",
-      "date": "2026-09-12",
-      "mode": "in_person",
-      "kcdCode": "E11.9",
-      "note": "혈당 관리, 식이 상담"
-    },
-    {
-      "id": "V-00063",
-      "patientId": "P-0031",
-      "date": "2026-09-28",
-      "mode": "in_person",
-      "kcdCode": "L20.9",
-      "note": "아토피 피부염 악화"
-    },
-    {
-      "id": "V-00064",
-      "patientId": "P-0033",
-      "date": "2026-08-06",
-      "mode": "in_person",
-      "kcdCode": "J30.4",
-      "note": "재채기, 맑은 콧물, 코막힘"
-    },
-    {
-      "id": "V-00065",
-      "patientId": "P-0033",
-      "date": "2026-08-24",
-      "mode": "in_person",
-      "kcdCode": "J02.9",
-      "note": "인후통, 발열 없음"
-    },
-    {
-      "id": "V-00066",
-      "patientId": "P-0033",
-      "date": "2026-08-28",
-      "mode": "telehealth",
-      "kcdCode": "G43.9",
-      "note": "편두통 반복"
-    },
-    {
-      "id": "V-00067",
-      "patientId": "P-0034",
-      "date": "2026-09-17",
-      "mode": "telehealth",
-      "kcdCode": "J02.9",
-      "note": "인후통 및 연하통"
-    },
-    {
-      "id": "V-00068",
-      "patientId": "P-0035",
-      "date": "2026-10-11",
-      "mode": "in_person",
-      "kcdCode": "J02.9",
-      "note": "인후통 및 연하통"
-    },
-    {
-      "id": "V-00069",
-      "patientId": "P-0036",
-      "date": "2026-07-18",
-      "mode": "in_person",
-      "kcdCode": "J30.4",
-      "note": "재채기, 맑은 콧물, 코막힘"
-    },
-    {
-      "id": "V-00070",
-      "patientId": "P-0036",
-      "date": "2026-08-16",
-      "mode": "in_person",
-      "kcdCode": "I10",
-      "note": "혈압 관리, 기존 약 유지"
-    },
-    {
-      "id": "V-00071",
-      "patientId": "P-0036",
-      "date": "2026-10-01",
-      "mode": "in_person",
-      "kcdCode": "M54.5",
-      "note": "허리 통증, 물리치료 권유"
-    },
-    {
-      "id": "V-00072",
-      "patientId": "P-0036",
-      "date": "2026-10-11",
-      "mode": "in_person",
-      "kcdCode": "I10",
-      "note": "혈압 관리, 기존 약 유지"
-    },
-    {
-      "id": "V-00073",
-      "patientId": "P-0038",
-      "date": "2026-08-11",
       "mode": "telehealth",
       "kcdCode": "K21.9",
       "note": "위식도역류 증상"
     },
     {
-      "id": "V-00074",
-      "patientId": "P-0039",
+      "id": "V-00024",
+      "patientId": "P-0018",
+      "date": "2026-02-23",
+      "mode": "in_person",
+      "kcdCode": "J06.9",
+      "note": "상기도 감염 증상"
+    },
+    {
+      "id": "V-00025",
+      "patientId": "P-0018",
+      "date": "2026-09-11",
+      "mode": "in_person",
+      "kcdCode": "J30.4",
+      "note": "재채기, 맑은 콧물, 코막힘"
+    },
+    {
+      "id": "V-00026",
+      "patientId": "P-0018",
+      "date": "2026-10-17",
+      "mode": "telehealth",
+      "kcdCode": "L20.9",
+      "note": "팔 오금 가려움, 건조"
+    },
+    {
+      "id": "V-00027",
+      "patientId": "P-0020",
+      "date": "2026-07-12",
+      "mode": "in_person",
+      "kcdCode": "L20.9",
+      "note": "팔 오금 가려움, 건조"
+    },
+    {
+      "id": "V-00028",
+      "patientId": "P-0020",
       "date": "2026-07-31",
       "mode": "in_person",
       "kcdCode": "J30.4",
       "note": "재채기, 맑은 콧물, 코막힘"
     },
     {
-      "id": "V-00075",
-      "patientId": "P-0039",
-      "date": "2026-08-21",
+      "id": "V-00029",
+      "patientId": "P-0021",
+      "date": "2026-06-15",
       "mode": "in_person",
-      "kcdCode": "G43.9",
-      "note": "편측 두통, 빛 과민"
+      "kcdCode": "J06.9",
+      "note": "상기도 감염 증상"
     },
     {
-      "id": "V-00076",
-      "patientId": "P-0039",
-      "date": "2026-08-29",
+      "id": "V-00030",
+      "patientId": "P-0021",
+      "date": "2026-08-25",
+      "mode": "telehealth",
+      "kcdCode": "E11.9",
+      "note": "혈당 관리, 식이 상담"
+    },
+    {
+      "id": "V-00031",
+      "patientId": "P-0022",
+      "date": "2026-01-06",
+      "mode": "telehealth",
+      "kcdCode": "E11.9",
+      "note": "공복혈당 측정 결과 확인"
+    },
+    {
+      "id": "V-00032",
+      "patientId": "P-0022",
+      "date": "2026-08-14",
+      "mode": "telehealth",
+      "kcdCode": "E11.9",
+      "note": "공복혈당 측정 결과 확인"
+    },
+    {
+      "id": "V-00033",
+      "patientId": "P-0022",
+      "date": "2026-10-18",
+      "mode": "in_person",
+      "kcdCode": "J06.9",
+      "note": "콧물, 기침, 미열"
+    },
+    {
+      "id": "V-00034",
+      "patientId": "P-0023",
+      "date": "2026-01-18",
+      "mode": "telehealth",
+      "kcdCode": "E11.9",
+      "note": "혈당 관리, 식이 상담"
+    },
+    {
+      "id": "V-00035",
+      "patientId": "P-0023",
+      "date": "2026-01-24",
+      "mode": "telehealth",
+      "kcdCode": "E11.9",
+      "note": "혈당 관리, 식이 상담"
+    },
+    {
+      "id": "V-00036",
+      "patientId": "P-0023",
+      "date": "2026-04-17",
+      "mode": "in_person",
+      "kcdCode": "L20.9",
+      "note": "팔 오금 가려움, 건조"
+    },
+    {
+      "id": "V-00037",
+      "patientId": "P-0023",
+      "date": "2026-04-23",
+      "mode": "in_person",
+      "kcdCode": "J30.4",
+      "note": "재채기, 맑은 콧물, 코막힘"
+    },
+    {
+      "id": "V-00038",
+      "patientId": "P-0024",
+      "date": "2026-05-02",
+      "mode": "telehealth",
+      "kcdCode": "E11.9",
+      "note": "혈당 관리, 식이 상담"
+    },
+    {
+      "id": "V-00039",
+      "patientId": "P-0024",
+      "date": "2026-08-03",
+      "mode": "in_person",
+      "kcdCode": "E11.9",
+      "note": "혈당 관리, 식이 상담"
+    },
+    {
+      "id": "V-00040",
+      "patientId": "P-0025",
+      "date": "2026-03-24",
+      "mode": "in_person",
+      "kcdCode": "J02.9",
+      "note": "인후통, 발열 없음"
+    },
+    {
+      "id": "V-00041",
+      "patientId": "P-0026",
+      "date": "2026-04-11",
+      "mode": "telehealth",
+      "kcdCode": "J30.4",
+      "note": "알레르기 비염 증상 지속"
+    },
+    {
+      "id": "V-00042",
+      "patientId": "P-0026",
+      "date": "2026-07-18",
       "mode": "in_person",
       "kcdCode": "K21.9",
+      "note": "속쓰림, 야간 악화"
+    },
+    {
+      "id": "V-00043",
+      "patientId": "P-0026",
+      "date": "2026-07-28",
+      "mode": "in_person",
+      "kcdCode": "L20.9",
+      "note": "팔 오금 가려움, 건조"
+    },
+    {
+      "id": "V-00044",
+      "patientId": "P-0027",
+      "date": "2026-04-25",
+      "mode": "telehealth",
+      "kcdCode": "J30.4",
+      "note": "재채기, 맑은 콧물, 코막힘"
+    },
+    {
+      "id": "V-00045",
+      "patientId": "P-0027",
+      "date": "2026-07-07",
+      "mode": "telehealth",
+      "kcdCode": "E11.9",
+      "note": "혈당 관리, 식이 상담"
+    },
+    {
+      "id": "V-00046",
+      "patientId": "P-0027",
+      "date": "2026-07-11",
+      "mode": "telehealth",
+      "kcdCode": "J02.9",
+      "note": "인후통 및 연하통"
+    },
+    {
+      "id": "V-00047",
+      "patientId": "P-0027",
+      "date": "2026-08-23",
+      "mode": "in_person",
+      "kcdCode": "I10",
+      "note": "혈압 관리, 기존 약 유지"
+    },
+    {
+      "id": "V-00048",
+      "patientId": "P-0028",
+      "date": "2026-06-24",
+      "mode": "telehealth",
+      "kcdCode": "J06.9",
+      "note": "상기도 감염 증상"
+    },
+    {
+      "id": "V-00049",
+      "patientId": "P-0030",
+      "date": "2026-08-19",
+      "mode": "in_person",
+      "kcdCode": "K21.9",
+      "note": "속쓰림, 야간 악화"
+    },
+    {
+      "id": "V-00050",
+      "patientId": "P-0030",
+      "date": "2026-09-10",
+      "mode": "in_person",
+      "kcdCode": "M54.5",
+      "note": "요통, 방사통 없음"
+    },
+    {
+      "id": "V-00051",
+      "patientId": "P-0031",
+      "date": "2026-01-19",
+      "mode": "in_person",
+      "kcdCode": "K21.9",
+      "note": "속쓰림, 야간 악화"
+    },
+    {
+      "id": "V-00052",
+      "patientId": "P-0031",
+      "date": "2026-05-20",
+      "mode": "telehealth",
+      "kcdCode": "K21.9",
+      "note": "속쓰림, 야간 악화"
+    },
+    {
+      "id": "V-00053",
+      "patientId": "P-0031",
+      "date": "2026-07-01",
+      "mode": "in_person",
+      "kcdCode": "I10",
+      "note": "혈압 관리, 기존 약 유지"
+    },
+    {
+      "id": "V-00054",
+      "patientId": "P-0031",
+      "date": "2026-08-08",
+      "mode": "telehealth",
+      "kcdCode": "L20.9",
+      "note": "아토피 피부염 악화"
+    },
+    {
+      "id": "V-00055",
+      "patientId": "P-0032",
+      "date": "2026-01-25",
+      "mode": "telehealth",
+      "kcdCode": "J02.9",
+      "note": "인후통, 발열 없음"
+    },
+    {
+      "id": "V-00056",
+      "patientId": "P-0032",
+      "date": "2026-05-11",
+      "mode": "in_person",
+      "kcdCode": "J30.4",
+      "note": "재채기, 맑은 콧물, 코막힘"
+    },
+    {
+      "id": "V-00057",
+      "patientId": "P-0033",
+      "date": "2026-08-21",
+      "mode": "telehealth",
+      "kcdCode": "J06.9",
+      "note": "콧물, 기침, 미열"
+    },
+    {
+      "id": "V-00058",
+      "patientId": "P-0034",
+      "date": "2026-04-28",
+      "mode": "telehealth",
+      "kcdCode": "K21.9",
       "note": "위식도역류 증상"
+    },
+    {
+      "id": "V-00059",
+      "patientId": "P-0035",
+      "date": "2026-06-13",
+      "mode": "in_person",
+      "kcdCode": "J30.4",
+      "note": "알레르기 비염 증상 지속"
+    },
+    {
+      "id": "V-00060",
+      "patientId": "P-0035",
+      "date": "2026-08-08",
+      "mode": "in_person",
+      "kcdCode": "I10",
+      "note": "혈압 145/92, 생활습관 상담"
+    },
+    {
+      "id": "V-00061",
+      "patientId": "P-0037",
+      "date": "2026-04-19",
+      "mode": "in_person",
+      "kcdCode": "J02.9",
+      "note": "인후통, 발열 없음"
+    },
+    {
+      "id": "V-00062",
+      "patientId": "P-0037",
+      "date": "2026-05-02",
+      "mode": "in_person",
+      "kcdCode": "J30.4",
+      "note": "재채기, 맑은 콧물, 코막힘"
     }
   ],
   "requests": [
@@ -820,151 +788,175 @@
       "id": "R-0001",
       "patientId": "P-0001",
       "symptomText": "머리 한쪽이 지끈거려요",
-      "requestedAt": "2026-10-20T10:21:00+09:00"
+      "requestedAt": "2026-10-20T13:00:00+09:00"
     },
     {
       "id": "R-0002",
-      "patientId": "P-0003",
+      "patientId": "P-0002",
       "symptomText": "당뇨약 먹고 있는데 질문이 있어요",
       "requestedAt": "2026-10-20T11:43:00+09:00"
     },
     {
       "id": "R-0003",
-      "patientId": "P-0007",
-      "symptomText": "코가 막히고 간지러워요",
-      "requestedAt": "2026-10-20T17:08:00+09:00"
+      "patientId": "P-0003",
+      "symptomText": "속이 쓰려요",
+      "requestedAt": "2026-10-20T15:13:00+09:00"
     },
     {
       "id": "R-0004",
-      "patientId": "P-0008",
-      "symptomText": "침 삼킬 때 목이 아파요",
-      "requestedAt": "2026-10-20T10:55:00+09:00"
+      "patientId": "P-0004",
+      "symptomText": "두통이 자주 와요",
+      "requestedAt": "2026-10-20T16:49:00+09:00"
     },
     {
       "id": "R-0005",
-      "patientId": "P-0009",
-      "symptomText": "재채기가 계속 나요",
-      "requestedAt": "2026-10-20T17:34:00+09:00"
+      "patientId": "P-0006",
+      "symptomText": "속이 쓰려요",
+      "requestedAt": "2026-10-20T13:44:00+09:00"
     },
     {
       "id": "R-0006",
       "patientId": "P-0010",
       "symptomText": "혈당 수치 상담하고 싶어요",
-      "requestedAt": "2026-10-20T09:43:00+09:00"
+      "requestedAt": "2026-10-20T17:18:00+09:00"
     },
     {
       "id": "R-0007",
       "patientId": "P-0011",
-      "symptomText": "허리가 또 아파요",
-      "requestedAt": "2026-10-20T10:17:00+09:00"
+      "symptomText": "혈압약 상담 받고 싶어요",
+      "requestedAt": "2026-10-20T14:31:00+09:00"
     },
     {
       "id": "R-0008",
-      "patientId": "P-0015",
+      "patientId": "P-0012",
       "symptomText": "감기 기운이 있어요",
-      "requestedAt": "2026-10-20T10:35:00+09:00"
+      "requestedAt": "2026-10-20T14:54:00+09:00"
     },
     {
       "id": "R-0009",
-      "patientId": "P-0016",
-      "symptomText": "피부가 가려워요",
-      "requestedAt": "2026-10-20T10:00:00+09:00"
+      "patientId": "P-0013",
+      "symptomText": "감기 기운이 있어요",
+      "requestedAt": "2026-10-20T10:55:00+09:00"
     },
     {
       "id": "R-0010",
-      "patientId": "P-0017",
+      "patientId": "P-0014",
       "symptomText": "팔 접히는 곳이 빨갛고 간지러워요",
-      "requestedAt": "2026-10-20T13:26:00+09:00"
+      "requestedAt": "2026-10-20T15:37:00+09:00"
     },
     {
       "id": "R-0011",
-      "patientId": "P-0019",
-      "symptomText": "인후통이 다시 생겼어요",
-      "requestedAt": "2026-10-20T16:38:00+09:00"
+      "patientId": "P-0016",
+      "symptomText": "피부가 가려워요",
+      "requestedAt": "2026-10-20T11:09:00+09:00"
     },
     {
       "id": "R-0012",
-      "patientId": "P-0020",
-      "symptomText": "혈당 수치 상담하고 싶어요",
-      "requestedAt": "2026-10-20T17:25:00+09:00"
+      "patientId": "P-0018",
+      "symptomText": "피부가 가려워요",
+      "requestedAt": "2026-10-20T10:23:00+09:00"
     },
     {
       "id": "R-0013",
-      "patientId": "P-0022",
-      "symptomText": "인후통이 다시 생겼어요",
-      "requestedAt": "2026-10-20T09:00:00+09:00"
+      "patientId": "P-0019",
+      "symptomText": "머리 한쪽이 지끈거려요",
+      "requestedAt": "2026-10-20T10:31:00+09:00"
     },
     {
       "id": "R-0014",
-      "patientId": "P-0023",
-      "symptomText": "목이 따가워요",
-      "requestedAt": "2026-10-20T13:59:00+09:00"
+      "patientId": "P-0021",
+      "symptomText": "당뇨약 먹고 있는데 질문이 있어요",
+      "requestedAt": "2026-10-20T16:17:00+09:00"
     },
     {
       "id": "R-0015",
-      "patientId": "P-0024",
-      "symptomText": "집에서 잰 혈압이 조금 높아요",
-      "requestedAt": "2026-10-20T14:06:00+09:00"
+      "patientId": "P-0022",
+      "symptomText": "감기 기운이 있어요",
+      "requestedAt": "2026-10-20T15:47:00+09:00"
     },
     {
       "id": "R-0016",
-      "patientId": "P-0025",
-      "symptomText": "혈당 수치 상담하고 싶어요",
-      "requestedAt": "2026-10-20T13:25:00+09:00"
+      "patientId": "P-0023",
+      "symptomText": "목이 따가워요",
+      "requestedAt": "2026-10-20T09:34:00+09:00"
     },
     {
       "id": "R-0017",
-      "patientId": "P-0026",
-      "symptomText": "당뇨약 먹고 있는데 질문이 있어요",
-      "requestedAt": "2026-10-20T10:18:00+09:00"
+      "patientId": "P-0025",
+      "symptomText": "침 삼킬 때 목이 아파요",
+      "requestedAt": "2026-10-20T13:31:00+09:00"
     },
     {
       "id": "R-0018",
-      "patientId": "P-0027",
-      "symptomText": "혈당 수치 상담하고 싶어요",
-      "requestedAt": "2026-10-20T10:08:00+09:00"
+      "patientId": "P-0026",
+      "symptomText": "팔 접히는 곳이 빨갛고 간지러워요",
+      "requestedAt": "2026-10-20T09:02:00+09:00"
     },
     {
       "id": "R-0019",
-      "patientId": "P-0032",
-      "symptomText": "밥 먹고 나면 가슴이 타는 느낌이에요",
-      "requestedAt": "2026-10-20T12:17:00+09:00"
+      "patientId": "P-0029",
+      "symptomText": "혈당 수치 상담하고 싶어요",
+      "requestedAt": "2026-10-20T13:42:00+09:00"
     },
     {
       "id": "R-0020",
-      "patientId": "P-0033",
-      "symptomText": "머리 한쪽이 지끈거려요",
-      "requestedAt": "2026-10-20T15:27:00+09:00"
+      "patientId": "P-0030",
+      "symptomText": "혈당 수치 상담하고 싶어요",
+      "requestedAt": "2026-10-20T12:37:00+09:00"
     },
     {
       "id": "R-0021",
-      "patientId": "P-0036",
-      "symptomText": "집에서 잰 혈압이 조금 높아요",
-      "requestedAt": "2026-10-20T10:07:00+09:00"
+      "patientId": "P-0031",
+      "symptomText": "피부가 가려워요",
+      "requestedAt": "2026-10-20T12:21:00+09:00"
     },
     {
       "id": "R-0022",
-      "patientId": "P-0037",
-      "symptomText": "인후통이 다시 생겼어요",
-      "requestedAt": "2026-10-20T13:23:00+09:00"
+      "patientId": "P-0032",
+      "symptomText": "재채기가 계속 나요",
+      "requestedAt": "2026-10-20T11:38:00+09:00"
     },
     {
       "id": "R-0023",
-      "patientId": "P-0038",
+      "patientId": "P-0033",
+      "symptomText": "감기 기운이 있어요",
+      "requestedAt": "2026-10-20T09:35:00+09:00"
+    },
+    {
+      "id": "R-0024",
+      "patientId": "P-0034",
       "symptomText": "오래 앉아 있으면 허리가 뻐근해요",
       "requestedAt": "2026-10-20T15:40:00+09:00"
     },
     {
-      "id": "R-0024",
-      "patientId": "P-0039",
-      "symptomText": "머리 한쪽이 지끈거려요",
-      "requestedAt": "2026-10-20T11:24:00+09:00"
+      "id": "R-0025",
+      "patientId": "P-0035",
+      "symptomText": "허리가 또 아파요",
+      "requestedAt": "2026-10-20T15:58:00+09:00"
     },
     {
-      "id": "R-0025",
-      "patientId": "P-0040",
+      "id": "R-0026",
+      "patientId": "P-0036",
       "symptomText": "허리가 또 아파요",
       "requestedAt": "2026-10-20T13:52:00+09:00"
+    },
+    {
+      "id": "R-0027",
+      "patientId": "P-0037",
+      "symptomText": "코가 막히고 간지러워요",
+      "requestedAt": "2026-10-20T11:16:00+09:00"
+    },
+    {
+      "id": "R-0028",
+      "patientId": "P-0038",
+      "symptomText": "혈당 수치 상담하고 싶어요",
+      "requestedAt": "2026-10-20T17:32:00+09:00"
+    },
+    {
+      "id": "R-0029",
+      "patientId": "P-0039",
+      "symptomText": "머리 한쪽이 지끈거려요",
+      "requestedAt": "2026-10-20T13:37:00+09:00"
     }
   ]
 }

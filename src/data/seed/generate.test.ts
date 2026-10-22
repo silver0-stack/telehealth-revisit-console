@@ -2,7 +2,7 @@ import { describe, expect, it } from "vitest";
 import { DatasetSchema } from "../../domain/types.ts";
 import { generateDataset } from "./generate.ts";
 
-const options = { seed: 20261020, today: "2026-10-20", patientCount: 40 };
+const options = { seed: 20261020, today: "2026-10-20", patientCount: 40, clinicRegion: "서울특별시" } as const;
 
 describe("generateDataset", () => {
   it("is reproducible for the same seed", () => {
@@ -17,6 +17,11 @@ describe("generateDataset", () => {
     const data = generateDataset(options);
     expect(() => DatasetSchema.parse(data)).not.toThrow();
     expect(data.patients).toHaveLength(40);
+  });
+
+  it("includes patients both inside and outside the clinic's region", () => {
+    const regions = new Set(generateDataset(options).patients.map((p) => p.region === options.clinicRegion));
+    expect(regions).toEqual(new Set([true, false]));
   });
 
   it("never puts a visit after the anchor date", () => {

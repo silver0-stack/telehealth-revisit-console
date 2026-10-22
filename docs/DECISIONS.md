@@ -35,3 +35,19 @@ rule function keeps it deterministic and testable (rules must be code, not AI): 
 `ONLY_TELEHEALTH_VISITS`), check the symptom (`NO_MATCHING_SYMPTOM`), or note the visit was too long ago
 (`OUTSIDE_WINDOW`). The result also carries the rule version and evidence visit id for the audit log.
 The order of checks decides which reason wins when several apply; tests pin that order.
+
+## D8. Eligibility has three outcomes: follow_up, first_visit, not_allowed (2026-10-22)
+Replaces the yes/no result of D7. Under the 2026-10-19 draft, failing the follow-up check means the request
+is first-visit (초진) telehealth, which is allowed in the patient's own 시·도 or for listed exception groups.
+Only a first-visit request from another region without an exception is `not_allowed`. The result keeps the
+"why not follow-up" reason from D7, so staff still know whether booking an in-person visit would help.
+
+## D9. Rule periods are { amount, unit } and end dates follow the Civil Act (2026-10-22)
+"6 months" is not 180 days: it depends on month lengths. `periodEnd()` adds calendar months with date-fns and
+applies the 민법 counting rule (start day not counted, end on the day before the matching day). This is an
+assumption (A3) with tests for month ends and leap years, so changing the reading later is a one-function edit.
+
+## D10. Old rule versions stay in config/rules (2026-10-22)
+`rules.v1.json` (30-day placeholder) is kept next to `rules.v2.json` (draft). `getRules()` returns the newest.
+Keeping both shows how rules evolve and gives the M5 impact preview a real pair to compare:
+on the demo data, moving from v1 to v2 turns 2 follow-up requests into 11.

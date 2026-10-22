@@ -1,5 +1,5 @@
 import { format, parseISO, subDays } from "date-fns";
-import type { Dataset, Patient, TelehealthRequest, Visit } from "../../domain/types.ts";
+import { SIDO, type Dataset, type Patient, type Sido, type TelehealthRequest, type Visit } from "../../domain/types.ts";
 
 // Small seeded PRNG (mulberry32) so `pnpm seed` gives the same data every run
 // without adding a faker dependency.
@@ -31,6 +31,9 @@ const GIVEN_NAMES = [
   "모과", "유자", "쑥갓", "도토리", "솔잎", "들깨", "녹두", "단풍",
 ] as const;
 
+// A few of the draft's outside-region categories, enough to exercise the region check.
+const EXCEPTION_SAMPLES = ["rare_disease", "type1_diabetes", "registered_disability", "long_term_care"] as const;
+
 // KCD codes are a public classification, not patient data. `requestPhrases` mix
 // clinical words and everyday wording on purpose: that gap is what the symptom
 // matcher (M3/M4) has to bridge.
@@ -51,9 +54,11 @@ export type GenerateOptions = {
   /** Anchor date for the fake timeline (Asia/Seoul calendar date). */
   today: string;
   patientCount: number;
+  /** Most patients live in the clinic's region, like a real neighborhood clinic. */
+  clinicRegion: Sido;
 };
 
-export function generateDataset({ seed, today, patientCount }: GenerateOptions): Dataset {
+export function generateDataset({ seed, today, patientCount, clinicRegion }: GenerateOptions): Dataset {
   const random = createRandom(seed);
   const todayDate = parseISO(today);
   const patients: Patient[] = [];
@@ -65,11 +70,13 @@ export function generateDataset({ seed, today, patientCount }: GenerateOptions):
       id: `P-${String(i).padStart(4, "0")}`,
       displayName: pick(random, SURNAMES) + pick(random, GIVEN_NAMES),
       birthYear: intBetween(random, 1940, 2015),
+      region: random() < 0.75 ? clinicRegion : pick(random, SIDO),
+      telehealthException: random() < 0.15 ? pick(random, EXCEPTION_SAMPLES) : null,
     };
     patients.push(patient);
 
-    // Oldest first, so the last visit is the most recent one.
-    const daysAgo = Array.from({ length: intBetween(random, 0, 4) }, () => intBetween(random, 1, 120)).sort(
+    // Up to ~10 months back, so some visits fall outside a 6-month window. Oldest first.
+    const daysAgo = Array.from({ length: intBetween(random, 0, 4) }, () => intBetween(random, 1, 300)).sort(
       (a, b) => b - a,
     );
     let lastCondition: (typeof CONDITIONS)[number] | undefined;

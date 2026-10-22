@@ -35,7 +35,7 @@ pnpm dev                     # http://localhost:3000
 ## Status
 
 - [x] M0 Scaffold
-- [x] M1 Eligibility engine
+- [x] M1 Eligibility engine (follow-up / first-visit, based on the 2026-10-19 draft)
 - [ ] M2 Restricted drugs
 - [ ] M3 Review flow
 - [ ] M4 Jev + evaluation

@@ -6,11 +6,15 @@ Each one is tagged `ASSUMPTION` in code and must be checked before any real use.
 
 | ID | Assumption | Where in code | What to verify | Where to verify |
 |----|------------|---------------|----------------|-----------------|
-| A1 | Re-visit window is 30 days (`revisitWindowDays: 30`) | `config/rules/rules.v1.json` | The actual window, and whether it differs by condition or patient group | Enforcement Decree of the Medical Act; MOHW notices on 비대면 진료 |
-| A2 | Only an `in_person` visit for the same symptom at the same clinic counts | `src/domain/eligibility.ts` | Whether a prior telehealth visit or another clinic's visit can count | Same as A1 |
-| A3 | The boundary day counts: a visit exactly `revisitWindowDays` days before the request is still inside the window | `src/domain/eligibility.ts` | Whether the window is inclusive, and whether it counts from the visit day or the next day | Same as A1 |
-| A4 | Days are counted as Asia/Seoul calendar days between the visit date and the request date | `src/domain/eligibility.ts`, `src/domain/dates.ts` | Whether the law counts calendar days, 24-hour periods, or business days | Same as A1 |
-| A5 | "Same clinic" is implied because the app models one clinic; other clinics' visits are never stored | `src/domain/eligibility.ts` | Whether a visit at a related clinic (same group or referral) can count | Same as A1 |
+| A1 | Follow-up (일반) window is **6 months** in the current rules (`rules.v2.json`, from the 2026-10-19 draft). `rules.v1.json` keeps the old 30-day placeholder for comparison | `config/rules/rules.v*.json` | Whether the final text keeps 6 months | 의료법 시행규칙 final text (after the 2026-11-09 comment period) |
+| A2 | Only an `in_person` visit for the same symptom at the same clinic counts | `src/domain/eligibility.ts` | Supported by the draft (제31조의5⑤1). Re-check in the final text | Same as A1 |
+| A3 | The window's last day is counted like the Civil Act: start day not counted, ends the day before the matching day; a missing day means the month's last day (e.g. 04-30 → 10-31, 08-31 → 02-28). The last day is included | `src/domain/dates.ts` (`periodEnd`) | Whether MOHW applies 민법 제157조·제160조 to this period, or counts "same day number 6 months later" | MOHW guidance / Q&A after the rule is final |
+| A4 | Days are Asia/Seoul calendar days; the request's date is its Seoul date | `src/domain/dates.ts` | Whether the law uses calendar days and which clock decides the request date | Same as A1 |
+| A5 | "Same clinic" is implied because the app models one clinic; other clinics' visits are never stored | `src/domain/eligibility.ts` | Supported by the draft ("해당 의료기관") | Same as A1 |
+| A6 | The window starts at the **latest same-symptom** in-person visit (see the source check below for the competing reading) | `src/domain/eligibility.ts` | Which reading of 제31조의2① + 제31조의5⑤1 MOHW intends | MOHW guidance |
+| A7 | "동일한 증상" is decided by a clinician (helped by the matcher); eligibility receives a confirmed KCD code | `src/domain/eligibility.ts` | Whether MOHW defines "same symptom" (code level, body system, or clinical judgment) | MOHW guidance |
+| A8 | The once-only 30-day first-visit prescription (제31조의3④) counts once **per patient**, across all clinics and conditions | M2 (not implemented yet) | Whether "1회" is per patient, per condition, or per period | Final text / MOHW 고시 on 진료이력·처방이력 확인 |
+| A9 | The demo clinic is 의원급, so the 병원급 limits (제31조의4) do not apply | `src/data/clinic.ts` | n/a for a demo; real use must check the facility type | — |
 
 Rows are added as new assumptions appear (restricted drug list in M2, AI confidence threshold in M4).
 
@@ -47,14 +51,14 @@ How this affects the assumptions above:
 
 | ID | Status after reading the draft |
 |----|--------------------------------|
-| A1 | **Differs.** The draft window is 6 months, counted in calendar months from the last in-person visit, not 30 days. |
+| A1 | **Differs.** The draft window is 6 months, counted in calendar months from the last in-person visit, not 30 days. **Applied in `rules.v2.json`.** |
 | A2 | **Supported by the draft.** Only an in-person (대면) visit for the same symptom at the same clinic counts. |
 | A3 | **Partly answered.** "6개월이 되는 날까지" includes the end date. Exact day arithmetic (e.g. a visit on 08-31) is not spelled out; it likely follows 민법 기간 계산 (제157조, 제160조). Verify. |
 | A4 | Still open. The draft speaks in dates (날), which fits calendar days, but does not say which timezone or clock. |
 | A5 | **Supported.** "해당 의료기관" = the same clinic. |
 | A6 (new) | **Open question in the draft text:** 제31조의2① anchors the window on the *last* in-person visit (any symptom), while 제31조의5⑤1 asks for a same-symptom in-person visit *within* that window. The app reads it as "a same-symptom in-person visit within 6 months". Verify which reading MOHW intends. |
 | A7 (new) | "동일한 증상" has no definition in the draft. Deciding it stays with the clinician; the app only suggests. |
-| new | Failing the follow-up check does **not** mean "refuse". It means the request is 초진 telehealth, which has its own conditions (same 시·도 or an exception, 7-day prescriptions). The app's eligible / not eligible model is incomplete. |
+| new | Failing the follow-up check does **not** mean "refuse". It means the request is 초진 telehealth, which has its own conditions (same 시·도 or an exception, 7-day prescriptions). **Applied:** `checkEligibility` now returns `follow_up`, `first_visit` or `not_allowed`. |
 
 News reports used before finding the primary source (they match the draft text):
 - 청년의사: http://www.docdocdoc.co.kr/news/articleView.html?idxno=3043716

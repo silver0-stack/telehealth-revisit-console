@@ -1,0 +1,32 @@
+{
+  "version": "v2",
+  "source": "의료법 시행규칙 일부개정령안 (보건복지부공고 제2026-780호, 입법예고 2026-10-19 ~ 2026-11-09), 제31조의2. DRAFT.",
+  "assumptions": [
+    "A1: followUp.window = 6 months follows the draft, not final law.",
+    "A3: the window end uses 민법 기간 계산 (first day not counted). Verify.",
+    "A6: reads the draft as 'a same-symptom in-person visit within 6 months'. Verify.",
+    "outsideRegionExceptions mirrors 제31조의2③ 1~14 of the draft."
+  ],
+  "followUp": {
+    "window": { "amount": 6, "unit": "month" }
+  },
+  "firstVisit": {
+    "requireSameRegion": true,
+    "outsideRegionExceptions": [
+      "rare_disease",
+      "type1_diabetes",
+      "registered_disability",
+      "long_term_care",
+      "inmate",
+      "hospice",
+      "isolated_infectious_disease",
+      "seafarer",
+      "soldier",
+      "police_officer",
+      "firefighter",
+      "national_merit",
+      "overseas_national",
+      "mohw_notice"
+    ]
+  }
+}
