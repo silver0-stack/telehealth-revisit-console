@@ -53,3 +53,40 @@ matchers on the same set, not as clinical accuracy.
 
 Do not add synonyms just to fix individual cases in this file: the set would stop measuring anything.
 New cases for tuning belong in a separate file.
+
+## Results: 2026-10-22
+
+Same 102 cases, `minConfidence` 0.8. Full predictions: `results/2026-10-22-rules.json`, `results/2026-10-22-jev.json`.
+
+| | Rule-based (`synonyms-v1`) | Jev (`typesafe-ai/jev-1.14.0`) |
+|---|---|---|
+| Accuracy (3 labels) | 77.5% | **84.3%** |
+| Pre-selected | 47 | 42 |
+| **Wrong pre-selections** | **7** | **0** |
+| Pre-selection precision | 85.1% | **100%** |
+| Truly "same" left for the clinician | 11 | 9 |
+| Typos | 66.7% | **100%** |
+| Vague | 0% | **100%** |
+| Lookalikes | 60.9% | 56.5% |
+| Related | 100% | 75.0% |
+| "90–100% sure" was right | 85.1% | 96.7% |
+| Latency p50 / p95 | ~0 ms | 503 / 1088 ms |
+
+What this says:
+
+- **Where the rules were wrong and Jev fixed it.** All 7 cases the rule-based matcher wrongly pre-selected
+  were *not* called "same" by Jev. Five it got fully right (e.g. C-101 "머리카락이 많이 빠져요" is not a
+  headache; C-098 "머리를 부딪혀서" is an injury; C-064 leg numbness is related to, not the same as, back pain).
+  Two it called "related" instead of "different" (C-007 neck pain, C-067 back pain with painful urination),
+  which is a harmless mistake for this app.
+- **Where Jev is still wrong.** It called three non-"same" cases "same" (C-018, C-020, C-081), but each with
+  49–63% probability, so the 0.8 threshold kept them from being pre-selected. Its weakest tag is still
+  `lookalike`: it mixes up "related" and "different" (5 each way), which does not change any app decision.
+- **Calibration.** Jev's high-confidence answers are trustworthy (61 answers at 90–100%, 96.7% correct;
+  12 at 80–90%, all correct). Below 0.7 it is close to a coin flip. That supports keeping
+  `minConfidence` at 0.8: lowering it to 0.7 would add answers that are right only ~82% of the time.
+- **Both fail on `mixed`** (two complaints in one sentence), e.g. C-010 "목도 따갑고 허리도 아파요".
+  The review screen shows the probabilities, so the clinician sees the uncertainty.
+
+Cost: each case is one small request; the whole run cost well under one cent (estimated from the model's
+per-token price, not read from the bill).

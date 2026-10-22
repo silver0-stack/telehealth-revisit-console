@@ -1,0 +1,1810 @@
+{
+  "date": "2026-10-22",
+  "matcher": {
+    "kind": "ai",
+    "id": "typesafe-ai/jev",
+    "version": "typesafe-ai/jev-1.14.0"
+  },
+  "minConfidence": 0.8,
+  "latencyMs": {
+    "p50": 503,
+    "p95": 1088
+  },
+  "summary": {
+    "total": 102,
+    "accuracy": 0.8431372549019608,
+    "byTag": {
+      "synonym": {
+        "n": 24,
+        "accuracy": 0.9583333333333334
+      },
+      "same_wording": {
+        "n": 9,
+        "accuracy": 1
+      },
+      "typo": {
+        "n": 9,
+        "accuracy": 1
+      },
+      "colloquial": {
+        "n": 7,
+        "accuracy": 0.8571428571428571
+      },
+      "related": {
+        "n": 12,
+        "accuracy": 0.75
+      },
+      "lookalike": {
+        "n": 23,
+        "accuracy": 0.5652173913043478
+      },
+      "different": {
+        "n": 12,
+        "accuracy": 1
+      },
+      "mixed": {
+        "n": 2,
+        "accuracy": 0
+      },
+      "vague": {
+        "n": 5,
+        "accuracy": 1
+      },
+      "short": {
+        "n": 1,
+        "accuracy": 1
+      }
+    },
+    "preselection": {
+      "minConfidence": 0.8,
+      "preselected": 42,
+      "precision": 1,
+      "wrongPreselections": [],
+      "missedSame": 9
+    },
+    "calibration": [
+      {
+        "range": "0.4–0.5",
+        "n": 3,
+        "meanConfidence": 0.4666666666666666,
+        "accuracy": 0
+      },
+      {
+        "range": "0.5–0.6",
+        "n": 12,
+        "meanConfidence": 0.5358333333333334,
+        "accuracy": 0.5
+      },
+      {
+        "range": "0.6–0.7",
+        "n": 3,
+        "meanConfidence": 0.6166666666666667,
+        "accuracy": 0
+      },
+      {
+        "range": "0.7–0.8",
+        "n": 11,
+        "meanConfidence": 0.7418181818181818,
+        "accuracy": 0.8181818181818182
+      },
+      {
+        "range": "0.8–0.9",
+        "n": 12,
+        "meanConfidence": 0.8481818181818181,
+        "accuracy": 1
+      },
+      {
+        "range": "0.9–1.0",
+        "n": 61,
+        "meanConfidence": 0.9670491803278688,
+        "accuracy": 0.9672131147540983
+      }
+    ],
+    "confusion": {
+      "same": {
+        "same": 48,
+        "related": 2,
+        "different": 1
+      },
+      "related": {
+        "same": 3,
+        "related": 18,
+        "different": 5
+      },
+      "different": {
+        "same": 0,
+        "related": 5,
+        "different": 20
+      }
+    },
+    "topConfusions": [
+      {
+        "truth": "related",
+        "predicted": "different",
+        "n": 5,
+        "ids": [
+          "C-058",
+          "C-065",
+          "C-066",
+          "C-097",
+          "C-099"
+        ]
+      },
+      {
+        "truth": "different",
+        "predicted": "related",
+        "n": 5,
+        "ids": [
+          "C-007",
+          "C-008",
+          "C-045",
+          "C-055",
+          "C-067"
+        ]
+      },
+      {
+        "truth": "related",
+        "predicted": "same",
+        "n": 3,
+        "ids": [
+          "C-018",
+          "C-020",
+          "C-081"
+        ]
+      },
+      {
+        "truth": "same",
+        "predicted": "related",
+        "n": 2,
+        "ids": [
+          "C-012",
+          "C-054"
+        ]
+      },
+      {
+        "truth": "same",
+        "predicted": "different",
+        "n": 1,
+        "ids": [
+          "C-010"
+        ]
+      }
+    ]
+  },
+  "predictions": [
+    {
+      "id": "C-001",
+      "tags": [
+        "synonym"
+      ],
+      "truth": "same",
+      "predicted": "same",
+      "probabilities": {
+        "same": 0.93,
+        "related": 0.05,
+        "different": 0.02
+      },
+      "today": "목이 따가워요",
+      "previousKcd": "J02.9",
+      "ms": 503
+    },
+    {
+      "id": "C-002",
+      "tags": [
+        "synonym"
+      ],
+      "truth": "same",
+      "predicted": "same",
+      "probabilities": {
+        "same": 0.94,
+        "related": 0.05,
+        "different": 0.01
+      },
+      "today": "침 삼킬 때 목이 아파요",
+      "previousKcd": "J02.9",
+      "ms": 3817
+    },
+    {
+      "id": "C-003",
+      "tags": [
+        "same_wording"
+      ],
+      "truth": "same",
+      "predicted": "same",
+      "probabilities": {
+        "same": 0.98,
+        "related": 0.02,
+        "different": 0
+      },
+      "today": "인후통이 다시 생겼어요",
+      "previousKcd": "J02.9",
+      "ms": 399
+    },
+    {
+      "id": "C-004",
+      "tags": [
+        "typo"
+      ],
+      "truth": "same",
+      "predicted": "same",
+      "probabilities": {
+        "same": 0.93,
+        "related": 0.05,
+        "different": 0.02
+      },
+      "today": "목이 따가와요",
+      "previousKcd": "J02.9",
+      "ms": 400
+    },
+    {
+      "id": "C-005",
+      "tags": [
+        "synonym",
+        "colloquial"
+      ],
+      "truth": "same",
+      "predicted": "same",
+      "probabilities": {
+        "same": 0.98,
+        "related": 0.02,
+        "different": 0
+      },
+      "today": "목구멍이 칼칼하고 아파요",
+      "previousKcd": "J02.9",
+      "ms": 491
+    },
+    {
+      "id": "C-006",
+      "tags": [
+        "related"
+      ],
+      "truth": "related",
+      "predicted": "related",
+      "probabilities": {
+        "same": 0.02,
+        "related": 0.83,
+        "different": 0.15
+      },
+      "today": "콧물이랑 기침이 나요",
+      "previousKcd": "J02.9",
+      "ms": 388
+    },
+    {
+      "id": "C-007",
+      "tags": [
+        "lookalike"
+      ],
+      "truth": "different",
+      "predicted": "related",
+      "probabilities": {
+        "same": 0.38,
+        "related": 0.55,
+        "different": 0.07
+      },
+      "today": "목이 아파서 고개를 못 돌리겠어요",
+      "previousKcd": "J02.9",
+      "ms": 401
+    },
+    {
+      "id": "C-008",
+      "tags": [
+        "lookalike"
+      ],
+      "truth": "different",
+      "predicted": "related",
+      "probabilities": {
+        "same": 0.07,
+        "related": 0.52,
+        "different": 0.41
+      },
+      "today": "목이 뻐근하고 어깨가 결려요",
+      "previousKcd": "J02.9",
+      "ms": 385
+    },
+    {
+      "id": "C-009",
+      "tags": [
+        "different"
+      ],
+      "truth": "different",
+      "predicted": "different",
+      "probabilities": {
+        "same": 0,
+        "related": 0.01,
+        "different": 0.99
+      },
+      "today": "허리가 아파요",
+      "previousKcd": "J02.9",
+      "ms": 404
+    },
+    {
+      "id": "C-010",
+      "tags": [
+        "mixed"
+      ],
+      "truth": "same",
+      "predicted": "different",
+      "probabilities": {
+        "same": 0.22,
+        "related": 0.34,
+        "different": 0.44
+      },
+      "today": "목도 따갑고 허리도 아파요",
+      "previousKcd": "J02.9",
+      "ms": 421
+    },
+    {
+      "id": "C-011",
+      "tags": [
+        "vague"
+      ],
+      "truth": "different",
+      "predicted": "different",
+      "probabilities": {
+        "same": 0.01,
+        "related": 0,
+        "different": 0.99
+      },
+      "today": "그냥 몸이 안 좋아요",
+      "previousKcd": "J02.9",
+      "ms": 400
+    },
+    {
+      "id": "C-012",
+      "tags": [
+        "synonym"
+      ],
+      "truth": "same",
+      "predicted": "related",
+      "probabilities": {
+        "same": 0.4,
+        "related": 0.59,
+        "different": 0.01
+      },
+      "today": "목 안이 부어서 말하기 힘들어요",
+      "previousKcd": "J02.9",
+      "ms": 370
+    },
+    {
+      "id": "C-013",
+      "tags": [
+        "synonym"
+      ],
+      "truth": "same",
+      "predicted": "same",
+      "probabilities": {
+        "same": 0.88,
+        "related": 0.02,
+        "different": 0.1
+      },
+      "today": "감기 기운이 있어요",
+      "previousKcd": "J06.9",
+      "ms": 387
+    },
+    {
+      "id": "C-014",
+      "tags": [
+        "same_wording"
+      ],
+      "truth": "same",
+      "predicted": "same",
+      "probabilities": {
+        "same": 0.97,
+        "related": 0.02,
+        "different": 0.01
+      },
+      "today": "콧물이랑 기침이 나요",
+      "previousKcd": "J06.9",
+      "ms": 672
+    },
+    {
+      "id": "C-015",
+      "tags": [
+        "synonym"
+      ],
+      "truth": "same",
+      "predicted": "same",
+      "probabilities": {
+        "same": 0.82,
+        "related": 0.17,
+        "different": 0.01
+      },
+      "today": "기침이 계속 나고 열이 조금 있어요",
+      "previousKcd": "J06.9",
+      "ms": 467
+    },
+    {
+      "id": "C-016",
+      "tags": [
+        "colloquial"
+      ],
+      "truth": "same",
+      "predicted": "same",
+      "probabilities": {
+        "same": 0.95,
+        "related": 0.04,
+        "different": 0.01
+      },
+      "today": "감기걸린거 같아요 콧물나요",
+      "previousKcd": "J06.9",
+      "ms": 430
+    },
+    {
+      "id": "C-017",
+      "tags": [
+        "typo"
+      ],
+      "truth": "same",
+      "predicted": "same",
+      "probabilities": {
+        "same": 0.71,
+        "related": 0.11,
+        "different": 0.18
+      },
+      "today": "기칭이 나요",
+      "previousKcd": "J06.9",
+      "ms": 654
+    },
+    {
+      "id": "C-018",
+      "tags": [
+        "related"
+      ],
+      "truth": "related",
+      "predicted": "same",
+      "probabilities": {
+        "same": 0.49,
+        "related": 0.46,
+        "different": 0.05
+      },
+      "today": "목이 따가워요",
+      "previousKcd": "J06.9",
+      "ms": 387
+    },
+    {
+      "id": "C-019",
+      "tags": [
+        "lookalike"
+      ],
+      "truth": "related",
+      "predicted": "related",
+      "probabilities": {
+        "same": 0.09000000000000001,
+        "related": 0.8200000000000001,
+        "different": 0.09000000000000001
+      },
+      "today": "재채기가 계속 나고 코가 간지러워요",
+      "previousKcd": "J06.9",
+      "ms": 600
+    },
+    {
+      "id": "C-020",
+      "tags": [
+        "lookalike"
+      ],
+      "truth": "related",
+      "predicted": "same",
+      "probabilities": {
+        "same": 0.63,
+        "related": 0.34,
+        "different": 0.03
+      },
+      "today": "열이 39도까지 나고 온몸이 쑤셔요",
+      "previousKcd": "J06.9",
+      "ms": 499
+    },
+    {
+      "id": "C-021",
+      "tags": [
+        "different"
+      ],
+      "truth": "different",
+      "predicted": "different",
+      "probabilities": {
+        "same": 0,
+        "related": 0.15,
+        "different": 0.85
+      },
+      "today": "속이 쓰려요",
+      "previousKcd": "J06.9",
+      "ms": 480
+    },
+    {
+      "id": "C-022",
+      "tags": [
+        "lookalike"
+      ],
+      "truth": "related",
+      "predicted": "related",
+      "probabilities": {
+        "same": 0.01,
+        "related": 0.97,
+        "different": 0.02
+      },
+      "today": "숨 쉴 때 가슴이 답답하고 쌕쌕거려요",
+      "previousKcd": "J06.9",
+      "ms": 630
+    },
+    {
+      "id": "C-023",
+      "tags": [
+        "different"
+      ],
+      "truth": "different",
+      "predicted": "different",
+      "probabilities": {
+        "same": 0.04,
+        "related": 0.44,
+        "different": 0.52
+      },
+      "today": "두통이 자주 와요",
+      "previousKcd": "J06.9",
+      "ms": 770
+    },
+    {
+      "id": "C-024",
+      "tags": [
+        "short"
+      ],
+      "truth": "same",
+      "predicted": "same",
+      "probabilities": {
+        "same": 0.94,
+        "related": 0.04,
+        "different": 0.02
+      },
+      "today": "콧물",
+      "previousKcd": "J06.9",
+      "ms": 471
+    },
+    {
+      "id": "C-025",
+      "tags": [
+        "same_wording"
+      ],
+      "truth": "same",
+      "predicted": "same",
+      "probabilities": {
+        "same": 0.98,
+        "related": 0.01,
+        "different": 0.01
+      },
+      "today": "재채기가 계속 나요",
+      "previousKcd": "J30.4",
+      "ms": 529
+    },
+    {
+      "id": "C-026",
+      "tags": [
+        "synonym"
+      ],
+      "truth": "same",
+      "predicted": "same",
+      "probabilities": {
+        "same": 0.89,
+        "related": 0.1,
+        "different": 0.01
+      },
+      "today": "코가 막히고 간지러워요",
+      "previousKcd": "J30.4",
+      "ms": 510
+    },
+    {
+      "id": "C-027",
+      "tags": [
+        "synonym"
+      ],
+      "truth": "same",
+      "predicted": "same",
+      "probabilities": {
+        "same": 0.99,
+        "related": 0.01,
+        "different": 0
+      },
+      "today": "아침마다 맑은 콧물이 줄줄 나요",
+      "previousKcd": "J30.4",
+      "ms": 780
+    },
+    {
+      "id": "C-028",
+      "tags": [
+        "synonym"
+      ],
+      "truth": "same",
+      "predicted": "same",
+      "probabilities": {
+        "same": 0.98,
+        "related": 0.01,
+        "different": 0.01
+      },
+      "today": "비염이 또 도졌어요",
+      "previousKcd": "J30.4",
+      "ms": 1789
+    },
+    {
+      "id": "C-029",
+      "tags": [
+        "typo"
+      ],
+      "truth": "same",
+      "predicted": "same",
+      "probabilities": {
+        "same": 0.97,
+        "related": 0.02,
+        "different": 0.01
+      },
+      "today": "제채기가 멈추질 않아요",
+      "previousKcd": "J30.4",
+      "ms": 501
+    },
+    {
+      "id": "C-030",
+      "tags": [
+        "lookalike"
+      ],
+      "truth": "related",
+      "predicted": "related",
+      "probabilities": {
+        "same": 0,
+        "related": 0.99,
+        "different": 0.01
+      },
+      "today": "누런 콧물이 나고 열이 나요",
+      "previousKcd": "J30.4",
+      "ms": 499
+    },
+    {
+      "id": "C-031",
+      "tags": [
+        "related"
+      ],
+      "truth": "related",
+      "predicted": "related",
+      "probabilities": {
+        "same": 0.13,
+        "related": 0.83,
+        "different": 0.04
+      },
+      "today": "눈이 가렵고 충혈됐어요",
+      "previousKcd": "J30.4",
+      "ms": 560
+    },
+    {
+      "id": "C-032",
+      "tags": [
+        "related"
+      ],
+      "truth": "related",
+      "predicted": "related",
+      "probabilities": {
+        "same": 0.01,
+        "related": 0.79,
+        "different": 0.2
+      },
+      "today": "목이 따가워요",
+      "previousKcd": "J30.4",
+      "ms": 570
+    },
+    {
+      "id": "C-033",
+      "tags": [
+        "different"
+      ],
+      "truth": "different",
+      "predicted": "different",
+      "probabilities": {
+        "same": 0,
+        "related": 0,
+        "different": 1
+      },
+      "today": "허리가 아파요",
+      "previousKcd": "J30.4",
+      "ms": 521
+    },
+    {
+      "id": "C-034",
+      "tags": [
+        "different"
+      ],
+      "truth": "different",
+      "predicted": "different",
+      "probabilities": {
+        "same": 0,
+        "related": 0.03,
+        "different": 0.97
+      },
+      "today": "속이 쓰려요",
+      "previousKcd": "J30.4",
+      "ms": 499
+    },
+    {
+      "id": "C-035",
+      "tags": [
+        "lookalike"
+      ],
+      "truth": "related",
+      "predicted": "related",
+      "probabilities": {
+        "same": 0.02,
+        "related": 0.96,
+        "different": 0.02
+      },
+      "today": "코피가 자주 나요",
+      "previousKcd": "J30.4",
+      "ms": 820
+    },
+    {
+      "id": "C-036",
+      "tags": [
+        "same_wording"
+      ],
+      "truth": "same",
+      "predicted": "same",
+      "probabilities": {
+        "same": 0.95,
+        "related": 0.01,
+        "different": 0.04
+      },
+      "today": "혈압약 상담 받고 싶어요",
+      "previousKcd": "I10",
+      "ms": 532
+    },
+    {
+      "id": "C-037",
+      "tags": [
+        "synonym"
+      ],
+      "truth": "same",
+      "predicted": "same",
+      "probabilities": {
+        "same": 0.97,
+        "related": 0,
+        "different": 0.03
+      },
+      "today": "집에서 잰 혈압이 조금 높아요",
+      "previousKcd": "I10",
+      "ms": 639
+    },
+    {
+      "id": "C-038",
+      "tags": [
+        "typo"
+      ],
+      "truth": "same",
+      "predicted": "same",
+      "probabilities": {
+        "same": 0.96,
+        "related": 0.01,
+        "different": 0.03
+      },
+      "today": "혈압약 상담 받고시퍼요",
+      "previousKcd": "I10",
+      "ms": 479
+    },
+    {
+      "id": "C-039",
+      "tags": [
+        "synonym"
+      ],
+      "truth": "same",
+      "predicted": "same",
+      "probabilities": {
+        "same": 0.94,
+        "related": 0.02,
+        "different": 0.04
+      },
+      "today": "고혈압 약이 다 떨어졌어요",
+      "previousKcd": "I10",
+      "ms": 510
+    },
+    {
+      "id": "C-040",
+      "tags": [
+        "synonym"
+      ],
+      "truth": "same",
+      "predicted": "same",
+      "probabilities": {
+        "same": 0.98,
+        "related": 0.02,
+        "different": 0
+      },
+      "today": "혈압이 150 넘게 나와요",
+      "previousKcd": "I10",
+      "ms": 510
+    },
+    {
+      "id": "C-041",
+      "tags": [
+        "colloquial"
+      ],
+      "truth": "same",
+      "predicted": "same",
+      "probabilities": {
+        "same": 0.73,
+        "related": 0.26,
+        "different": 0.01
+      },
+      "today": "뒷목이 뻐근하고 혈압이 오른 것 같아요",
+      "previousKcd": "I10",
+      "ms": 530
+    },
+    {
+      "id": "C-042",
+      "tags": [
+        "lookalike"
+      ],
+      "truth": "different",
+      "predicted": "different",
+      "probabilities": {
+        "same": 0.01,
+        "related": 0.46,
+        "different": 0.53
+      },
+      "today": "가슴이 타는 느낌이에요",
+      "previousKcd": "I10",
+      "ms": 660
+    },
+    {
+      "id": "C-043",
+      "tags": [
+        "lookalike"
+      ],
+      "truth": "related",
+      "predicted": "related",
+      "probabilities": {
+        "same": 0.03,
+        "related": 0.92,
+        "different": 0.05
+      },
+      "today": "가슴이 두근거리고 숨이 차요",
+      "previousKcd": "I10",
+      "ms": 560
+    },
+    {
+      "id": "C-044",
+      "tags": [
+        "vague"
+      ],
+      "truth": "related",
+      "predicted": "related",
+      "probabilities": {
+        "same": 0.16,
+        "related": 0.75,
+        "different": 0.09
+      },
+      "today": "어지럽고 머리가 아파요",
+      "previousKcd": "I10",
+      "ms": 391
+    },
+    {
+      "id": "C-045",
+      "tags": [
+        "lookalike"
+      ],
+      "truth": "different",
+      "predicted": "related",
+      "probabilities": {
+        "same": 0,
+        "related": 0.52,
+        "different": 0.48
+      },
+      "today": "혈당이 높게 나와요",
+      "previousKcd": "I10",
+      "ms": 519
+    },
+    {
+      "id": "C-046",
+      "tags": [
+        "different"
+      ],
+      "truth": "different",
+      "predicted": "different",
+      "probabilities": {
+        "same": 0,
+        "related": 0.04,
+        "different": 0.96
+      },
+      "today": "허리가 아파요",
+      "previousKcd": "I10",
+      "ms": 520
+    },
+    {
+      "id": "C-047",
+      "tags": [
+        "vague"
+      ],
+      "truth": "same",
+      "predicted": "same",
+      "probabilities": {
+        "same": 0.71,
+        "related": 0.02,
+        "different": 0.27
+      },
+      "today": "약 다시 받고 싶어요",
+      "previousKcd": "I10",
+      "ms": 500
+    },
+    {
+      "id": "C-048",
+      "tags": [
+        "same_wording"
+      ],
+      "truth": "same",
+      "predicted": "same",
+      "probabilities": {
+        "same": 0.98,
+        "related": 0.01,
+        "different": 0.01
+      },
+      "today": "혈당 수치 상담하고 싶어요",
+      "previousKcd": "E11.9",
+      "ms": 509
+    },
+    {
+      "id": "C-049",
+      "tags": [
+        "synonym"
+      ],
+      "truth": "same",
+      "predicted": "same",
+      "probabilities": {
+        "same": 0.5,
+        "related": 0.02,
+        "different": 0.48
+      },
+      "today": "당뇨약 먹고 있는데 질문이 있어요",
+      "previousKcd": "E11.9",
+      "ms": 520
+    },
+    {
+      "id": "C-050",
+      "tags": [
+        "synonym"
+      ],
+      "truth": "same",
+      "predicted": "same",
+      "probabilities": {
+        "same": 0.93,
+        "related": 0.06,
+        "different": 0.01
+      },
+      "today": "공복 혈당이 140 나왔어요",
+      "previousKcd": "E11.9",
+      "ms": 521
+    },
+    {
+      "id": "C-051",
+      "tags": [
+        "synonym"
+      ],
+      "truth": "same",
+      "predicted": "same",
+      "probabilities": {
+        "same": 0.9299999999999999,
+        "related": 0.02,
+        "different": 0.05
+      },
+      "today": "당뇨약 처방 다시 받고 싶어요",
+      "previousKcd": "E11.9",
+      "ms": 650
+    },
+    {
+      "id": "C-052",
+      "tags": [
+        "typo"
+      ],
+      "truth": "same",
+      "predicted": "same",
+      "probabilities": {
+        "same": 0.96,
+        "related": 0.02,
+        "different": 0.02
+      },
+      "today": "혈당이 놉아요",
+      "previousKcd": "E11.9",
+      "ms": 639
+    },
+    {
+      "id": "C-053",
+      "tags": [
+        "related"
+      ],
+      "truth": "related",
+      "predicted": "related",
+      "probabilities": {
+        "same": 0,
+        "related": 0.99,
+        "different": 0.01
+      },
+      "today": "발이 저리고 감각이 둔해요",
+      "previousKcd": "E11.9",
+      "ms": 381
+    },
+    {
+      "id": "C-054",
+      "tags": [
+        "colloquial"
+      ],
+      "truth": "same",
+      "predicted": "related",
+      "probabilities": {
+        "same": 0.46,
+        "related": 0.51,
+        "different": 0.03
+      },
+      "today": "물을 많이 마시고 소변을 자주 봐요",
+      "previousKcd": "E11.9",
+      "ms": 546
+    },
+    {
+      "id": "C-055",
+      "tags": [
+        "lookalike"
+      ],
+      "truth": "different",
+      "predicted": "related",
+      "probabilities": {
+        "same": 0,
+        "related": 0.96,
+        "different": 0.04
+      },
+      "today": "혈압이 높게 나와요",
+      "previousKcd": "E11.9",
+      "ms": 533
+    },
+    {
+      "id": "C-056",
+      "tags": [
+        "different"
+      ],
+      "truth": "different",
+      "predicted": "different",
+      "probabilities": {
+        "same": 0,
+        "related": 0.07,
+        "different": 0.93
+      },
+      "today": "목이 따가워요",
+      "previousKcd": "E11.9",
+      "ms": 1731
+    },
+    {
+      "id": "C-057",
+      "tags": [
+        "related"
+      ],
+      "truth": "related",
+      "predicted": "related",
+      "probabilities": {
+        "same": 0,
+        "related": 1,
+        "different": 0
+      },
+      "today": "상처가 잘 안 낫고 발에 염증이 생겼어요",
+      "previousKcd": "E11.9",
+      "ms": 2148
+    },
+    {
+      "id": "C-058",
+      "tags": [
+        "lookalike"
+      ],
+      "truth": "related",
+      "predicted": "different",
+      "probabilities": {
+        "same": 0,
+        "related": 0.1,
+        "different": 0.9
+      },
+      "today": "갑상선 약 상담하고 싶어요",
+      "previousKcd": "E11.9",
+      "ms": 543
+    },
+    {
+      "id": "C-059",
+      "tags": [
+        "related"
+      ],
+      "truth": "related",
+      "predicted": "related",
+      "probabilities": {
+        "same": 0,
+        "related": 0.92,
+        "different": 0.08
+      },
+      "today": "눈이 침침해요",
+      "previousKcd": "E11.9",
+      "ms": 1088
+    },
+    {
+      "id": "C-060",
+      "tags": [
+        "same_wording"
+      ],
+      "truth": "same",
+      "predicted": "same",
+      "probabilities": {
+        "same": 0.98,
+        "related": 0.01,
+        "different": 0.01
+      },
+      "today": "허리가 또 아파요",
+      "previousKcd": "M54.5",
+      "ms": 521
+    },
+    {
+      "id": "C-061",
+      "tags": [
+        "synonym"
+      ],
+      "truth": "same",
+      "predicted": "same",
+      "probabilities": {
+        "same": 0.99,
+        "related": 0.01,
+        "different": 0
+      },
+      "today": "오래 앉아 있으면 허리가 뻐근해요",
+      "previousKcd": "M54.5",
+      "ms": 530
+    },
+    {
+      "id": "C-062",
+      "tags": [
+        "typo"
+      ],
+      "truth": "same",
+      "predicted": "same",
+      "probabilities": {
+        "same": 1,
+        "related": 0,
+        "different": 0
+      },
+      "today": "허리가 아퍼요",
+      "previousKcd": "M54.5",
+      "ms": 379
+    },
+    {
+      "id": "C-063",
+      "tags": [
+        "same_wording"
+      ],
+      "truth": "same",
+      "predicted": "same",
+      "probabilities": {
+        "same": 0.98,
+        "related": 0.02,
+        "different": 0
+      },
+      "today": "요통이 심해졌어요",
+      "previousKcd": "M54.5",
+      "ms": 400
+    },
+    {
+      "id": "C-064",
+      "tags": [
+        "lookalike"
+      ],
+      "truth": "related",
+      "predicted": "related",
+      "probabilities": {
+        "same": 0.01,
+        "related": 0.98,
+        "different": 0.01
+      },
+      "today": "허리부터 다리까지 저려요",
+      "previousKcd": "M54.5",
+      "ms": 383
+    },
+    {
+      "id": "C-065",
+      "tags": [
+        "related"
+      ],
+      "truth": "related",
+      "predicted": "different",
+      "probabilities": {
+        "same": 0,
+        "related": 0.39,
+        "different": 0.61
+      },
+      "today": "목이랑 어깨가 결려요",
+      "previousKcd": "M54.5",
+      "ms": 537
+    },
+    {
+      "id": "C-066",
+      "tags": [
+        "related"
+      ],
+      "truth": "related",
+      "predicted": "different",
+      "probabilities": {
+        "same": 0,
+        "related": 0.23,
+        "different": 0.77
+      },
+      "today": "무릎이 아파요",
+      "previousKcd": "M54.5",
+      "ms": 411
+    },
+    {
+      "id": "C-067",
+      "tags": [
+        "lookalike",
+        "mixed"
+      ],
+      "truth": "different",
+      "predicted": "related",
+      "probabilities": {
+        "same": 0.03,
+        "related": 0.76,
+        "different": 0.21
+      },
+      "today": "허리가 아프고 소변 볼 때 따가워요",
+      "previousKcd": "M54.5",
+      "ms": 400
+    },
+    {
+      "id": "C-068",
+      "tags": [
+        "different"
+      ],
+      "truth": "different",
+      "predicted": "different",
+      "probabilities": {
+        "same": 0,
+        "related": 0,
+        "different": 1
+      },
+      "today": "속이 쓰려요",
+      "previousKcd": "M54.5",
+      "ms": 392
+    },
+    {
+      "id": "C-069",
+      "tags": [
+        "colloquial"
+      ],
+      "truth": "same",
+      "predicted": "same",
+      "probabilities": {
+        "same": 0.88,
+        "related": 0.11,
+        "different": 0.01
+      },
+      "today": "허리 삐끗했어요",
+      "previousKcd": "M54.5",
+      "ms": 379
+    },
+    {
+      "id": "C-070",
+      "tags": [
+        "vague"
+      ],
+      "truth": "different",
+      "predicted": "different",
+      "probabilities": {
+        "same": 0.01,
+        "related": 0.02,
+        "different": 0.97
+      },
+      "today": "여기저기 아파요",
+      "previousKcd": "M54.5",
+      "ms": 382
+    },
+    {
+      "id": "C-071",
+      "tags": [
+        "synonym"
+      ],
+      "truth": "same",
+      "predicted": "same",
+      "probabilities": {
+        "same": 1,
+        "related": 0,
+        "different": 0
+      },
+      "today": "속이 쓰려요",
+      "previousKcd": "K21.9",
+      "ms": 369
+    },
+    {
+      "id": "C-072",
+      "tags": [
+        "synonym"
+      ],
+      "truth": "same",
+      "predicted": "same",
+      "probabilities": {
+        "same": 0.99,
+        "related": 0.01,
+        "different": 0
+      },
+      "today": "밥 먹고 나면 가슴이 타는 느낌이에요",
+      "previousKcd": "K21.9",
+      "ms": 460
+    },
+    {
+      "id": "C-073",
+      "tags": [
+        "synonym"
+      ],
+      "truth": "same",
+      "predicted": "same",
+      "probabilities": {
+        "same": 0.99,
+        "related": 0.01,
+        "different": 0
+      },
+      "today": "신물이 올라와요",
+      "previousKcd": "K21.9",
+      "ms": 461
+    },
+    {
+      "id": "C-074",
+      "tags": [
+        "typo"
+      ],
+      "truth": "same",
+      "predicted": "same",
+      "probabilities": {
+        "same": 1,
+        "related": 0,
+        "different": 0
+      },
+      "today": "속쓰림이 심해여",
+      "previousKcd": "K21.9",
+      "ms": 479
+    },
+    {
+      "id": "C-075",
+      "tags": [
+        "colloquial"
+      ],
+      "truth": "same",
+      "predicted": "same",
+      "probabilities": {
+        "same": 0.99,
+        "related": 0.01,
+        "different": 0
+      },
+      "today": "누우면 목까지 시큼한 게 올라와요",
+      "previousKcd": "K21.9",
+      "ms": 371
+    },
+    {
+      "id": "C-076",
+      "tags": [
+        "related"
+      ],
+      "truth": "related",
+      "predicted": "related",
+      "probabilities": {
+        "same": 0.12,
+        "related": 0.59,
+        "different": 0.29
+      },
+      "today": "체한 것 같고 더부룩해요",
+      "previousKcd": "K21.9",
+      "ms": 378
+    },
+    {
+      "id": "C-077",
+      "tags": [
+        "related"
+      ],
+      "truth": "related",
+      "predicted": "related",
+      "probabilities": {
+        "same": 0,
+        "related": 0.5,
+        "different": 0.5
+      },
+      "today": "배가 아프고 설사해요",
+      "previousKcd": "K21.9",
+      "ms": 380
+    },
+    {
+      "id": "C-078",
+      "tags": [
+        "lookalike"
+      ],
+      "truth": "different",
+      "predicted": "different",
+      "probabilities": {
+        "same": 0.01,
+        "related": 0.27,
+        "different": 0.72
+      },
+      "today": "가슴이 쥐어짜듯 아프고 식은땀이 나요",
+      "previousKcd": "K21.9",
+      "ms": 359
+    },
+    {
+      "id": "C-079",
+      "tags": [
+        "different"
+      ],
+      "truth": "different",
+      "predicted": "different",
+      "probabilities": {
+        "same": 0,
+        "related": 0.1,
+        "different": 0.9
+      },
+      "today": "두통이 자주 와요",
+      "previousKcd": "K21.9",
+      "ms": 360
+    },
+    {
+      "id": "C-080",
+      "tags": [
+        "different"
+      ],
+      "truth": "different",
+      "predicted": "different",
+      "probabilities": {
+        "same": 0,
+        "related": 0.02,
+        "different": 0.98
+      },
+      "today": "허리가 아파요",
+      "previousKcd": "K21.9",
+      "ms": 390
+    },
+    {
+      "id": "C-081",
+      "tags": [
+        "lookalike"
+      ],
+      "truth": "related",
+      "predicted": "same",
+      "probabilities": {
+        "same": 0.57,
+        "related": 0.37,
+        "different": 0.06
+      },
+      "today": "목에 뭐가 걸린 느낌이에요",
+      "previousKcd": "K21.9",
+      "ms": 349
+    },
+    {
+      "id": "C-082",
+      "tags": [
+        "synonym"
+      ],
+      "truth": "same",
+      "predicted": "same",
+      "probabilities": {
+        "same": 0.85,
+        "related": 0.02,
+        "different": 0.13
+      },
+      "today": "피부가 가려워요",
+      "previousKcd": "L20.9",
+      "ms": 650
+    },
+    {
+      "id": "C-083",
+      "tags": [
+        "synonym"
+      ],
+      "truth": "same",
+      "predicted": "same",
+      "probabilities": {
+        "same": 0.98,
+        "related": 0.02,
+        "different": 0
+      },
+      "today": "팔 접히는 곳이 빨갛고 간지러워요",
+      "previousKcd": "L20.9",
+      "ms": 450
+    },
+    {
+      "id": "C-084",
+      "tags": [
+        "same_wording"
+      ],
+      "truth": "same",
+      "predicted": "same",
+      "probabilities": {
+        "same": 1,
+        "related": 0,
+        "different": 0
+      },
+      "today": "아토피가 심해졌어요",
+      "previousKcd": "L20.9",
+      "ms": 739
+    },
+    {
+      "id": "C-085",
+      "tags": [
+        "typo"
+      ],
+      "truth": "same",
+      "predicted": "same",
+      "probabilities": {
+        "same": 0.88,
+        "related": 0.03,
+        "different": 0.09
+      },
+      "today": "피부가 가렵어요",
+      "previousKcd": "L20.9",
+      "ms": 481
+    },
+    {
+      "id": "C-086",
+      "tags": [
+        "colloquial"
+      ],
+      "truth": "same",
+      "predicted": "same",
+      "probabilities": {
+        "same": 0.93,
+        "related": 0.07,
+        "different": 0
+      },
+      "today": "피부가 건조하고 긁으면 진물이 나요",
+      "previousKcd": "L20.9",
+      "ms": 521
+    },
+    {
+      "id": "C-087",
+      "tags": [
+        "lookalike"
+      ],
+      "truth": "related",
+      "predicted": "related",
+      "probabilities": {
+        "same": 0.0101010101010101,
+        "related": 0.8181818181818181,
+        "different": 0.1717171717171717
+      },
+      "today": "갑자기 온몸에 두드러기가 났어요",
+      "previousKcd": "L20.9",
+      "ms": 499
+    },
+    {
+      "id": "C-088",
+      "tags": [
+        "lookalike"
+      ],
+      "truth": "related",
+      "predicted": "related",
+      "probabilities": {
+        "same": 0.02,
+        "related": 0.74,
+        "different": 0.24
+      },
+      "today": "발가락 사이가 갈라지고 가려워요",
+      "previousKcd": "L20.9",
+      "ms": 530
+    },
+    {
+      "id": "C-089",
+      "tags": [
+        "lookalike"
+      ],
+      "truth": "different",
+      "predicted": "different",
+      "probabilities": {
+        "same": 0,
+        "related": 0.03,
+        "different": 0.97
+      },
+      "today": "코가 간지럽고 재채기가 나요",
+      "previousKcd": "L20.9",
+      "ms": 410
+    },
+    {
+      "id": "C-090",
+      "tags": [
+        "different"
+      ],
+      "truth": "different",
+      "predicted": "different",
+      "probabilities": {
+        "same": 0,
+        "related": 0.01,
+        "different": 0.99
+      },
+      "today": "속이 쓰려요",
+      "previousKcd": "L20.9",
+      "ms": 5320
+    },
+    {
+      "id": "C-091",
+      "tags": [
+        "related"
+      ],
+      "truth": "related",
+      "predicted": "related",
+      "probabilities": {
+        "same": 0.02,
+        "related": 0.83,
+        "different": 0.15
+      },
+      "today": "얼굴에 여드름이 많이 났어요",
+      "previousKcd": "L20.9",
+      "ms": 540
+    },
+    {
+      "id": "C-092",
+      "tags": [
+        "synonym"
+      ],
+      "truth": "same",
+      "predicted": "same",
+      "probabilities": {
+        "same": 0.94,
+        "related": 0.03,
+        "different": 0.03
+      },
+      "today": "머리 한쪽이 지끈거려요",
+      "previousKcd": "G43.9",
+      "ms": 580
+    },
+    {
+      "id": "C-093",
+      "tags": [
+        "synonym"
+      ],
+      "truth": "same",
+      "predicted": "same",
+      "probabilities": {
+        "same": 0.72,
+        "related": 0.05,
+        "different": 0.23
+      },
+      "today": "두통이 자주 와요",
+      "previousKcd": "G43.9",
+      "ms": 520
+    },
+    {
+      "id": "C-094",
+      "tags": [
+        "same_wording"
+      ],
+      "truth": "same",
+      "predicted": "same",
+      "probabilities": {
+        "same": 1,
+        "related": 0,
+        "different": 0
+      },
+      "today": "편두통이 또 왔어요",
+      "previousKcd": "G43.9",
+      "ms": 609
+    },
+    {
+      "id": "C-095",
+      "tags": [
+        "typo"
+      ],
+      "truth": "same",
+      "predicted": "same",
+      "probabilities": {
+        "same": 0.76,
+        "related": 0.06,
+        "different": 0.18
+      },
+      "today": "두퉁이 있어요",
+      "previousKcd": "G43.9",
+      "ms": 501
+    },
+    {
+      "id": "C-096",
+      "tags": [
+        "synonym"
+      ],
+      "truth": "same",
+      "predicted": "same",
+      "probabilities": {
+        "same": 0.98,
+        "related": 0.01,
+        "different": 0.01
+      },
+      "today": "머리가 깨질 것 같고 빛을 보면 더 아파요",
+      "previousKcd": "G43.9",
+      "ms": 531
+    },
+    {
+      "id": "C-097",
+      "tags": [
+        "lookalike"
+      ],
+      "truth": "related",
+      "predicted": "different",
+      "probabilities": {
+        "same": 0.08,
+        "related": 0.45,
+        "different": 0.47
+      },
+      "today": "어지러워서 서 있기 힘들어요",
+      "previousKcd": "G43.9",
+      "ms": 549
+    },
+    {
+      "id": "C-098",
+      "tags": [
+        "lookalike"
+      ],
+      "truth": "different",
+      "predicted": "different",
+      "probabilities": {
+        "same": 0.01,
+        "related": 0.46,
+        "different": 0.53
+      },
+      "today": "머리를 부딪혀서 아파요",
+      "previousKcd": "G43.9",
+      "ms": 510
+    },
+    {
+      "id": "C-099",
+      "tags": [
+        "lookalike"
+      ],
+      "truth": "related",
+      "predicted": "different",
+      "probabilities": {
+        "same": 0.01,
+        "related": 0.38,
+        "different": 0.61
+      },
+      "today": "뒷목이 뻐근해요",
+      "previousKcd": "G43.9",
+      "ms": 389
+    },
+    {
+      "id": "C-100",
+      "tags": [
+        "different"
+      ],
+      "truth": "different",
+      "predicted": "different",
+      "probabilities": {
+        "same": 0,
+        "related": 0.02,
+        "different": 0.98
+      },
+      "today": "속이 쓰려요",
+      "previousKcd": "G43.9",
+      "ms": 380
+    },
+    {
+      "id": "C-101",
+      "tags": [
+        "lookalike"
+      ],
+      "truth": "different",
+      "predicted": "different",
+      "probabilities": {
+        "same": 0,
+        "related": 0.05,
+        "different": 0.95
+      },
+      "today": "머리카락이 많이 빠져요",
+      "previousKcd": "G43.9",
+      "ms": 385
+    },
+    {
+      "id": "C-102",
+      "tags": [
+        "vague"
+      ],
+      "truth": "different",
+      "predicted": "different",
+      "probabilities": {
+        "same": 0.01,
+        "related": 0.06,
+        "different": 0.93
+      },
+      "today": "피곤하고 기운이 없어요",
+      "previousKcd": "J02.9",
+      "ms": 529
+    }
+  ]
+}

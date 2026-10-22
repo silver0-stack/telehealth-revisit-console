@@ -98,9 +98,14 @@ So the script reports pre-selection precision and lists every wrong pre-selectio
 `eval/results/` stay comparable over time, and the audit log records the version that actually answered
 (`result.response.modelId`). Moving to a new version means re-running the evaluation first.
 
-## D20. Jev was not run: the free tier cannot call it (2026-10-22)
+## D20. Jev needs paid credits (2026-10-22, updated the same day)
 A single test call returned `403 Free tier users do not have access to this model`. The Vercel account is on
-Hobby with only free AI Gateway credits, and the minimum paid top-up is $10. `JevMatcher` is written against
-the documented API and unit-tested with a fake `decide`, but it has never answered a real request. The
+Hobby with only free AI Gateway credits, and the minimum paid top-up is $10. `JevMatcher` was written against
+the documented API and unit-tested with a fake `decide` before any real call. The
 rule-based baseline was evaluated so the comparison is ready once credits exist. Zero data retention is also
 unavailable on Hobby (Pro and Enterprise only); acceptable here only because every request is synthetic text.
+
+## D21. Keep minConfidence at 0.8, now based on data (2026-10-22)
+On the 102-case evaluation, Jev's answers at 0.8 and above were right 97% of the time and produced no wrong
+pre-selection; its three wrong "same" answers all scored 0.49–0.63. Answers at 0.7–0.8 were right 82% of the time.
+0.8 stays, and A13 now has evidence behind it. Re-run the evaluation before changing the model version or threshold.

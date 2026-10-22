@@ -44,8 +44,8 @@ pnpm dev                     # http://localhost:3000
 - **No authentication.** There is a single implied clinician user, and anyone who can reach the server can
   save a rule version from `/admin/rules`.
 - **Admin-saved rule versions, review decisions and the audit log are in memory** and disappear on restart. Shipped versions are in `config/rules/`.
-- **Jev has not been run yet.** The Hobby plan's free AI Gateway credits do not cover `typesafe-ai/jev`
-  (403 on a test call). The code is written and unit-tested with a fake; see [D20](docs/DECISIONS.md).
+- **Jev needs paid AI Gateway credits.** The free tier returns 403 for `typesafe-ai/jev`. Without credits,
+  run with `MATCHER=rules`; everything works, with the weaker rule-based suggestions.
 - **No zero data retention.** Not available on Hobby. Fine for synthetic text only; real patient text would
   need a plan with ZDR and much more than this demo provides.
 - **Demo drug catalog.** Drug categories are demo assignments, not the official 식약처/MOHW lists.
@@ -56,6 +56,6 @@ pnpm dev                     # http://localhost:3000
 - [x] M1 Eligibility engine (follow-up / first-visit, based on the 2026-10-19 draft)
 - [x] M2 Restricted drugs (blocklist, first-visit day limits, versioned admin screen)
 - [x] M3 Review flow (rule-based matcher, clinician review, audit log)
-- [ ] M4 Jev + evaluation (evaluation and rule-based baseline done; Jev written but not run, needs paid credits)
+- [x] M4 Jev + evaluation (Jev: 0 wrong pre-selections vs 7 for the rule-based baseline, see [eval/README.md](eval/README.md))
 - [ ] M5 Rule-change impact preview
 - [ ] M6 E2E, accessibility, write-up
