@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import localFont from "next/font/local";
 import type { ReactNode } from "react";
 import Link from "next/link";
 import { DemoBanner } from "@/components/DemoBanner";
@@ -7,6 +8,15 @@ import { MainNav } from "@/components/MainNav";
 import { RoleSwitch } from "@/components/RoleSwitch";
 import { TextSizeToggle } from "@/components/TextSizeToggle";
 import { getRole } from "./role";
+
+// Pretendard 1.3.9 (SIL OFL, license next to the file), self-hosted so the page never calls a font CDN.
+// One variable file covers every weight the UI uses.
+const pretendard = localFont({
+  src: "./fonts/PretendardVariable.woff2",
+  weight: "45 920",
+  display: "swap",
+  variable: "--font-pretendard",
+});
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -17,7 +27,7 @@ export const metadata: Metadata = {
 export default async function RootLayout({ children }: { children: ReactNode }) {
   const role = await getRole();
   return (
-    <html lang="ko">
+    <html lang="ko" className={pretendard.variable}>
       <body>
         <a
           href="#main"

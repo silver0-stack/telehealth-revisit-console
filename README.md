@@ -155,6 +155,7 @@ Neon Postgres 주소(`DATABASE_URL`)를 넣습니다. 표는 첫 사용 때 자�
 - **Next.js** (App Router) + **TypeScript** strict + **Tailwind CSS**
 - **zod**: 설정 파일과 입력값 검증 · **date-fns**: 날짜 계산 (시간대 Asia/Seoul)
 - **Vitest**: 단위 테스트 · **Playwright + axe**: 브라우저 테스트와 접근성 검사
+- **Pretendard** 글꼴 (SIL OFL, `src/app/fonts/`에 직접 포함)
 - **Vercel AI SDK + AI Gateway**: Jev 호출 · **Neon Postgres** (`@neondatabase/serverless`): 배포 환경의 저장소
 
 ```

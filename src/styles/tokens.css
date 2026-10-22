@@ -21,7 +21,7 @@
   --color-banner-bg: #fff4d6;
   --color-banner-text: #5c3d00;
 
-  --font-sans: "Pretendard", "Apple SD Gothic Neo", "Malgun Gothic", "Noto Sans KR", system-ui, sans-serif;
+  --font-sans: var(--font-pretendard), "Pretendard", "Apple SD Gothic Neo", "Malgun Gothic", "Noto Sans KR", system-ui, sans-serif;
   --font-mono: ui-monospace, "Cascadia Mono", Consolas, monospace;
 
   /* Base size. The "큰 글씨" toggle raises it; Tailwind sizes are rem, so everything scales. */
