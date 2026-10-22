@@ -4,6 +4,8 @@ out/
 coverage/
 *.tsbuildinfo
 next-env.d.ts
+*.log
+.vercel/
 
 # secrets
 .env
@@ -18,3 +20,4 @@ test-results/
 CLAUDE.md
 AGENTS.md
 HANDOFF.md
+.claude/
