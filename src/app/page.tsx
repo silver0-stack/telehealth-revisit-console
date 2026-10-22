@@ -20,8 +20,6 @@ export default async function HomePage() {
     listReviews(),
     getRules(),
   ]);
-  const visitCounts = await Promise.all(patients.map((p) => source.listVisits(p.id).then((v) => v.length)));
-  const requested = new Set(requests.map((r) => r.patientId));
   const nameById = new Map(patients.map((p) => [p.id, p.displayName]));
 
   // Only stored decisions are counted here. Suggestions are not computed on this page, so opening it
@@ -66,7 +64,9 @@ export default async function HomePage() {
 
         <div className="rounded border border-border bg-surface">
           <div className="flex items-baseline justify-between gap-2 border-b border-border px-4 py-2">
-            <h2 className="font-bold">다음 검토</h2>
+            <h2 className="font-bold">
+              다음 검토 <span className="text-sm font-normal text-text-muted">오래 기다린 순</span>
+            </h2>
             <Link href="/reviews" className="inline-flex items-center gap-1 text-accent underline">
               전체 {requests.length}건
               <Icon name="arrow-right" />
@@ -92,36 +92,6 @@ export default async function HomePage() {
           )}
         </div>
       </section>
-
-      <h2 className="mt-8 text-xl font-bold">가상 환자 목록</h2>
-      <p className="mt-1 text-text-muted">환자 {patients.length}명</p>
-      <div className="mt-2 overflow-x-auto rounded border border-border bg-surface">
-        <table className="w-full border-collapse text-left">
-          <caption className="sr-only">가상 환자 목록</caption>
-          <thead className="border-b border-border">
-            <tr>
-              <th scope="col" className="px-3 py-2">환자 ID</th>
-              <th scope="col" className="px-3 py-2">이름</th>
-              <th scope="col" className="px-3 py-2">출생연도</th>
-              <th scope="col" className="px-3 py-2">거주 시·도</th>
-              <th scope="col" className="px-3 py-2 text-right">방문 기록</th>
-              <th scope="col" className="px-3 py-2">비대면 요청</th>
-            </tr>
-          </thead>
-          <tbody>
-            {patients.map((p, i) => (
-              <tr key={p.id} className="border-b border-border last:border-0">
-                <td className="px-3 py-2 font-mono">{p.id}</td>
-                <td className="px-3 py-2">{p.displayName}</td>
-                <td className="px-3 py-2">{p.birthYear}</td>
-                <td className="px-3 py-2">{p.region}</td>
-                <td className="px-3 py-2 text-right tabular-nums">{visitCounts[i]}건</td>
-                <td className="px-3 py-2">{requested.has(p.id) ? "요청 있음" : "없음"}</td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
     </>
   );
 }

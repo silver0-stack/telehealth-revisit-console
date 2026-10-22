@@ -4,10 +4,13 @@ import { expect, test } from "@playwright/test";
 // Steps build on each other (decisions show up in the audit log), so they run in order.
 test.describe.configure({ mode: "serial" });
 
-test("patient list shows synthetic patients and keyboard users can skip to content", async ({ page }) => {
+test("오늘 할 일 shows the open work, oldest request first, and keyboard users can skip to content", async ({ page }) => {
   await page.goto("/");
-  await expect(page.getByRole("heading", { name: "가상 환자 목록" })).toBeVisible();
-  await expect(page.locator("tbody tr")).toHaveCount(40);
+  await expect(page.getByRole("heading", { name: "오늘 할 일" })).toBeVisible();
+  await expect(page.locator("dl > div").filter({ hasText: "검토 대기" })).toContainText("26");
+  const nextUp = page.getByRole("heading", { name: /다음 검토/ }).locator("xpath=../..").getByRole("listitem");
+  await expect(nextUp).toHaveCount(5);
+  await expect(nextUp.first()).toContainText("2026-10-20 09:00");
 
   await page.keyboard.press("Tab");
   await expect(page.getByRole("link", { name: "본문으로 건너뛰기" })).toBeFocused();
