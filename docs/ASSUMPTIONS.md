@@ -1,72 +1,70 @@
-# Assumptions
+# 가정 목록
 
-Korea's revised Medical Act on telehealth takes effect 2026-12-24, but the detailed criteria are still being
-set by decree and Ministry of Health and Welfare notices. Every number below is a **placeholder**.
-Each one is tagged `ASSUMPTION` in code and must be checked before any real use.
+비대면 진료에 관한 개정 의료법은 2026-12-24에 시행되지만, 세부 기준은 아직 시행령과 보건복지부 고시로 정해지는 중입니다.
+아래의 모든 숫자는 **임시값**입니다. 코드에서는 각각 `ASSUMPTION` 태그를 달았고, 실제로 쓰기 전에 반드시 확인해야 합니다.
 
-| ID | Assumption | Where in code | What to verify | Where to verify |
-|----|------------|---------------|----------------|-----------------|
-| A1 | Follow-up (일반) window is **6 months** in the current rules (`rules.v2.json`, from the 2026-10-19 draft). `rules.v1.json` keeps the old 30-day placeholder for comparison | `config/rules/rules.v*.json` | Whether the final text keeps 6 months | 의료법 시행규칙 final text (after the 2026-11-09 comment period) |
-| A2 | Only an `in_person` visit for the same symptom at the same clinic counts | `src/domain/eligibility.ts` | Supported by the draft (제31조의5⑤1). Re-check in the final text | Same as A1 |
-| A3 | The window's last day is counted like the Civil Act: start day not counted, ends the day before the matching day; a missing day means the month's last day (e.g. 04-30 → 10-31, 08-31 → 02-28). The last day is included | `src/domain/dates.ts` (`periodEnd`) | Whether MOHW applies 민법 제157조·제160조 to this period, or counts "same day number 6 months later" | MOHW guidance / Q&A after the rule is final |
-| A4 | Days are Asia/Seoul calendar days; the request's date is its Seoul date | `src/domain/dates.ts` | Whether the law uses calendar days and which clock decides the request date | Same as A1 |
-| A5 | "Same clinic" is implied because the app models one clinic; other clinics' visits are never stored | `src/domain/eligibility.ts` | Supported by the draft ("해당 의료기관") | Same as A1 |
-| A6 | The window starts at the **latest same-symptom** in-person visit (see the source check below for the competing reading) | `src/domain/eligibility.ts` | Which reading of 제31조의2① + 제31조의5⑤1 MOHW intends | MOHW guidance |
-| A7 | "동일한 증상" is decided by a clinician (helped by the matcher); eligibility receives a confirmed KCD code | `src/domain/eligibility.ts` | Whether MOHW defines "same symptom" (code level, body system, or clinical judgment) | MOHW guidance |
-| A8 | The once-only 30-day first-visit prescription (제31조의3④) counts once **per patient**, across all clinics and conditions | `src/domain/prescription.ts`, `rules.v2.json` (`extendedTimesPerPatient`) | Whether "1회" is per patient, per condition, or per period | Final text / MOHW 고시 on 진료이력·처방이력 확인 |
-| A9 | The demo clinic is 의원급, so the 병원급 limits (제31조의4) do not apply | `src/data/clinic.ts` | n/a for a demo; real use must check the facility type | — |
-| A10 | Which category each demo drug belongs to (e.g. 펜터민 → 마약·향정, 이소트레티노인 → 오·남용 우려) is a demo assignment | `src/data/drugs.ts` | The official lists: 마약류 품목허가, 식약처 오·남용 우려 의약품 고시, and the not-yet-published MOHW notice on 비만치료제 성분 (제31조의10②) | 식약처 고시; MOHW 고시 |
-| A11 | The narrow exceptions that allow 마약류 by telehealth (제31조의10③: 희귀질환자, 호스피스 통증관리, 중단 시 중대한 위해) are not modeled; those orders are blocked and handled outside the tool | `src/domain/prescription.ts` | Whether a real tool must support the exception flow and what proof it needs | Final text / MOHW 고시 |
-| A12 | Day limits apply only to first-visit telehealth; follow-up telehealth has no day limit in the draft | `src/domain/prescription.ts` | That the final text keeps 제31조의3 limited to 제34조의2제2항제2호 (초진) | Final text |
-| A13 | `minConfidence = 0.8` decides when a suggestion may be pre-selected. Checked on 2026-10-22: no wrong pre-selection for Jev at 0.8 (D21) | `config/ai.json` | Re-check on more and clinician-labeled cases; the 102 synthetic cases are small | `eval/results/` |
-| A14 | The rule-based matcher's probabilities (0.9 / 0.7 / ...) are hand-set confidence levels. Checked: its "90%" answers were right 85% of the time (overconfident) | `src/ai/rule-based-matcher.ts` | Lower the levels or keep it only as a fallback | `eval/results/` |
-| A15 | The evaluation labels in `eval/cases.jsonl` are correct | `eval/cases.jsonl` | Have a clinician review the labels, especially the judgment calls listed in `eval/README.md` | Clinician review |
+| ID | 가정 | 코드 위치 | 확인할 것 | 확인할 곳 |
+|----|------|-----------|-----------|-----------|
+| A1 | 현재 규칙(`rules.v2.json`, 2026-10-19 초안 기준)에서 재진(일반) 기간은 **6개월**. `rules.v1.json`은 비교용으로 옛 30일 임시값을 유지 | `config/rules/rules.v*.json` | 최종 조문이 6개월을 유지하는지 | 의료법 시행규칙 최종 조문 (2026-11-09 의견 마감 이후) |
+| A2 | 같은 의원에서 같은 증상으로 받은 `in_person`(대면) 방문만 인정 | `src/domain/eligibility.ts` | 초안이 뒷받침함(제31조의5⑤1). 최종 조문에서 다시 확인 | A1과 같음 |
+| A3 | 기간의 마지막 날은 민법 방식으로 계산: 첫날 불산입, 대응하는 날의 전날에 끝남. 대응하는 날이 없으면 그 달의 말일(예: 04-30 → 10-31, 08-31 → 02-28). 마지막 날도 기간에 포함 | `src/domain/dates.ts` (`periodEnd`) | 보건복지부가 이 기간에 민법 제157조·제160조를 적용하는지, 아니면 "6개월 뒤 같은 날짜"로 세는지 | 규칙 확정 후 보건복지부 안내 / 질의응답 |
+| A4 | 날짜는 Asia/Seoul 달력 기준이고, 요청 날짜는 서울 시각 기준 날짜 | `src/domain/dates.ts` | 법이 달력 날짜를 쓰는지, 요청 날짜를 어느 시계로 정하는지 | A1과 같음 |
+| A5 | 앱이 의원 하나만 다루므로 "같은 의원"이 전제됨. 다른 의원의 방문 기록은 저장하지 않음 | `src/domain/eligibility.ts` | 초안이 뒷받침함("해당 의료기관") | A1과 같음 |
+| A6 | 기간은 **가장 최근의 같은 증상** 대면 진료부터 셈 (다른 해석은 아래 원문 확인 참고) | `src/domain/eligibility.ts` | 보건복지부가 제31조의2①과 제31조의5⑤1을 어떻게 해석하는지 | 보건복지부 안내 |
+| A7 | "동일한 증상"은 의사가 정함(증상 비교기가 도움). 재진 판단 함수는 확정된 KCD 코드를 받음 | `src/domain/eligibility.ts` | 보건복지부가 "같은 증상"을 정의하는지 (코드 단위, 신체 계통, 임상 판단 중 무엇인지) | 보건복지부 안내 |
+| A8 | 한 번만 허용되는 초진 30일 처방(제31조의3④)은 모든 의원과 질환을 통틀어 **환자당** 1회로 셈 | `src/domain/prescription.ts`, `rules.v2.json` (`extendedTimesPerPatient`) | "1회"가 환자당인지, 질환당인지, 기간당인지 | 최종 조문 / 진료이력·처방이력 확인에 관한 보건복지부 고시 |
+| A9 | 데모 의원은 의원급이므로 병원급 제한(제31조의4)은 적용하지 않음 | `src/data/clinic.ts` | 데모에는 해당 없음. 실제로 쓰려면 의료기관 종류를 확인해야 함 | — |
+| A10 | 데모 약물의 분류(예: 펜터민 → 마약·향정, 이소트레티노인 → 오·남용 우려)는 데모용으로 정한 것 | `src/data/drugs.ts` | 공식 목록: 마약류 품목허가, 식약처 오·남용 우려 의약품 고시, 아직 발표되지 않은 비만치료제 성분에 관한 보건복지부 고시(제31조의10②) | 식약처 고시, 보건복지부 고시 |
+| A11 | 마약류를 비대면으로 처방할 수 있는 좁은 예외(제31조의10③: 희귀질환자, 호스피스 통증 관리, 중단 시 중대한 위해)는 구현하지 않음. 이런 처방은 차단하고 도구 밖에서 처리 | `src/domain/prescription.ts` | 실제 도구가 예외 흐름을 지원해야 하는지, 어떤 증빙이 필요한지 | 최종 조문 / 보건복지부 고시 |
+| A12 | 일수 제한은 초진 비대면 진료에만 적용. 초안에서 재진 비대면 진료에는 일수 제한이 없음 | `src/domain/prescription.ts` | 최종 조문에서도 제31조의3이 제34조의2제2항제2호(초진)에만 적용되는지 | 최종 조문 |
+| A13 | `minConfidence = 0.8`이 제안을 미리 선택할지 정함. 2026-10-22 확인: 0.8에서 Jev의 잘못된 미리 선택 없음(D21) | `config/ai.json` | 더 많은 사례, 의사가 정답을 붙인 사례로 다시 확인. 가상 사례 102건은 적음 | `eval/results/` |
+| A14 | 키워드 비교기의 확률(0.9 / 0.7 / ...)은 직접 정한 확신 수준. 확인 결과: "90%"라고 한 답의 85%만 맞음(과신) | `src/ai/rule-based-matcher.ts` | 수준을 낮추거나 예비용으로만 유지 | `eval/results/` |
+| A15 | `eval/cases.jsonl`의 평가 정답이 맞음 | `eval/cases.jsonl` | 의사가 정답을 검토. 특히 `eval/README.md`에 적은 판단이 갈리는 사례 | 의사 검토 |
 
-Rows are added as new assumptions appear.
+새 가정이 생기면 행을 추가합니다.
 
-## Source check: 2026-10-22 (primary source)
+## 원문 확인: 2026-10-22 (1차 자료)
 
-**Source:** 의료법 시행규칙 일부개정령안, 보건복지부공고 제2026-780호, 입법예고 2026-10-19 ~ 2026-11-09.
-Notice page: https://opinion.lawmaking.go.kr/gcom/ogLmPp/89052 (attached draft text, read in full for the articles below).
-Parent law: 의료법 법률 제21238호 (공포 2025-12-23, 시행 2026-12-24).
-**This is a draft.** The text can change after the comment period. Re-check after 2026-11-09 and again before 2026-12-24.
+**출처:** 의료법 시행규칙 일부개정령안, 보건복지부공고 제2026-780호, 입법예고 2026-10-19 ~ 2026-11-09.
+공고 페이지: https://opinion.lawmaking.go.kr/gcom/ogLmPp/89052 (첨부된 초안 원문에서 아래 조문을 끝까지 읽음).
+상위 법: 의료법 법률 제21238호 (공포 2025-12-23, 시행 2026-12-24).
+**이것은 초안입니다.** 의견 수렴 뒤 내용이 바뀔 수 있습니다. 2026-11-09 이후에 다시 확인하고, 2026-12-24 전에 한 번 더 확인합니다.
 
-What the draft says (article numbers are from the draft):
+초안 내용 (조문 번호는 초안 기준):
 
-- **제31조의2①, 일반 (follow-up) telehealth window:** "환자가 해당 의료기관에서 마지막으로 대면하여 진료를 받은 날부터
+- **제31조의2①, 일반(재진) 비대면 진료 기간:** "환자가 해당 의료기관에서 마지막으로 대면하여 진료를 받은 날부터
   6개월이 되는 날까지의 기간".
-- **제31조의5⑤1, how to check it:** look in this clinic's records for an in-person visit **for the same symptom**
-  (동일한 증상으로 대면하여 진료받은 기록) within that window. Telehealth visits do not count; the text says 대면.
-- **제31조의2②, 초진 (first-visit) telehealth:** allowed when the patient's registered address (or a 실거주지 registered in
-  the 비대면진료지원시스템) is in the same 시·도 as the clinic.
-- **제31조의2③, exceptions allowed outside the 시·도:** 14 categories, including 희귀질환자, 제1형 당뇨병 환자, 등록장애인,
-  장기요양 수급자, 수용자, 호스피스대상환자, isolated 1st/2nd-class infectious disease patients, 선원, 군인, 경찰·소방공무원,
-  국가보훈 희생·공헌자, 재외국민 abroad, plus others set by notice (고시).
-- **제31조의3, 초진 prescriptions:** at most 7 days; up to 30 days if prior care and prescription history for the condition is
-  confirmed and the clinician judges continuing treatment necessary, but **only once**, counting other clinics too.
-- **제31조의10, never prescribable by telehealth:** 마약·향정신성의약품; drugs MFDS lists as high misuse risk; **비만치료제**;
-  others set by MOHW notice. Narrow exception for 마약류 with the same ingredient previously prescribed in person
-  (희귀질환자, 호스피스 pain control, stopping would seriously harm the patient, others by notice).
-- **제31조의7, volume caps:** telehealth ≤ 30/100 of a clinic's visits per half-year; per clinician, monthly average per
-  half-year ≤ 500 (doctors) or ≤ 130 (dentists, Korean medicine doctors). Visits after 20:00 on weekdays, after 18:00 on
-  Saturdays, and on holidays are excluded from the count.
-- **제31조의5①, method:** video by default; voice is allowed for 일반 telehealth if the clinician judges it enough, unless the
-  condition needs visual information (제31조의11: under-13 patients, skin, eye, ENT, injuries).
+- **제31조의5⑤1, 확인 방법:** 이 의원의 기록에서 그 기간 안에 **같은 증상으로** 대면 진료를 받은 기록
+  (동일한 증상으로 대면하여 진료받은 기록)을 찾음. 조문이 "대면"이라고 하므로 비대면 진료는 인정하지 않음.
+- **제31조의2②, 초진 비대면 진료:** 환자의 주민등록 주소(또는 비대면진료지원시스템에 등록한 실거주지)가 의원과
+  같은 시·도이면 허용.
+- **제31조의2③, 다른 시·도라도 허용되는 예외:** 14종. 희귀질환자, 제1형 당뇨병 환자, 등록장애인, 장기요양 수급자,
+  수용자, 호스피스대상환자, 격리 중인 제1급·제2급 감염병 환자, 선원, 군인, 경찰·소방공무원, 국가보훈 희생·공헌자,
+  해외 체류 재외국민, 그리고 고시로 정하는 사람.
+- **제31조의3, 초진 처방:** 최대 7일. 해당 질환의 이전 진료·처방 이력이 확인되고 의사가 계속 치료가 필요하다고 판단하면
+  30일까지 가능하지만, 다른 의원까지 통틀어 **단 한 번만** 가능.
+- **제31조의10, 비대면으로 절대 처방할 수 없는 약:** 마약·향정신성의약품, 식약처가 오·남용 우려가 크다고 정한 약,
+  **비만치료제**, 그리고 보건복지부 고시로 정하는 약. 마약류는 같은 성분을 대면으로 처방받은 적이 있을 때 좁은 예외가 있음
+  (희귀질환자, 호스피스 통증 관리, 중단하면 환자에게 중대한 위해, 고시로 정하는 경우).
+- **제31조의7, 건수 상한:** 비대면 진료는 반기마다 의원 전체 진료의 30/100 이하. 의사 1인당 반기 월평균 500건 이하
+  (치과의사·한의사는 130건 이하). 평일 20시 이후, 토요일 18시 이후, 공휴일 진료는 건수에서 제외.
+- **제31조의5①, 방법:** 기본은 화상. 일반(재진) 비대면 진료는 의사가 충분하다고 판단하면 음성도 가능하지만,
+  시각 정보가 필요한 경우(제31조의11: 13세 미만, 피부, 눈, 이비인후과, 외상)는 제외.
 
-How this affects the assumptions above:
+위 가정에 미치는 영향:
 
-| ID | Status after reading the draft |
-|----|--------------------------------|
-| A1 | **Differs.** The draft window is 6 months, counted in calendar months from the last in-person visit, not 30 days. **Applied in `rules.v2.json`.** |
-| A2 | **Supported by the draft.** Only an in-person (대면) visit for the same symptom at the same clinic counts. |
-| A3 | **Partly answered.** "6개월이 되는 날까지" includes the end date. Exact day arithmetic (e.g. a visit on 08-31) is not spelled out; it likely follows 민법 기간 계산 (제157조, 제160조). Verify. |
-| A4 | Still open. The draft speaks in dates (날), which fits calendar days, but does not say which timezone or clock. |
-| A5 | **Supported.** "해당 의료기관" = the same clinic. |
-| A6 (new) | **Open question in the draft text:** 제31조의2① anchors the window on the *last* in-person visit (any symptom), while 제31조의5⑤1 asks for a same-symptom in-person visit *within* that window. The app reads it as "a same-symptom in-person visit within 6 months". Verify which reading MOHW intends. |
-| A7 (new) | "동일한 증상" has no definition in the draft. Deciding it stays with the clinician; the app only suggests. |
-| new | Failing the follow-up check does **not** mean "refuse". It means the request is 초진 telehealth, which has its own conditions (same 시·도 or an exception, 7-day prescriptions). **Applied:** `checkEligibility` now returns `follow_up`, `first_visit` or `not_allowed`. |
+| ID | 초안을 읽은 뒤 상태 |
+|----|---------------------|
+| A1 | **다름.** 초안의 기간은 30일이 아니라 마지막 대면 진료부터 달력 기준 6개월. **`rules.v2.json`에 반영함.** |
+| A2 | **초안이 뒷받침함.** 같은 의원에서 같은 증상으로 받은 대면 진료만 인정. |
+| A3 | **일부 답이 나옴.** "6개월이 되는 날까지"는 끝나는 날을 포함함. 정확한 날짜 계산(예: 08-31 방문)은 명시되지 않음. 민법 기간 계산(제157조, 제160조)을 따를 가능성이 높음. 확인 필요. |
+| A4 | 아직 미정. 초안은 날짜(날)로 말하므로 달력 날짜에 맞지만, 어느 시간대나 시계를 쓰는지는 말하지 않음. |
+| A5 | **뒷받침함.** "해당 의료기관" = 같은 의원. |
+| A6 (신규) | **초안 조문의 해석 문제:** 제31조의2①은 기간의 시작을 *마지막* 대면 진료(증상 무관)로 잡지만, 제31조의5⑤1은 그 기간 *안에* 같은 증상의 대면 진료를 요구함. 앱은 "6개월 안에 같은 증상의 대면 진료가 있음"으로 해석함. 보건복지부가 어느 쪽을 의도하는지 확인 필요. |
+| A7 (신규) | 초안에 "동일한 증상"의 정의가 없음. 판단은 의사가 하고, 앱은 제안만 함. |
+| 신규 | 재진 조건을 못 채우는 것은 "거절"이 **아님**. 초진 비대면 진료가 되며, 초진에는 별도 조건(같은 시·도 또는 예외 대상, 7일 처방)이 있음. **반영함:** `checkEligibility`가 이제 `follow_up`, `first_visit`, `not_allowed`를 돌려줌. |
 
-News reports used before finding the primary source (they match the draft text):
+1차 자료를 찾기 전에 참고한 기사 (초안 원문과 내용이 일치함):
 - 청년의사: http://www.docdocdoc.co.kr/news/articleView.html?idxno=3043716
 - 경향신문: https://www.khan.co.kr/article/202610181200021/
 - 보건복지부 보도자료 (2026-10-18): https://www.mohw.go.kr/board.es?mid=a10503010100&bid=0027&act=view&list_no=1492252

@@ -58,14 +58,18 @@ async function computeSuggestion(request: TelehealthRequest, requestDate: string
   const matcher = getSymptomMatcher();
   const { minConfidence } = getAiConfig();
   const visits = await getRecordSource().listVisits(request.patientId);
-  const candidates: MatchCandidate[] = [];
-  for (const visit of comparisonVisits(visits, requestDate)) {
-    const match = await matcher.match({
-      todaySymptom: request.symptomText,
-      previousNote: visit.note,
-      previousKcdCode: visit.kcdCode,
-    });
-    candidates.push({ visitId: visit.id, kcdCode: visit.kcdCode, match });
-  }
+  // The comparisons are independent, so they run in parallel: with an AI matcher the first page view
+  // waits for the slowest call instead of the sum of all calls. Promise.all keeps the input order.
+  const candidates: MatchCandidate[] = await Promise.all(
+    comparisonVisits(visits, requestDate).map(async (visit) => ({
+      visitId: visit.id,
+      kcdCode: visit.kcdCode,
+      match: await matcher.match({
+        todaySymptom: request.symptomText,
+        previousNote: visit.note,
+        previousKcdCode: visit.kcdCode,
+      }),
+    })),
+  );
   return { suggestion: chooseSuggestion(candidates, minConfidence), candidates, minConfidence };
 }

@@ -1,130 +1,131 @@
-# Decisions
+# 설계 결정 기록
 
-Each entry: what we chose, why, and what we gave up. Newest at the bottom.
+각 항목에는 무엇을 골랐는지, 왜 골랐는지, 무엇을 포기했는지를 적습니다. 새 항목은 맨 아래에 붙입니다.
 
-## D1. pnpm 10 via corepack, not pnpm 12 (2026-10-22)
-pnpm 12 ships its entry point as `bin/pnpm.mjs`, but the corepack bundled with Node 24.11 (0.34.2)
-still looks for `bin/pnpm.cjs` and crashes. `packageManager` pins `pnpm@10.34.7`, which corepack runs fine.
-Revisit when Node ships a newer corepack.
+## D1. pnpm 12가 아니라 corepack으로 pnpm 10 사용 (2026-10-22)
+pnpm 12는 실행 파일을 `bin/pnpm.mjs`로 배포하는데, Node 24.11에 들어 있는 corepack(0.34.2)은 아직
+`bin/pnpm.cjs`를 찾다가 멈춥니다. 그래서 `packageManager`를 corepack이 잘 실행하는 `pnpm@10.34.7`로 고정했습니다.
+Node가 새 corepack을 포함하면 다시 검토합니다.
 
-## D2. TypeScript 6, not 7 (2026-10-22)
-TypeScript 7 is the native (Go) compiler and has no JavaScript API. Next.js build-time type checking and
-typescript-eslint (inside eslint-config-next) both load that API, so they break on 7. We use 6.0.x until
-those tools support 7.
+## D2. TypeScript 7이 아니라 6 사용 (2026-10-22)
+TypeScript 7은 Go로 새로 만든 컴파일러라서 JavaScript API가 없습니다. Next.js의 빌드 중 타입 검사와
+typescript-eslint(eslint-config-next 안에 포함)가 모두 이 API를 쓰기 때문에 7에서는 동작하지 않습니다.
+이 도구들이 7을 지원할 때까지 6.0.x를 씁니다.
 
-## D3. Seed script runs on Node's built-in TypeScript support (2026-10-22)
-`pnpm seed` is `node scripts/seed.ts`. Node 24 strips types natively, so we avoid adding tsx/ts-node.
-The cost: files the script imports use explicit `.ts` extensions, and `erasableSyntaxOnly` +
-`verbatimModuleSyntax` in tsconfig forbid syntax Node cannot strip (enums, non-`type` type imports).
+## D3. seed 스크립트는 Node의 기본 TypeScript 지원으로 실행 (2026-10-22)
+`pnpm seed`는 `node scripts/seed.ts`입니다. Node 24는 타입 표기를 스스로 지우고 실행할 수 있어서 tsx나 ts-node를
+추가하지 않았습니다. 대신 스크립트가 불러오는 파일은 `.ts` 확장자를 명시해야 하고, tsconfig의
+`erasableSyntaxOnly`와 `verbatimModuleSyntax` 설정 때문에 Node가 지울 수 없는 문법(enum, `type`이 없는 타입 import)은 쓸 수 없습니다.
 
-## D4. Visit dates are calendar dates, not timestamps (2026-10-22)
-`Visit.date` is `yyyy-MM-dd` in Asia/Seoul. Eligibility is counted in days, and a timestamp would
-make the boundary day depend on the server's timezone. Request times keep a full ISO string with `+09:00`.
+## D4. 방문 날짜는 시각이 아니라 달력 날짜 (2026-10-22)
+`Visit.date`는 Asia/Seoul 기준 `yyyy-MM-dd`입니다. 재진 기간은 날짜 단위로 세는데, 시각까지 저장하면
+서버의 시간대에 따라 경계가 되는 날이 달라질 수 있습니다. 요청 시각은 `+09:00`이 붙은 전체 ISO 문자열로 유지합니다.
 
-## D5. Own seeded PRNG instead of a faker library (2026-10-22)
-A 10-line mulberry32 function gives reproducible data. A faker library would add a dependency and
-risk producing realistic-looking names, phone numbers or addresses, which hard rule 1 forbids.
+## D5. faker 라이브러리 대신 직접 만든 seed 난수 생성기 사용 (2026-10-22)
+10줄짜리 mulberry32 함수만으로 매번 같은 데이터를 만들 수 있습니다. faker 라이브러리는 의존성이 늘어나고,
+진짜처럼 보이는 이름·전화번호·주소를 만들 위험이 있습니다. 이는 절대 규칙 1(가상 데이터만 사용)에 어긋납니다.
 
-## D6. Eligibility takes a confirmed KCD code, not free text (2026-10-22)
-`checkEligibility` compares `symptomKcdCode` with the visit's `kcdCode`. Turning the patient's free text
-into a code is the symptom matcher's job (M3/M4) plus a clinician's confirmation. Keeping that out of the
-rule function keeps it deterministic and testable (rules must be code, not AI): same input, same answer, no AI call.
+## D6. 재진 판단은 자유 서술이 아니라 확정된 KCD 코드를 받음 (2026-10-22)
+`checkEligibility`는 `symptomKcdCode`와 방문 기록의 `kcdCode`를 비교합니다. 환자가 쓴 글을 코드로 바꾸는 일은
+증상 비교기(M3/M4)와 의사 확인의 몫입니다. 이 일을 규칙 함수 밖에 두면 함수가 결정적이고 테스트하기 쉬워집니다.
+"규칙은 AI가 아니라 코드" 원칙대로, 같은 입력에는 같은 답이 나오고 AI를 호출하지 않습니다.
 
-## D7. Eligibility returns a reason code, not just true/false (2026-10-22)
-"Not eligible" has four different fixes for staff: book an in-person visit (`NO_VISIT`,
-`ONLY_TELEHEALTH_VISITS`), check the symptom (`NO_MATCHING_SYMPTOM`), or note the visit was too long ago
-(`OUTSIDE_WINDOW`). The result also carries the rule version and evidence visit id for the audit log.
-The order of checks decides which reason wins when several apply; tests pin that order.
+## D7. 재진 판단은 참/거짓만이 아니라 사유 코드를 돌려줌 (2026-10-22)
+"대상 아님"에도 직원이 할 일이 네 가지로 다릅니다. 대면 진료 예약(`NO_VISIT`, `ONLY_TELEHEALTH_VISITS`),
+증상 확인(`NO_MATCHING_SYMPTOM`), 방문이 너무 오래됨(`OUTSIDE_WINDOW`)입니다. 결과에는 감사 기록용으로
+규칙 버전과 근거 방문 id도 함께 담습니다. 여러 사유가 동시에 해당할 때는 검사 순서가 어떤 사유를 보여 줄지 정하며,
+테스트로 그 순서를 고정했습니다.
 
-## D8. Eligibility has three outcomes: follow_up, first_visit, not_allowed (2026-10-22)
-Replaces the yes/no result of D7. Under the 2026-10-19 draft, failing the follow-up check means the request
-is first-visit (초진) telehealth, which is allowed in the patient's own 시·도 or for listed exception groups.
-Only a first-visit request from another region without an exception is `not_allowed`. The result keeps the
-"why not follow-up" reason from D7, so staff still know whether booking an in-person visit would help.
+## D8. 재진 판단 결과는 follow_up, first_visit, not_allowed 세 가지 (2026-10-22)
+D7의 예/아니요 결과를 대체합니다. 2026-10-19 초안에서는 재진 조건을 못 채우면 초진 비대면 진료가 되고,
+초진은 환자가 같은 시·도에 살거나 예외 대상이면 허용됩니다. 다른 시·도에 살고 예외 대상도 아닌 초진만
+`not_allowed`입니다. 결과에는 D7의 "재진이 아닌 이유"도 남겨서, 대면 진료 예약이 도움이 되는지 직원이 알 수 있습니다.
 
-## D9. Rule periods are { amount, unit } and end dates follow the Civil Act (2026-10-22)
-"6 months" is not 180 days: it depends on month lengths. `periodEnd()` adds calendar months with date-fns and
-applies the 민법 counting rule (start day not counted, end on the day before the matching day). This is an
-assumption (A3) with tests for month ends and leap years, so changing the reading later is a one-function edit.
+## D9. 규칙 기간은 { amount, unit }이고 끝나는 날은 민법 방식으로 계산 (2026-10-22)
+"6개월"은 180일이 아니라 달마다 길이가 다릅니다. `periodEnd()`는 date-fns로 달력 기준 개월 수를 더하고
+민법의 기간 계산(첫날 불산입, 대응하는 날의 전날에 끝남)을 적용합니다. 이는 가정(A3)이며 월말과 윤년 테스트가 있어서,
+나중에 해석이 바뀌어도 함수 하나만 고치면 됩니다.
 
-## D10. Old rule versions stay in config/rules (2026-10-22)
-`rules.v1.json` (30-day placeholder) is kept next to `rules.v2.json` (draft). `getRules()` returns the newest.
-Keeping both shows how rules evolve and gives the M5 impact preview a real pair to compare:
-on the demo data, moving from v1 to v2 turns 2 follow-up requests into 11.
+## D10. 옛 규칙 버전도 config/rules에 남겨 둠 (2026-10-22)
+`rules.v1.json`(30일 임시값)을 `rules.v2.json`(초안) 옆에 그대로 둡니다. `getRules()`는 가장 새 버전을 돌려줍니다.
+두 버전을 함께 두면 규칙이 어떻게 바뀌었는지 보여 줄 수 있고, M5 영향 미리보기에 실제 비교 대상이 생깁니다.
+데모 데이터에서 v1 → v2로 바꾸면 재진 요청이 2건에서 11건이 됩니다.
 
-## D11. The prescription check screen is a GET form (2026-10-22)
-`/prescriptions` submits with `method="get"`, so the URL holds every input and the server computes the result.
-It works without JavaScript, a result can be bookmarked or shared in a bug report, and there is no client state
-to keep in sync. The cost: inputs are visible in the URL, which is acceptable only because all data is synthetic.
+## D11. 처방 확인 화면은 GET 폼 (2026-10-22)
+`/prescriptions`는 `method="get"`으로 제출해서 모든 입력값이 URL에 담기고 서버가 결과를 계산합니다.
+JavaScript 없이도 동작하고, 결과를 북마크하거나 버그 신고에 링크로 붙일 수 있으며, 맞춰야 할 클라이언트 상태가 없습니다.
+대신 입력값이 URL에 보이는데, 모든 데이터가 가상이라서 허용됩니다.
 
-## D12. Rule versions are never edited in place (2026-10-22)
-Saving on the admin screen creates a new version (v3, v4, ...) instead of changing the current one. Every
-eligibility and prescription result records its `ruleVersion`, so an old decision can always be explained with
-the exact rules that produced it. Admin-saved versions live in memory for the demo and vanish on restart.
+## D12. 규칙 버전은 절대 덮어쓰지 않음 (2026-10-22)
+관리자 화면에서 저장하면 현재 버전을 고치지 않고 새 버전(v3, v4, ...)을 만듭니다. 모든 재진 판단과 처방 결과에
+`ruleVersion`이 기록되므로, 예전 결정도 그때 쓴 규칙 그대로 설명할 수 있습니다. 데모에서는 관리자가 저장한 버전이
+메모리에만 있어서 서버를 다시 켜면 사라집니다.
 
-## D13. Domain returns codes; Korean sentences live in one labels file (2026-10-22)
-`checkEligibility` and `checkPrescription` return codes like `EXTENSION_ALREADY_USED`, never sentences.
-`src/components/labels.ts` turns codes into UI text. Tests stay stable when wording changes, the same reason
-always reads the same way on every screen, and the domain stays free of UI concerns.
+## D13. 도메인은 코드를 돌려주고, 한국어 문장은 문구 파일 한 곳에 둠 (2026-10-22)
+`checkEligibility`와 `checkPrescription`은 `EXTENSION_ALREADY_USED` 같은 코드만 돌려주고 문장은 돌려주지 않습니다.
+`src/components/labels.ts`가 코드를 화면 문구로 바꿉니다. 문구를 고쳐도 테스트가 깨지지 않고, 같은 사유는 모든 화면에서
+같은 말로 보이며, 도메인 코드가 화면 일에 섞이지 않습니다.
 
-## D14. The matcher compares with each recent in-person visit, then suggests the best (2026-10-22)
-A patient may have visits for several conditions. Comparing today's text only with the latest visit would miss
-"sore throat again" when the latest visit was for back pain. We compare with the latest in-person visit per KCD
-code (up to five) and suggest the one most likely to be "same". With an AI matcher this costs up to five calls
-per request, which is why the result is computed once and cached (D15).
+## D14. 증상 비교는 최근 대면 진료 각각과 비교한 뒤 가장 맞는 것을 제안 (2026-10-22)
+환자는 여러 질환으로 방문했을 수 있습니다. 오늘 증상을 가장 최근 방문과만 비교하면, 최근 방문이 요통이었을 때
+"또 목이 아파요"를 놓칩니다. 그래서 KCD 코드별로 가장 최근 대면 진료(최대 5건)와 비교하고, "같음"일 가능성이 가장 높은 것을
+제안합니다. AI 비교기를 쓰면 요청 하나에 최대 5번 호출하게 되므로, 결과를 한 번 계산해 저장해 둡니다(D15).
 
-## D15. A suggestion is computed once per request and kept (2026-10-22)
-The review page and the approve action must refer to the same suggestion, or the audit log could record numbers
-the clinician never saw. `getSuggestion` caches the promise per request id. A failed call is removed from the
-cache so the next page view retries instead of showing a stale error.
+## D15. 제안은 요청마다 한 번만 계산하고 저장해 둠 (2026-10-22)
+검토 화면과 승인 동작은 같은 제안을 가리켜야 합니다. 그렇지 않으면 의사가 본 적 없는 숫자가 감사 기록에 남을 수 있습니다.
+`getSuggestion`은 요청 id별로 promise를 저장해 둡니다. 호출이 실패하면 저장에서 지워서, 오래된 오류를 계속 보여 주지 않고
+다음에 페이지를 열 때 다시 시도합니다.
 
-## D16. Rule-based suggestions are labeled differently from AI ones (2026-10-22)
-Every automatic suggestion shows probabilities and "최종 판단은 의사". Only model output is labeled "AI 제안";
-the keyword matcher says "자동 제안(규칙 기반)". Its probabilities are fixed confidence levels per rule, not
-learned, and M4's calibration table measures how well they match reality.
+## D16. 규칙 기반 제안은 AI 제안과 다르게 표시 (2026-10-22)
+모든 자동 제안에는 확률과 "최종 판단은 의사"가 붙습니다. 모델이 낸 답에만 "AI 제안" 라벨을 붙이고,
+키워드 비교기는 "자동 제안(규칙 기반)"이라고 표시합니다. 키워드 비교기의 확률은 학습한 값이 아니라 규칙마다 정해 둔
+확신 수준이며, 이것이 실제와 얼마나 맞는지는 M4의 보정표로 측정합니다.
 
-## D17. An approved review is final (2026-10-22)
-`applyReviewAction` refuses any change after approval. Eligibility is computed from the approved code and stored
-with it; allowing edits would silently change the basis of a decision already acted on. A held review can still be
-approved. Correcting an approved decision would need a new, separately audited action (not built).
+## D17. 승인한 검토는 바꿀 수 없음 (2026-10-22)
+`applyReviewAction`은 승인 뒤의 모든 변경을 거부합니다. 재진 판단은 승인된 코드로 계산해 함께 저장하는데, 수정을 허용하면
+이미 실행된 결정의 근거가 조용히 바뀝니다. 보류한 검토는 나중에 승인할 수 있습니다. 승인된 결정을 바로잡으려면 따로
+감사 기록이 남는 새 동작이 필요합니다(아직 만들지 않음).
 
-## D18. The evaluation's headline number is wrong pre-selections, not accuracy (2026-10-22)
-The app only acts on a confident "same": it pre-selects that code. A wrong "same" can turn a first visit into a
-follow-up, which changes what may be prescribed. Mixing up "related" and "different" changes nothing in the app.
-So the script reports pre-selection precision and lists every wrong pre-selection by case id, before accuracy.
+## D18. 평가의 대표 숫자는 정확도가 아니라 잘못된 미리 선택 (2026-10-22)
+앱은 확신이 높은 "같음"일 때만 행동합니다. 그 코드를 미리 골라 두는 것입니다. 잘못된 "같음"은 초진을 재진으로 바꿀 수 있고,
+그러면 처방 가능한 범위가 달라집니다. 반면 "관련 있음"과 "다름"을 헷갈리는 것은 앱에서 아무것도 바꾸지 않습니다.
+그래서 평가 스크립트는 정확도보다 먼저 미리 선택의 정밀도를 보고하고, 잘못된 미리 선택을 사례 id별로 모두 나열합니다.
 
-## D19. Jev is called with a pinned version (2026-10-22)
-`config/ai.json` names `typesafe-ai/jev-1.14.0` instead of the moving alias `typesafe-ai/jev`. Results in
-`eval/results/` stay comparable over time, and the audit log records the version that actually answered
-(`result.response.modelId`). Moving to a new version means re-running the evaluation first.
+## D19. Jev는 버전을 고정해서 호출 (2026-10-22)
+`config/ai.json`은 계속 바뀌는 별칭 `typesafe-ai/jev` 대신 `typesafe-ai/jev-1.14.0`을 씁니다. 그래야 `eval/results/`의
+결과를 시간이 지나도 비교할 수 있고, 감사 기록에는 실제로 답한 버전(`result.response.modelId`)이 남습니다.
+새 버전으로 바꾸려면 먼저 평가를 다시 돌립니다.
 
-## D20. Jev needs paid credits (2026-10-22, updated the same day)
-A single test call returned `403 Free tier users do not have access to this model`. The Vercel account is on
-Hobby with only free AI Gateway credits, and the minimum paid top-up is $10. `JevMatcher` was written against
-the documented API and unit-tested with a fake `decide` before any real call. The
-rule-based baseline was evaluated so the comparison is ready once credits exist. Zero data retention is also
-unavailable on Hobby (Pro and Enterprise only); acceptable here only because every request is synthetic text.
+## D20. Jev는 유료 크레딧이 필요 (2026-10-22, 같은 날 갱신)
+테스트 호출 한 번이 `403 Free tier users do not have access to this model`을 돌려줬습니다. Vercel 계정은 Hobby 요금제이고
+AI Gateway 무료 크레딧만 있었으며, 최소 유료 충전은 $10입니다. `JevMatcher`는 실제 호출 전에 문서에 나온 API대로 작성하고
+가짜 `decide` 함수로 단위 테스트했습니다. 크레딧이 생기면 바로 비교할 수 있도록 키워드 비교기를 먼저 평가해 두었습니다.
+데이터 미보관(ZDR)도 Hobby에서는 쓸 수 없습니다(Pro, Enterprise 전용). 모든 요청이 가상 텍스트라서 이 프로젝트에서만 허용됩니다.
 
-## D21. Keep minConfidence at 0.8, now based on data (2026-10-22)
-On the 102-case evaluation, Jev's answers at 0.8 and above were right 97% of the time and produced no wrong
-pre-selection; its three wrong "same" answers all scored 0.49–0.63. Answers at 0.7–0.8 were right 82% of the time.
-0.8 stays, and A13 now has evidence behind it. Re-run the evaluation before changing the model version or threshold.
+## D21. minConfidence는 0.8 유지, 이제 데이터 근거가 있음 (2026-10-22)
+102건 평가에서 Jev가 0.8 이상으로 답한 것은 97%가 맞았고, 잘못된 미리 선택은 없었습니다. 틀린 "같음" 세 건은 모두
+0.49~0.63이었습니다. 0.7~0.8 구간의 답은 82%가 맞았습니다. 그래서 0.8을 유지하고, 이제 A13에 근거가 생겼습니다.
+모델 버전이나 기준값을 바꾸기 전에는 평가를 다시 돌립니다.
 
-## D22. Impact is measured on "what if they asked today?" scenarios (2026-10-22)
-The demo has only 26 real requests, too few to show a rule change. `diffRules` instead asks, for every patient:
-"if you requested telehealth today for each condition you were seen for in person, or for a new symptom, what
-would each rule version say?" and "if your latest prescription per drug were repeated by telehealth?". It is a
-pure function of the rules and the records, so the same comparison always gives the same list. The scenarios
-are written on the screen next to the numbers so nobody mistakes them for real requests.
+## D22. 영향은 "오늘 요청한다면?" 시나리오로 측정 (2026-10-22)
+데모의 실제 요청은 26건뿐이라 규칙 변화를 보여 주기에 너무 적습니다. 그래서 `diffRules`는 환자마다 이렇게 묻습니다.
+"대면 진료를 받았던 각 질환으로, 또는 새 증상으로 오늘 비대면 진료를 요청한다면 각 규칙 버전은 뭐라고 답할까?",
+"약마다 가장 최근 처방을 비대면으로 다시 받는다면?" 규칙과 기록만으로 계산하는 순수 함수라서 같은 비교는 항상 같은 목록을
+줍니다. 화면에는 숫자 옆에 이 시나리오를 적어 두어서 실제 요청으로 오해하지 않게 했습니다.
 
-## D23. A new rule version can only be saved from its preview (2026-10-22)
-The edit form only offers "영향 미리보기" (GET). Saving is a second button on the preview, carrying the same
-values as hidden fields plus the version the preview was based on. If another version was saved in between,
-the save is refused (`STALE_PREVIEW`) because the impact shown is no longer true. The audit entry for the save
-includes the impact counts.
+## D23. 새 규칙 버전은 미리보기 화면에서만 저장 가능 (2026-10-22)
+편집 폼에는 "영향 미리보기"(GET) 버튼만 있습니다. 저장은 미리보기 화면의 두 번째 버튼이고, 같은 값을 숨은 필드로 담고
+미리보기의 기준이 된 버전도 함께 보냅니다. 그 사이에 다른 버전이 저장되었다면 보여 준 영향이 더 이상 맞지 않으므로
+저장을 거부합니다(`STALE_PREVIEW`). 저장의 감사 기록에는 영향 건수도 들어갑니다.
 
-## D24. E2E runs against its own production server with MATCHER=rules (2026-10-22)
-`pnpm test:e2e` builds the app and starts it on port 3100 instead of reusing the dev server. Every run starts
-from empty in-memory state, so the flow tests can assert exact audit-log contents, and they never touch the
-developer's session. `MATCHER=rules` keeps the run deterministic and free; Jev is measured separately by
-`pnpm eval:symptom`. The flow tests run in order on one worker because each step builds on the previous one.
+## D24. E2E는 MATCHER=rules로 별도 운영 서버를 띄워 실행 (2026-10-22)
+`pnpm test:e2e`는 개발 서버를 재사용하지 않고, 앱을 빌드해서 3100번 포트에 따로 띄웁니다. 매번 빈 메모리 상태에서 시작하므로
+흐름 테스트가 감사 기록 내용을 정확히 확인할 수 있고, 개발자의 작업 상태를 건드리지 않습니다. `MATCHER=rules`로 결과가 항상
+같고 비용도 들지 않습니다. Jev는 `pnpm eval:symptom`으로 따로 측정합니다. 각 단계가 앞 단계에 이어지므로 흐름 테스트는 작업자
+하나에서 순서대로 실행합니다.
+
+## D25. 제안을 만들 때 방문별 비교를 동시에 실행 (2026-10-22)
+처음에는 방문마다 `await`로 하나씩 비교했습니다. M3의 키워드 비교기는 네트워크 없이 바로 끝나서 문제가 없었지만,
+M4에서 Jev(호출당 약 1초)를 끼운 뒤 비교 3건짜리 검토 화면을 처음 열 때 약 3초가 걸리는 것을 서버 로그로 발견했습니다.
+비교끼리는 서로 관계가 없으므로 `Promise.all`로 동시에 보내고, 가장 느린 답 하나만큼만 기다립니다. 같은 3건 화면이
+3.1초에서 1.0초로 줄었습니다. 호출 횟수와 결과 순서는 그대로이고, 요청당 최대 5건이라 동시 호출 제한도 문제가 되지 않습니다.
