@@ -17,3 +17,4 @@ test-results/
 # AI agent instructions (local only)
 CLAUDE.md
 AGENTS.md
+HANDOFF.md
