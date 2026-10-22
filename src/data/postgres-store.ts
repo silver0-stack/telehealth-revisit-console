@@ -16,8 +16,7 @@ import {
 // database is outside the process and could hold rows written by an older version of the app.
 
 // Created on first use, so a fresh Neon database (or a preview branch) works without a setup step.
-// Every statement is idempotent. The demo_* tables carry a sandbox id (D33); the tables of the first
-// deploy without one (reviews, audit_events, rule_versions) are no longer read or written.
+// Every statement is idempotent. The demo_* tables carry a sandbox id (D33).
 const SCHEMA = [
   `CREATE TABLE IF NOT EXISTS demo_reviews (
      sandbox_id text NOT NULL,
