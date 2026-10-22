@@ -1,92 +1,91 @@
-# Symptom-match evaluation
+# 증상 비교 평가
 
-Measures how well a `SymptomMatcher` answers one question: is today's complaint the **same** as,
-**related** to, or **different** from the note of an earlier in-person visit?
+`SymptomMatcher`가 질문 하나에 얼마나 잘 답하는지 측정합니다. 질문은 이것입니다.
+오늘 증상이 이전 대면 진료 기록과 **같은가**, **관련 있는가**, **다른가**?
 
 ```bash
-pnpm eval:symptom                   # matcher from MATCHER in .env.local (default: rules)
+pnpm eval:symptom                   # .env.local의 MATCHER 값으로 실행 (기본: rules)
 pnpm eval:symptom --matcher rules
-pnpm eval:symptom --matcher jev     # needs AI_GATEWAY_API_KEY and paid AI Gateway credits
-pnpm eval:symptom --limit 5         # quick check, results not saved
+pnpm eval:symptom --matcher jev     # AI_GATEWAY_API_KEY와 AI Gateway 유료 크레딧 필요
+pnpm eval:symptom --limit 5         # 빠른 확인용, 결과를 저장하지 않음
 ```
 
-Results are saved to `results/<date>-<matcher>.json` with every prediction, so runs can be compared later.
+결과는 모든 예측과 함께 `results/<날짜>-<matcher>.json`에 저장되어, 나중에 실행 결과끼리 비교할 수 있습니다.
 
-## Cases (`cases.jsonl`)
+## 평가 사례 (`cases.jsonl`)
 
-102 synthetic pairs over the 9 demo conditions. Every text is invented; none comes from a real patient.
+데모 질환 9개에 대한 가상 사례 102쌍입니다. 모든 문장은 지어낸 것이며, 실제 환자에게서 온 것은 없습니다.
 
-| Tag | What it tests |
-|-----|---------------|
-| `same_wording` | Patient repeats the clinical word ("인후통") |
-| `synonym` | Everyday words for the same condition ("목이 따가워요" for 인후통) |
-| `colloquial` | Loose speech, run-on sentences ("감기걸린거 같아요 콧물나요") |
-| `typo` | Misspellings ("기칭", "두퉁", "받고시퍼요") |
-| `lookalike` | Shares a word but is a different condition ("목이 아파서 고개를 못 돌려요" is the neck, not the throat) |
-| `related` | Same body system or a likely complication |
-| `different` | Unrelated condition |
-| `mixed` | Two complaints in one sentence |
-| `vague` | Too unclear to call "same" |
-| `short` | One word |
+| 태그 | 무엇을 시험하나 |
+|------|-----------------|
+| `same_wording` | 환자가 의학 용어를 그대로 씀 ("인후통") |
+| `synonym` | 같은 질환을 일상어로 말함 (인후통을 "목이 따가워요"로) |
+| `colloquial` | 띄어쓰기 없는 말투, 이어지는 문장 ("감기걸린거 같아요 콧물나요") |
+| `typo` | 오타 ("기칭", "두퉁", "받고시퍼요") |
+| `lookalike` | 같은 단어가 들어 있지만 다른 질환 ("목이 아파서 고개를 못 돌려요"는 목구멍이 아니라 목 근육) |
+| `related` | 같은 신체 계통이거나 합병증일 가능성이 높음 |
+| `different` | 관련 없는 질환 |
+| `mixed` | 한 문장에 증상 두 개 |
+| `vague` | 너무 모호해서 "같음"이라고 할 수 없음 |
+| `short` | 한 단어 |
 
-### How labels were decided
+### 정답을 정한 기준
 
-- **same**: the same condition as the earlier visit, however it is worded.
-- **related**: a different condition in the same body system, or a likely complication
-  (e.g. foot numbness for a diabetic patient).
-- **different**: unrelated, or too vague to call the same. A vague complaint is labeled "different"
-  because the app must not treat it as a follow-up.
+- **같음 (same):** 어떻게 표현했든 이전 방문과 같은 질환.
+- **관련 있음 (related):** 같은 신체 계통의 다른 질환이거나 합병증일 가능성이 높은 경우
+  (예: 당뇨 환자의 발 저림).
+- **다름 (different):** 관련이 없거나, 너무 모호해서 같다고 할 수 없는 경우. 모호한 증상을 "다름"으로 둔 이유는
+  앱이 그런 요청을 재진으로 처리하면 안 되기 때문입니다.
 
-**Limitation:** labels were written by the project author with AI assistance, not reviewed by a clinician.
-Several cases are judgment calls (for example C-044, C-067, C-099). Treat the numbers as a comparison between
-matchers on the same set, not as clinical accuracy.
+**한계:** 정답은 프로젝트 작성자가 AI의 도움을 받아 붙였고, 의사가 검토하지 않았습니다.
+판단이 갈리는 사례도 여럿 있습니다(예: C-044, C-067, C-099). 따라서 이 숫자는 같은 사례 묶음에서 두 비교 방식을
+비교한 것이지, 임상적 정확도가 아닙니다.
 
-## Metrics
+## 지표
 
-- **Accuracy**, overall and per tag.
-- **Pre-selection**: the app pre-selects a suggestion only when the matcher says "same" with
-  probability ≥ `minConfidence` (`config/ai.json`). The key safety number is **wrong pre-selections**:
-  a different condition shown as "same" could make a first visit look like a follow-up.
-- **Calibration**: answers grouped by confidence. If "90% sure" is right only 70% of the time, the
-  probabilities should not be trusted as-is and the threshold must be set from data.
-- **Confusions**: the most common truth → predicted mistakes, with example cases.
+- **정확도:** 전체와 태그별.
+- **미리 선택:** 앱은 비교기가 "같음"이라고 답하고 그 확률이 `minConfidence`(`config/ai.json`) 이상일 때만 제안을
+  미리 골라 둡니다. 안전에 가장 중요한 숫자는 **잘못된 미리 선택**입니다. 다른 질환이 "같음"으로 보이면 초진이 재진처럼
+  보일 수 있기 때문입니다.
+- **보정 (calibration):** 답을 확신 정도별로 묶어 봅니다. "90% 확신"이 실제로 70%만 맞는다면 확률을 그대로 믿으면 안 되고,
+  기준값을 데이터로 정해야 합니다.
+- **혼동:** 가장 흔한 "정답 → 예측" 실수와 그 예시 사례.
 
-Do not add synonyms just to fix individual cases in this file: the set would stop measuring anything.
-New cases for tuning belong in a separate file.
+개별 사례를 맞추려고 이 파일에 동의어를 추가하지 마세요. 그러면 이 사례 묶음이 아무것도 측정하지 못하게 됩니다.
+조정용 새 사례는 별도 파일에 둡니다.
 
-## Results: 2026-10-22
+## 결과: 2026-10-22
 
-Same 102 cases, `minConfidence` 0.8. Full predictions: `results/2026-10-22-rules.json`, `results/2026-10-22-jev.json`.
+같은 102건, `minConfidence` 0.8. 전체 예측: `results/2026-10-22-rules.json`, `results/2026-10-22-jev.json`.
 
-| | Rule-based (`synonyms-v1`) | Jev (`typesafe-ai/jev-1.14.0`) |
+| | 키워드 규칙 (`synonyms-v1`) | Jev (`typesafe-ai/jev-1.14.0`) |
 |---|---|---|
-| Accuracy (3 labels) | 77.5% | **84.3%** |
-| Pre-selected | 47 | 42 |
-| **Wrong pre-selections** | **7** | **0** |
-| Pre-selection precision | 85.1% | **100%** |
-| Truly "same" left for the clinician | 11 | 9 |
-| Typos | 66.7% | **100%** |
-| Vague | 0% | **100%** |
-| Lookalikes | 60.9% | 56.5% |
-| Related | 100% | 75.0% |
-| "90–100% sure" was right | 85.1% | 96.7% |
-| Latency p50 / p95 | ~0 ms | 503 / 1088 ms |
+| 정확도 (3가지 답) | 77.5% | **84.3%** |
+| 미리 선택한 건수 | 47 | 42 |
+| **잘못된 미리 선택** | **7** | **0** |
+| 미리 선택 정밀도 | 85.1% | **100%** |
+| 실제로 "같음"인데 의사 확인으로 넘긴 건수 | 11 | 9 |
+| 오타 | 66.7% | **100%** |
+| 모호함 | 0% | **100%** |
+| 비슷해 보이지만 다른 질환 | 60.9% | 56.5% |
+| 관련 있음 | 100% | 75.0% |
+| "90~100% 확신"이 맞은 비율 | 85.1% | 96.7% |
+| 응답 시간 p50 / p95 | 약 0 ms | 503 / 1088 ms |
 
-What this says:
+이 결과가 말해 주는 것:
 
-- **Where the rules were wrong and Jev fixed it.** All 7 cases the rule-based matcher wrongly pre-selected
-  were *not* called "same" by Jev. Five it got fully right (e.g. C-101 "머리카락이 많이 빠져요" is not a
-  headache; C-098 "머리를 부딪혀서" is an injury; C-064 leg numbness is related to, not the same as, back pain).
-  Two it called "related" instead of "different" (C-007 neck pain, C-067 back pain with painful urination),
-  which is a harmless mistake for this app.
-- **Where Jev is still wrong.** It called three non-"same" cases "same" (C-018, C-020, C-081), but each with
-  49–63% probability, so the 0.8 threshold kept them from being pre-selected. Its weakest tag is still
-  `lookalike`: it mixes up "related" and "different" (5 each way), which does not change any app decision.
-- **Calibration.** Jev's high-confidence answers are trustworthy (61 answers at 90–100%, 96.7% correct;
-  12 at 80–90%, all correct). Below 0.7 it is close to a coin flip. That supports keeping
-  `minConfidence` at 0.8: lowering it to 0.7 would add answers that are right only ~82% of the time.
-- **Both fail on `mixed`** (two complaints in one sentence), e.g. C-010 "목도 따갑고 허리도 아파요".
-  The review screen shows the probabilities, so the clinician sees the uncertainty.
+- **키워드 규칙이 틀리고 Jev가 바로잡은 곳.** 키워드 규칙이 잘못 미리 선택한 7건을 Jev는 모두 "같음"으로 판단하지 않았습니다.
+  5건은 완전히 맞혔습니다(예: C-101 "머리카락이 많이 빠져요"는 두통이 아님, C-098 "머리를 부딪혀서"는 외상,
+  C-064 다리 저림은 요통과 같은 것이 아니라 관련 있음). 2건은 "다름" 대신 "관련 있음"이라고 답했는데
+  (C-007 목 통증, C-067 배뇨통이 있는 요통), 이 앱에서는 해가 없는 실수입니다.
+- **Jev가 아직 틀리는 곳.** "같음"이 아닌 3건(C-018, C-020, C-081)을 "같음"이라고 답했지만, 확률이 각각
+  49~63%여서 0.8 기준값 덕분에 미리 선택되지 않았습니다. 가장 약한 태그는 여전히 `lookalike`입니다.
+  "관련 있음"과 "다름"을 서로 헷갈리는데(양쪽으로 각 5건), 이는 앱의 어떤 결정도 바꾸지 않습니다.
+- **보정.** Jev의 확신이 높은 답은 믿을 만합니다(90~100% 구간 61건 중 96.7% 정답, 80~90% 구간 12건 모두 정답).
+  0.7 미만에서는 동전 던지기에 가깝습니다. 그래서 `minConfidence`를 0.8로 유지합니다. 0.7로 낮추면
+  약 82%만 맞는 답이 미리 선택에 더해집니다.
+- **둘 다 `mixed`에서 틀립니다** (한 문장에 증상 두 개). 예: C-010 "목도 따갑고 허리도 아파요".
+  검토 화면에 확률이 그대로 보이므로 의사가 불확실성을 알 수 있습니다.
 
-Cost: each case is one small request; the whole run cost well under one cent (estimated from the model's
-per-token price, not read from the bill).
+비용: 사례 하나가 작은 요청 하나이고, 전체 실행 비용은 1센트에 한참 못 미쳤습니다
+(청구서에서 읽은 값이 아니라 모델의 토큰당 가격으로 추정한 값).
