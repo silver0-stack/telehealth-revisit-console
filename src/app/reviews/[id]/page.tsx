@@ -12,6 +12,7 @@ import {
   suggestionBadge,
 } from "@/components/labels";
 import { getRole } from "@/app/role";
+import { readSandbox } from "@/app/sandbox";
 import { Icon } from "@/components/Icon";
 import { can } from "@/domain/roles";
 import { ProbabilityList } from "@/components/ProbabilityList";
@@ -60,7 +61,8 @@ export default async function ReviewDetailPage({ params, searchParams }: Props) 
   const visits = await source.listVisits(patient.id);
   const visitById = new Map(visits.map((v) => [v.id, v]));
   const { suggestion, candidates, minConfidence } = await getSuggestion(request, toSeoulDate(request.requestedAt));
-  const [review, rules, role] = await Promise.all([getReview(request.id), getRules(), getRole()]);
+  const sandbox = await readSandbox();
+  const [review, rules, role] = await Promise.all([getReview(sandbox, request.id), getRules(sandbox), getRole()]);
   const canDecide = can(role, "review.decide");
   const status = REVIEW_STATUS[review.state.status];
   const preselected = suggestion.kind === "preselect" ? suggestion.candidate : null;

@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { readSandbox } from "@/app/sandbox";
 import { Icon } from "@/components/Icon";
 import { ImpactReport } from "@/components/ImpactReport";
 import { StatusLine } from "@/components/StatusLine";
@@ -14,7 +15,7 @@ const selectClass = "mt-1 block rounded border border-border bg-surface px-3 py-
 
 export default async function RuleImpactPage({ searchParams }: { searchParams: SearchParams }) {
   const { from, to } = await searchParams;
-  const versions = (await listRuleVersions()).map((e) => e.rules);
+  const versions = (await listRuleVersions(await readSandbox())).map((e) => e.rules);
   const fromRules = versions.find((r) => r.version === from);
   const toRules = versions.find((r) => r.version === to);
   // Default to the most recent change, which is the question people usually have.

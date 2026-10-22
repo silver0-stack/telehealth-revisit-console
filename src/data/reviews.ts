@@ -13,16 +13,16 @@ const PENDING: ReviewRecord = { state: { status: "pending" }, eligibility: null 
 // at the same moment share one set of matcher calls instead of making two.
 const inFlight = new Map<string, Promise<SuggestionRecord>>();
 
-export async function getReview(requestId: string): Promise<ReviewRecord> {
-  return (await getStore().getReview(requestId)) ?? PENDING;
+export async function getReview(sandbox: string, requestId: string): Promise<ReviewRecord> {
+  return (await getStore().getReview(sandbox, requestId)) ?? PENDING;
 }
 
-export async function listReviews(): Promise<Map<string, ReviewRecord>> {
-  return getStore().listReviews();
+export async function listReviews(sandbox: string): Promise<Map<string, ReviewRecord>> {
+  return getStore().listReviews(sandbox);
 }
 
-export async function saveReview(requestId: string, record: ReviewRecord): Promise<void> {
-  await getStore().saveReview(requestId, record);
+export async function saveReview(sandbox: string, requestId: string, record: ReviewRecord): Promise<void> {
+  await getStore().saveReview(sandbox, requestId, record);
 }
 
 /** In-person visits worth comparing with: the latest one per KCD code, newest first, at most five. */
@@ -38,7 +38,7 @@ export function comparisonVisits(visits: readonly Visit[], requestDate: string):
 
 // The suggestion is computed once per request and stored, so the clinician decides on exactly what
 // the audit log records, every server instance shows the same numbers, and an AI matcher is not
-// called again on every page view (D15).
+// called again on every page view (D15). It is shared by all sandboxes: it depends only on the request.
 export async function getSuggestion(request: TelehealthRequest, requestDate: string): Promise<SuggestionRecord> {
   const stored = await getStore().getSuggestion(request.id);
   if (stored) return stored;

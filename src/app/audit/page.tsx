@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { connection } from "next/server";
+import { readSandbox } from "@/app/sandbox";
 import { describeChange } from "@/components/audit-change";
 import { formatSeoul } from "@/components/format";
 import { AUDIT_ACTION_TEXT, MATCH_LABEL_TEXT } from "@/components/labels";
@@ -47,7 +48,7 @@ function ChangeSummary({ event }: { event: AuditEvent }) {
 export default async function AuditPage() {
   // In-memory state changes per request, so this page must never be prerendered at build time.
   await connection();
-  const events = await listAuditEvents();
+  const events = await listAuditEvents(await readSandbox());
   return (
     <>
       <h1 className="text-2xl font-bold">감사 로그</h1>
@@ -81,7 +82,10 @@ export default async function AuditPage() {
             <tbody>
               {events.map((e) => (
                 <tr key={e.id} className="border-b border-border align-top last:border-0">
-                  <td className="px-3 py-2 whitespace-nowrap">{formatSeoul(e.at)}</td>
+                  <td className="px-3 py-2 whitespace-nowrap">
+                    {formatSeoul(e.at)}
+                    <span className="block font-mono text-sm text-text-muted">{e.id}</span>
+                  </td>
                   <td className="px-3 py-2 whitespace-nowrap">{e.actor}</td>
                   <td className="px-3 py-2 whitespace-nowrap">{AUDIT_ACTION_TEXT[e.action]}</td>
                   <td className="px-3 py-2 whitespace-nowrap">
@@ -113,7 +117,7 @@ export default async function AuditPage() {
           </table>
         </div>
       )}
-      <p className="mt-2 text-text-muted">데모 초기화를 하면 이전 기록이 지워지고, 초기화 기록이 첫 줄로 남아요.</p>
+      <p className="mt-2 text-text-muted">이 기록은 내 데모 공간의 것이에요. 다른 방문자에게는 보이지 않아요.</p>
     </>
   );
 }

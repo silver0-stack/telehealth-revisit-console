@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { connection } from "next/server";
+import { readSandbox } from "@/app/sandbox";
 import { formatSeoul } from "@/components/format";
 import { Icon } from "@/components/Icon";
 import { ELIGIBILITY_SHORT } from "@/components/labels";
@@ -14,11 +15,12 @@ export default async function HomePage() {
   // Review state lives in the store and changes per request, so this page is never prerendered.
   await connection();
   const source = getRecordSource();
+  const sandbox = await readSandbox();
   const [patients, requests, reviews, rules] = await Promise.all([
     source.listPatients(),
     source.listRequests(),
-    listReviews(),
-    getRules(),
+    listReviews(sandbox),
+    getRules(sandbox),
   ]);
   const nameById = new Map(patients.map((p) => [p.id, p.displayName]));
 

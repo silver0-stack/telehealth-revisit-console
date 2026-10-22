@@ -3,6 +3,7 @@ import { formatSeoul } from "@/components/format";
 import { Icon } from "@/components/Icon";
 import { ImpactReport } from "@/components/ImpactReport";
 import { getRole } from "@/app/role";
+import { readSandbox } from "@/app/sandbox";
 import { CATEGORY_LABEL, periodLabel, ROLE_LABEL } from "@/components/labels";
 import { StatusLine } from "@/components/StatusLine";
 import { getRecordSource } from "@/data";
@@ -62,7 +63,8 @@ function formDefaults(rules: Rules, draft: RuleForm | null): Omit<RuleForm, "bas
 export default async function RulesAdminPage({ searchParams }: { searchParams: SearchParams }) {
   const params = await searchParams;
   const { saved, error, preview, reset } = params;
-  const [rules, versions, role] = await Promise.all([getRules(), listRuleVersions(), getRole()]);
+  const sandbox = await readSandbox();
+  const [rules, versions, role] = await Promise.all([getRules(sandbox), listRuleVersions(sandbox), getRole()]);
   const isAdmin = can(role, "rules.save");
   const errorFields = typeof error === "string" ? error.split(",") : [];
 
@@ -344,7 +346,7 @@ export default async function RulesAdminPage({ searchParams }: { searchParams: S
             </tbody>
           </table>
         </div>
-        <p className="mt-2 text-text-muted">관리자 화면에서 저장한 버전은 데모 초기화를 하면 지워져요.</p>
+        <p className="mt-2 text-text-muted">저장한 버전은 내 데모 공간에만 적용돼요. 다른 방문자의 규칙은 바뀌지 않아요.</p>
       </section>
 
       <section className="mt-8" aria-labelledby="reset-heading">
@@ -352,14 +354,14 @@ export default async function RulesAdminPage({ searchParams }: { searchParams: S
           데모 초기화
         </h2>
         <p className="mt-1 text-text-muted">
-          모든 요청을 검토 대기로 되돌려요. 다른 방문자가 남긴 결정을 지울 때 쓰세요.
+          새 데모 공간에서 처음부터 다시 시작해요. 다른 방문자의 기록에는 영향이 없어요.
         </p>
         {isAdmin ? (
           <form action={resetDemoAction} className="mt-2 space-y-3 rounded border border-border bg-surface p-4">
             <label className="flex items-start gap-2">
               <input type="checkbox" name="confirm" required className="mt-1.5" />
               <span>
-                검토 결정, 감사 로그, 관리자가 저장한 규칙 버전이 지워지는 것을 확인했어요. (AI 제안은 남겨 둬요.)
+                지금까지의 검토 결정, 감사 로그, 저장한 규칙 버전을 두고 처음부터 다시 시작하는 것을 확인했어요.
               </span>
             </label>
             <button type="submit" className="rounded border border-status-danger px-4 py-2 font-semibold text-status-danger">

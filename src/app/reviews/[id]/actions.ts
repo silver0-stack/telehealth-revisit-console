@@ -16,6 +16,7 @@ import { applyReviewAction, type ReviewAction } from "@/domain/review";
 import { can } from "@/domain/roles";
 import { ROLE_ACTOR } from "@/components/labels";
 import { getRole } from "@/app/role";
+import { writableSandbox } from "@/app/sandbox";
 
 const FormSchema = z.discriminatedUnion("intent", [
   z.object({ intent: z.literal("approve"), requestId: z.string() }),
@@ -70,12 +71,13 @@ export async function reviewAction(formData: FormData) {
         ? { type: "edit_approve", kcdCode: form.kcdCode }
         : { type: "hold", reason: form.reason };
 
-  const current = await getReview(request.id);
+  const sandbox = await writableSandbox();
+  const current = await getReview(sandbox, request.id);
   const transition = applyReviewAction(current.state, action);
   if (!transition.ok) redirect(`${back}?error=${transition.error}`);
   const next = transition.next;
 
-  const rules = await getRules();
+  const rules = await getRules(sandbox);
   const eligibility =
     next.status === "approved"
       ? checkEligibility(
@@ -90,8 +92,8 @@ export async function reviewAction(formData: FormData) {
         )
       : null;
 
-  await saveReview(request.id, { state: next, eligibility });
-  await appendAuditEvent({
+  await saveReview(sandbox, request.id, { state: next, eligibility });
+  await appendAuditEvent(sandbox, {
     actor: ROLE_ACTOR[role],
     action: form.intent === "approve" ? "review.approve" : form.intent === "edit_approve" ? "review.edit_approve" : "review.hold",
     subject: { type: "request", id: request.id },

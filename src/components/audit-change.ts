@@ -45,7 +45,7 @@ export function describeChange(event: Pick<AuditEvent, "subject" | "before" | "a
     case "rules":
       return describeRules(event.before, event.after);
     case "demo":
-      return [{ label: "초기화", before: null, after: "검토 결정, 이전 감사 로그, 관리자가 저장한 규칙 버전을 지움" }];
+      return [{ label: "초기화", before: null, after: "새 데모 공간에서 처음부터 시작" }];
   }
 }
 

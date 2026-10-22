@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { connection } from "next/server";
+import { readSandbox } from "@/app/sandbox";
 import { formatSeoul } from "@/components/format";
 import { Icon } from "@/components/Icon";
 import { ELIGIBILITY_TITLE, REVIEW_STATUS } from "@/components/labels";
@@ -10,10 +11,14 @@ const STATUS_ORDER = { pending: 0, held: 1, approved: 2 } as const;
 const PENDING: ReviewRecord = { state: { status: "pending" }, eligibility: null };
 
 export default async function ReviewsPage() {
-  // In-memory review state changes per request, so this page must never be prerendered at build time.
+  // Review state changes per request and per visitor, so this page must never be prerendered at build time.
   await connection();
   const source = getRecordSource();
-  const [requests, patients, reviews] = await Promise.all([source.listRequests(), source.listPatients(), listReviews()]);
+  const [requests, patients, reviews] = await Promise.all([
+    source.listRequests(),
+    source.listPatients(),
+    listReviews(await readSandbox()),
+  ]);
   const nameById = new Map(patients.map((p) => [p.id, p.displayName]));
 
   // Undecided work first, then by request time, so the top of the list is what needs attention.

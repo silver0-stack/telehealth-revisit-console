@@ -3,9 +3,10 @@
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { getRole } from "@/app/role";
+import { startNewSandbox, writableSandbox } from "@/app/sandbox";
 import { ROLE_ACTOR } from "@/components/labels";
 import { appendAuditEvent } from "@/data/audit-log";
-import { resetDemo } from "@/data/demo-reset";
+import { logDemoReset } from "@/data/demo-reset";
 import { computeImpact } from "@/data/impact";
 import { getRules, saveRuleVersion } from "@/data/rules";
 import { can } from "@/domain/roles";
@@ -23,15 +24,16 @@ export async function saveRulesAction(formData: FormData) {
     redirect(`/admin/rules?error=${encodeURIComponent(fields.join(","))}`);
   }
 
-  const current = await getRules();
+  const sandbox = await writableSandbox();
+  const current = await getRules(sandbox);
   // Someone saved another version after this preview was made: the preview no longer shows the
   // real impact, so refuse instead of saving on stale information.
   if (current.version !== parsed.data.baseVersion) redirect(`/admin/rules?error=STALE_PREVIEW`);
 
   const actor = ROLE_ACTOR[role];
-  const saved = await saveRuleVersion(draftFromForm(current, parsed.data), actor);
+  const saved = await saveRuleVersion(sandbox, draftFromForm(current, parsed.data), actor);
   const impact = await computeImpact(current, saved);
-  await appendAuditEvent({
+  await appendAuditEvent(sandbox, {
     actor,
     action: "rules.save",
     subject: { type: "rules", id: saved.version },
@@ -52,7 +54,8 @@ export async function resetDemoAction(formData: FormData) {
   // A second, explicit step instead of a browser confirm dialog: the checkbox says what will be lost.
   if (formData.get("confirm") !== "on") redirect(`/admin/rules?error=RESET_CONFIRM`);
 
-  await resetDemo(ROLE_ACTOR[role]);
+  // Only this visitor moves to a new sandbox; nobody else's decisions are touched (D33).
+  await logDemoReset(await startNewSandbox(), ROLE_ACTOR[role]);
   revalidatePath("/", "layout");
   redirect(`/admin/rules?reset=1`);
 }

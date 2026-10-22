@@ -11,6 +11,10 @@ import { PostgresStore } from "./postgres-store.ts";
 // rule versions saved from the admin screen. Patient records stay in RecordSource (read-only seed).
 // The memory store keeps local runs and tests free of any service; the Postgres store is for the
 // deployed demo, where several server instances must see the same state.
+//
+// Decisions, the audit log and saved rule versions belong to a sandbox: the public demo gives each
+// visitor their own, so one visitor can never change or erase what another sees (D33).
+// Suggestions are shared: they depend only on the request, and sharing them keeps AI calls to one per request.
 
 export const ReviewRecordSchema = z.object({
   state: ReviewStateSchema,
@@ -39,29 +43,23 @@ export const NewAuditEventSchema = AuditEventSchema.omit({ id: true, at: true })
 export type NewAuditEvent = z.infer<typeof NewAuditEventSchema>;
 
 export interface Store {
-  getReview(requestId: string): Promise<ReviewRecord | null>;
-  listReviews(): Promise<Map<string, ReviewRecord>>;
-  saveReview(requestId: string, record: ReviewRecord): Promise<void>;
+  getReview(sandbox: string, requestId: string): Promise<ReviewRecord | null>;
+  listReviews(sandbox: string): Promise<Map<string, ReviewRecord>>;
+  saveReview(sandbox: string, requestId: string, record: ReviewRecord): Promise<void>;
 
   getSuggestion(requestId: string): Promise<SuggestionRecord | null>;
   /** Keeps the first record saved for a request and returns whichever one is stored. */
   saveSuggestion(requestId: string, record: SuggestionRecord): Promise<SuggestionRecord>;
 
-  /** Assigns the id (A-00001, ...) and stores the event. There is no update or delete. */
-  appendAuditEvent(event: NewAuditEvent, at: string): Promise<AuditEvent>;
+  /** Numbers the event within its sandbox (A-00001, ...) and stores it. There is no update or delete. */
+  appendAuditEvent(sandbox: string, event: NewAuditEvent, at: string): Promise<AuditEvent>;
   /** Newest first. */
-  listAuditEvents(): Promise<AuditEvent[]>;
+  listAuditEvents(sandbox: string): Promise<AuditEvent[]>;
 
   /** Admin-saved versions only, oldest first. */
-  listSavedRuleVersions(): Promise<RuleVersionEntry[]>;
-  /** Fails if the version name is already taken, so two saves cannot both become "v3". */
-  saveRuleVersion(entry: RuleVersionEntry): Promise<void>;
-
-  /**
-   * Demo only: clears reviews, the audit log and admin-saved rule versions. Stored suggestions stay,
-   * so a reset does not spend AI calls again.
-   */
-  resetDemo(): Promise<void>;
+  listSavedRuleVersions(sandbox: string): Promise<RuleVersionEntry[]>;
+  /** Fails if the version name is already taken in this sandbox, so two saves cannot both become "v3". */
+  saveRuleVersion(sandbox: string, entry: RuleVersionEntry): Promise<void>;
 }
 
 export const StoreChoiceSchema = z.enum(["memory", "postgres"]);

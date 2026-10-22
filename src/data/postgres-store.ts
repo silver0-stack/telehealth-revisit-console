@@ -16,27 +16,35 @@ import {
 // database is outside the process and could hold rows written by an older version of the app.
 
 // Created on first use, so a fresh Neon database (or a preview branch) works without a setup step.
-// Every statement is idempotent. Audit ids come from an identity column that is never reset.
+// Every statement is idempotent. The demo_* tables carry a sandbox id (D33); the tables of the first
+// deploy without one (reviews, audit_events, rule_versions) are no longer read or written.
 const SCHEMA = [
-  `CREATE TABLE IF NOT EXISTS reviews (
-     request_id text PRIMARY KEY,
+  `CREATE TABLE IF NOT EXISTS demo_reviews (
+     sandbox_id text NOT NULL,
+     request_id text NOT NULL,
      record jsonb NOT NULL,
-     updated_at timestamptz NOT NULL DEFAULT now())`,
+     updated_at timestamptz NOT NULL DEFAULT now(),
+     PRIMARY KEY (sandbox_id, request_id))`,
   `CREATE TABLE IF NOT EXISTS suggestions (
      request_id text PRIMARY KEY,
      record jsonb NOT NULL,
      created_at timestamptz NOT NULL DEFAULT now())`,
-  `CREATE TABLE IF NOT EXISTS audit_events (
-     seq bigint GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
-     event jsonb NOT NULL)`,
-  `CREATE TABLE IF NOT EXISTS rule_versions (
-     seq bigint GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
-     version text NOT NULL UNIQUE,
-     entry jsonb NOT NULL)`,
+  `CREATE TABLE IF NOT EXISTS demo_audit_events (
+     sandbox_id text NOT NULL,
+     n integer NOT NULL,
+     event jsonb NOT NULL,
+     PRIMARY KEY (sandbox_id, n))`,
+  `CREATE TABLE IF NOT EXISTS demo_rule_versions (
+     sandbox_id text NOT NULL,
+     seq integer NOT NULL,
+     version text NOT NULL,
+     entry jsonb NOT NULL,
+     PRIMARY KEY (sandbox_id, seq),
+     UNIQUE (sandbox_id, version))`,
 ];
 
-function auditId(seq: unknown): string {
-  return `A-${String(seq).padStart(5, "0")}`;
+function auditId(n: unknown): string {
+  return `A-${String(n).padStart(5, "0")}`;
 }
 
 export class PostgresStore implements Store {
@@ -59,23 +67,25 @@ export class PostgresStore implements Store {
     return this.schemaReady;
   }
 
-  async getReview(requestId: string) {
+  async getReview(sandbox: string, requestId: string) {
     await this.ready();
-    const rows = await this.sql`SELECT record FROM reviews WHERE request_id = ${requestId}`;
+    const rows = await this.sql`
+      SELECT record FROM demo_reviews WHERE sandbox_id = ${sandbox} AND request_id = ${requestId}`;
     return rows[0] ? ReviewRecordSchema.parse(rows[0].record) : null;
   }
 
-  async listReviews() {
+  async listReviews(sandbox: string) {
     await this.ready();
-    const rows = await this.sql`SELECT request_id, record FROM reviews`;
+    const rows = await this.sql`SELECT request_id, record FROM demo_reviews WHERE sandbox_id = ${sandbox}`;
     return new Map(rows.map((r) => [String(r.request_id), ReviewRecordSchema.parse(r.record)]));
   }
 
-  async saveReview(requestId: string, record: ReviewRecord) {
+  async saveReview(sandbox: string, requestId: string, record: ReviewRecord) {
     await this.ready();
     await this.sql`
-      INSERT INTO reviews (request_id, record) VALUES (${requestId}, ${JSON.stringify(record)}::jsonb)
-      ON CONFLICT (request_id) DO UPDATE SET record = EXCLUDED.record, updated_at = now()`;
+      INSERT INTO demo_reviews (sandbox_id, request_id, record)
+      VALUES (${sandbox}, ${requestId}, ${JSON.stringify(record)}::jsonb)
+      ON CONFLICT (sandbox_id, request_id) DO UPDATE SET record = EXCLUDED.record, updated_at = now()`;
   }
 
   async getSuggestion(requestId: string) {
@@ -96,38 +106,37 @@ export class PostgresStore implements Store {
     return stored;
   }
 
-  async appendAuditEvent(event: NewAuditEvent, at: string): Promise<AuditEvent> {
+  async appendAuditEvent(sandbox: string, event: NewAuditEvent, at: string): Promise<AuditEvent> {
+    await this.ready();
+    // Numbered within the sandbox in one statement. If two writes in the same sandbox race for the same
+    // number, the primary key rejects one of them instead of silently giving both the same id.
+    const rows = await this.sql`
+      INSERT INTO demo_audit_events (sandbox_id, n, event)
+      SELECT ${sandbox}, COALESCE(MAX(n), 0) + 1, ${JSON.stringify({ ...event, at })}::jsonb
+      FROM demo_audit_events WHERE sandbox_id = ${sandbox}
+      RETURNING n`;
+    return AuditEventSchema.parse({ ...event, at, id: auditId(rows[0]?.n) });
+  }
+
+  async listAuditEvents(sandbox: string) {
     await this.ready();
     const rows = await this.sql`
-      INSERT INTO audit_events (event) VALUES (${JSON.stringify({ ...event, at })}::jsonb) RETURNING seq`;
-    return AuditEventSchema.parse({ ...event, at, id: auditId(rows[0]?.seq) });
+      SELECT n, event FROM demo_audit_events WHERE sandbox_id = ${sandbox} ORDER BY n DESC`;
+    return rows.map((r) => AuditEventSchema.parse({ ...r.event, id: auditId(r.n) }));
   }
 
-  async listAuditEvents() {
+  async listSavedRuleVersions(sandbox: string) {
     await this.ready();
-    const rows = await this.sql`SELECT seq, event FROM audit_events ORDER BY seq DESC`;
-    return rows.map((r) => AuditEventSchema.parse({ ...r.event, id: auditId(r.seq) }));
-  }
-
-  async listSavedRuleVersions() {
-    await this.ready();
-    const rows = await this.sql`SELECT entry FROM rule_versions ORDER BY seq`;
+    const rows = await this.sql`SELECT entry FROM demo_rule_versions WHERE sandbox_id = ${sandbox} ORDER BY seq`;
     return rows.map((r) => RuleVersionEntrySchema.parse(r.entry));
   }
 
-  async saveRuleVersion(entry: RuleVersionEntry) {
+  async saveRuleVersion(sandbox: string, entry: RuleVersionEntry) {
     await this.ready();
-    // The UNIQUE constraint on version rejects a second "v3" saved at the same moment.
+    // The UNIQUE constraint on (sandbox, version) rejects a second "v3" saved at the same moment.
     await this.sql`
-      INSERT INTO rule_versions (version, entry) VALUES (${entry.rules.version}, ${JSON.stringify(entry)}::jsonb)`;
-  }
-
-  async resetDemo() {
-    await this.ready();
-    await this.sql.transaction([
-      this.sql`DELETE FROM reviews`,
-      this.sql`DELETE FROM audit_events`,
-      this.sql`DELETE FROM rule_versions`,
-    ]);
+      INSERT INTO demo_rule_versions (sandbox_id, seq, version, entry)
+      SELECT ${sandbox}, COALESCE(MAX(seq), 0) + 1, ${entry.rules.version}, ${JSON.stringify(entry)}::jsonb
+      FROM demo_rule_versions WHERE sandbox_id = ${sandbox}`;
   }
 }

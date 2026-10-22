@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { z } from "zod";
+import { readSandbox } from "@/app/sandbox";
 import { CATEGORY_LABEL, ELIGIBILITY_TITLE, notFollowUpText, prescriptionText, regionText } from "@/components/labels";
 import { StatusLine, type Tone } from "@/components/StatusLine";
 import { getRecordSource } from "@/data";
@@ -51,7 +52,7 @@ export default async function PrescriptionsPage({ searchParams }: { searchParams
 
   const source = getRecordSource();
   const [patients, today] = await Promise.all([source.listPatients(), source.getToday()]);
-  const rules = await getRules();
+  const rules = await getRules(await readSandbox());
 
   return (
     <>
@@ -175,7 +176,7 @@ async function Result({ query, today }: { query: z.infer<typeof QuerySchema>; to
     );
   }
 
-  const rules = await getRules();
+  const rules = await getRules(await readSandbox());
   const [visits, history] = await Promise.all([source.listVisits(patient.id), source.listPrescriptions(patient.id)]);
   const eligibility = checkEligibility(
     {
