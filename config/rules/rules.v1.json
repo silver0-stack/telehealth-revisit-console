@@ -1,0 +1,9 @@
+{
+  "version": "v1",
+  "assumptions": [
+    "A1: eligibility.revisitWindowDays = 30 is a placeholder, not the legal rule. See docs/ASSUMPTIONS.md."
+  ],
+  "eligibility": {
+    "revisitWindowDays": 30
+  }
+}
