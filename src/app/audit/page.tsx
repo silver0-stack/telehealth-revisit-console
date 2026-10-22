@@ -52,7 +52,7 @@ export default async function AuditPage() {
     <>
       <h1 className="text-2xl font-bold">감사 로그</h1>
       <p className="mt-1 text-text-muted">
-        사람이 내린 결정은 모두 여기에 남아요. 고치거나 지울 수 없어요. 최근 것부터 보여요.
+        결정 {events.length}건 · 최근 순 · 수정·삭제 불가
       </p>
 
       {events.length === 0 ? (
@@ -113,7 +113,7 @@ export default async function AuditPage() {
           </table>
         </div>
       )}
-      <p className="mt-2 text-text-muted">데모에서는 서버를 다시 켜면 기록이 사라져요. 실제로는 지울 수 없는 저장소에 보관해야 해요.</p>
+      <p className="mt-2 text-text-muted">데모 초기화를 하면 이전 기록이 지워지고, 초기화 기록이 첫 줄로 남아요.</p>
     </>
   );
 }

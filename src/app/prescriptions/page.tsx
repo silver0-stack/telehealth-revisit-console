@@ -57,8 +57,7 @@ export default async function PrescriptionsPage({ searchParams }: { searchParams
     <>
       <h1 className="text-2xl font-bold">처방 확인</h1>
       <p className="mt-1 text-text-muted">
-        비대면진료 요청이 일반(재진)인지 초진인지, 그리고 처방하려는 약과 일수가 규칙에 맞는지 확인해요. 기준일{" "}
-        {today} · 규칙 {rules.version}
+        재진·초진 구분과 처방 규칙 점검 · 기준일 {today} · 규칙 {rules.version}
       </p>
 
       <div className="mt-4 grid gap-6 lg:grid-cols-[minmax(0,22rem)_minmax(0,1fr)]">
@@ -145,7 +144,7 @@ export default async function PrescriptionsPage({ searchParams }: { searchParams
           </h2>
           {!submitted ? (
             <p className="rounded border border-dashed border-border p-4 text-text-muted">
-              왼쪽에서 환자, 증상, 약, 처방일수를 고르고 &ldquo;확인&rdquo;을 누르면 결과가 여기에 나와요.
+              환자, 증상, 약, 처방일수를 고르고 &ldquo;확인&rdquo;을 누르면 결과가 나와요.
             </p>
           ) : parsed && !parsed.success ? (
             <StatusLine tone="danger" title="입력을 확인해 주세요">
@@ -240,7 +239,7 @@ async function Result({ query, today }: { query: z.infer<typeof QuerySchema>; to
           <li>초진 예외(30일) 사용: {extensionUsed ? `사용함 (${extensionUsed.date})` : "사용 기록 없음"}</li>
         </ul>
         <p className="mt-2 text-text-muted">
-          데모 기록만 보여요. 실제로는 다른 의료기관의 기록까지 비대면진료지원시스템에서 확인해야 해요.
+          이 의원 기록만 보여요. 다른 의료기관 기록은 비대면진료지원시스템에서 확인해야 해요.
         </p>
       </div>
 

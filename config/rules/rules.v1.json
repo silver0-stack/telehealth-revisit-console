@@ -1,6 +1,6 @@
 {
   "version": "v1",
-  "source": "Early placeholder modeled on the 2023 비대면진료 시범사업 (30-day follow-up). Not current law.",
+  "source": "2023년 비대면진료 시범사업을 본뜬 초기 임시값 (재진 30일). 현행법 아님.",
   "assumptions": [
     "A1: followUp.window = 30 days is an outdated placeholder. See docs/ASSUMPTIONS.md.",
     "prescription: blocked categories and no first-visit day limit are placeholders, not current law."

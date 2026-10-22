@@ -81,7 +81,7 @@ export default async function RulesAdminPage({ searchParams }: { searchParams: S
     <>
       <h1 className="text-2xl font-bold">규칙 관리</h1>
       <p className="mt-1 text-text-muted">
-        처방 규칙을 고치면 먼저 누가 영향을 받는지 보여 주고, 확인한 뒤에 새 버전으로 저장해요. 기존 버전은 그대로 남아요.
+        저장 전 영향 미리보기 · 저장하면 새 버전 · 이전 버전 보존
       </p>
 
       <div className="mt-4 space-y-3" aria-live="polite">
@@ -125,7 +125,7 @@ export default async function RulesAdminPage({ searchParams }: { searchParams: S
           <dd>{prescriptionSummary(rules)}</dd>
         </dl>
         <p className="mt-2 text-text-muted">
-          재진 기간과 초진 지역은 이 화면에서 바꾸지 않아요. 바꾸려면 규칙 파일을 새로 추가하세요.
+          재진 기간과 초진 지역은 규칙 파일(config/rules)에서만 바꿀 수 있어요.
         </p>
       </section>
 
@@ -348,7 +348,7 @@ export default async function RulesAdminPage({ searchParams }: { searchParams: S
           데모 초기화
         </h2>
         <p className="mt-1 text-text-muted">
-          공개 데모라서 다른 방문자가 이미 요청을 승인했을 수 있어요. 처음 상태로 되돌리면 모든 요청이 다시 검토 대기가 돼요.
+          모든 요청을 검토 대기로 되돌려요. 다른 방문자가 남긴 결정을 지울 때 쓰세요.
         </p>
         {isAdmin ? (
           <form action={resetDemoAction} className="mt-2 space-y-3 rounded border border-border bg-surface p-4">

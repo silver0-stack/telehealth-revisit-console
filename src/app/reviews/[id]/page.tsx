@@ -160,13 +160,11 @@ export default async function ReviewDetailPage({ params, searchParams }: Props) 
               </StatusLine>
             ) : suggestion.kind === "preselect" ? (
               <StatusLine tone="ok" title={`이전 진료와 같은 증상으로 보여요: ${kcdLabel(suggestion.candidate.kcdCode)}`}>
-                {visitById.get(suggestion.candidate.visitId)?.date} 대면 진료와 비교했어요. 맞으면 &ldquo;승인&rdquo;, 다르면
-                &ldquo;수정하고 승인&rdquo;을 누르세요.
+                비교 기준: {visitById.get(suggestion.candidate.visitId)?.date} 대면 진료
               </StatusLine>
             ) : (
               <StatusLine tone="warn" title="의사 확인 필요">
-                확실한 제안이 없어서 미리 고르지 않았어요 (기준: 같은 증상 확률 {Math.round(minConfidence * 100)}% 이상).
-                진단 코드를 직접 고르세요.
+                같은 증상 확률이 {Math.round(minConfidence * 100)}% 미만이라 미리 고르지 않았어요. 진단 코드를 직접 고르세요.
               </StatusLine>
             )}
 

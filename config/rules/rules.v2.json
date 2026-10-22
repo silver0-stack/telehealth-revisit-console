@@ -1,6 +1,6 @@
 {
   "version": "v2",
-  "source": "의료법 시행규칙 일부개정령안 (보건복지부공고 제2026-780호, 입법예고 2026-10-19 ~ 2026-11-09), 제31조의2. DRAFT.",
+  "source": "의료법 시행규칙 일부개정령안 (보건복지부공고 제2026-780호, 입법예고 2026-10-19 ~ 2026-11-09), 제31조의2. 초안.",
   "assumptions": [
     "A1: followUp.window = 6 months follows the draft, not final law.",
     "A3: the window end uses 민법 기간 계산 (first day not counted). Verify.",

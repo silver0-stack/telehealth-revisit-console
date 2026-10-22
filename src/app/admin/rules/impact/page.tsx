@@ -32,7 +32,7 @@ export default async function RuleImpactPage({ searchParams }: { searchParams: S
       </p>
       <h1 className="mt-2 text-2xl font-bold">규칙 버전 비교</h1>
       <p className="mt-1 text-text-muted">
-        두 규칙 버전 사이에 진료 구분과 처방 결과가 바뀌는 환자를 보여 줘요. 기준일 {today}.
+        두 버전 사이에 진료 구분이나 처방 결과가 바뀌는 환자 · 기준일 {today}
       </p>
 
       <form action="/admin/rules/impact" method="get" className="mt-4 flex flex-wrap items-end gap-3">

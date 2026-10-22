@@ -29,8 +29,7 @@ export default async function ReviewsPage() {
     <>
       <h1 className="text-2xl font-bold">비대면진료 요청 검토</h1>
       <p className="mt-1 text-text-muted">
-        요청 {rows.length}건 중 검토 대기 {pendingCount}건. 요청마다 오늘 증상을 이전 대면 진료와 비교한 제안을 보고,
-        진단 코드를 확정하세요.
+        요청 {rows.length}건 · 검토 대기 {pendingCount}건
       </p>
 
       <div className="mt-4 overflow-x-auto rounded border border-border bg-surface">
@@ -70,7 +69,6 @@ export default async function ReviewsPage() {
           </tbody>
         </table>
       </div>
-      <p className="mt-2 text-text-muted">검토 결과는 데모 서버를 다시 켜면 사라져요.</p>
     </>
   );
 }
