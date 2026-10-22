@@ -20,6 +20,7 @@ Each one is tagged `ASSUMPTION` in code and must be checked before any real use.
 | A12 | Day limits apply only to first-visit telehealth; follow-up telehealth has no day limit in the draft | `src/domain/prescription.ts` | That the final text keeps 제31조의3 limited to 제34조의2제2항제2호 (초진) | Final text |
 | A13 | `minConfidence = 0.8` is a starting point for when a suggestion may be pre-selected | `config/ai.json` | Tune from the M4 evaluation (calibration and error cost), not from regulation | `eval/results/` |
 | A14 | The rule-based matcher's probabilities (0.9 / 0.7 / ...) are hand-set confidence levels | `src/ai/rule-based-matcher.ts` | Whether they are calibrated: M4 calibration table | `eval/results/` |
+| A15 | The evaluation labels in `eval/cases.jsonl` are correct | `eval/cases.jsonl` | Have a clinician review the labels, especially the judgment calls listed in `eval/README.md` | Clinician review |
 
 Rows are added as new assumptions appear.
 

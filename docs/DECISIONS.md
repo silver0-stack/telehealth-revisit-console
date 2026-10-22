@@ -87,3 +87,20 @@ learned, and M4's calibration table measures how well they match reality.
 `applyReviewAction` refuses any change after approval. Eligibility is computed from the approved code and stored
 with it; allowing edits would silently change the basis of a decision already acted on. A held review can still be
 approved. Correcting an approved decision would need a new, separately audited action (not built).
+
+## D18. The evaluation's headline number is wrong pre-selections, not accuracy (2026-10-22)
+The app only acts on a confident "same": it pre-selects that code. A wrong "same" can turn a first visit into a
+follow-up, which changes what may be prescribed. Mixing up "related" and "different" changes nothing in the app.
+So the script reports pre-selection precision and lists every wrong pre-selection by case id, before accuracy.
+
+## D19. Jev is called with a pinned version (2026-10-22)
+`config/ai.json` names `typesafe-ai/jev-1.14.0` instead of the moving alias `typesafe-ai/jev`. Results in
+`eval/results/` stay comparable over time, and the audit log records the version that actually answered
+(`result.response.modelId`). Moving to a new version means re-running the evaluation first.
+
+## D20. Jev was not run: the free tier cannot call it (2026-10-22)
+A single test call returned `403 Free tier users do not have access to this model`. The Vercel account is on
+Hobby with only free AI Gateway credits, and the minimum paid top-up is $10. `JevMatcher` is written against
+the documented API and unit-tested with a fake `decide`, but it has never answered a real request. The
+rule-based baseline was evaluated so the comparison is ready once credits exist. Zero data retention is also
+unavailable on Hobby (Pro and Enterprise only); acceptable here only because every request is synthetic text.

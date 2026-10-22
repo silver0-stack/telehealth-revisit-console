@@ -1,18 +1,24 @@
 import { z } from "zod";
+import { getAiConfig } from "../data/ai-config.ts";
+import { JevMatcher } from "./jev-matcher.ts";
 import { RuleBasedMatcher } from "./rule-based-matcher.ts";
 import type { SymptomMatcher } from "./symptom-matcher.ts";
 
-const MatcherEnvSchema = z.enum(["rules", "jev"]).default("rules");
+export const MatcherChoiceSchema = z.enum(["rules", "jev"]);
+export type MatcherChoice = z.infer<typeof MatcherChoiceSchema>;
+
+export function createMatcher(choice: MatcherChoice): SymptomMatcher {
+  if (choice === "rules") return new RuleBasedMatcher();
+  if (!process.env.AI_GATEWAY_API_KEY) {
+    throw new Error("MATCHER=jev needs AI_GATEWAY_API_KEY in .env.local. Set MATCHER=rules to run without AI.");
+  }
+  return new JevMatcher(getAiConfig().jevModel);
+}
 
 let matcher: SymptomMatcher | undefined;
 
 // MATCHER=rules needs no network or key, so the whole app works without the AI (hard rule 4).
 export function getSymptomMatcher(): SymptomMatcher {
-  if (matcher) return matcher;
-  const choice = MatcherEnvSchema.parse(process.env.MATCHER || undefined);
-  if (choice === "jev") {
-    throw new Error("MATCHER=jev is not available yet (added in M4). Set MATCHER=rules in .env.local.");
-  }
-  matcher = new RuleBasedMatcher();
+  matcher ??= createMatcher(MatcherChoiceSchema.default("rules").parse(process.env.MATCHER || undefined));
   return matcher;
 }

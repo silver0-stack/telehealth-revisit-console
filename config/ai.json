@@ -1,3 +1,4 @@
 {
-  "minConfidence": 0.8
+  "minConfidence": 0.8,
+  "jevModel": "typesafe-ai/jev-1.14.0"
 }

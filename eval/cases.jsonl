@@ -1,0 +1,102 @@
+{"id":"C-001","previousKcd":"J02.9","previousNote":"인후통, 발열 없음","today":"목이 따가워요","label":"same","tags":["synonym"]}
+{"id":"C-002","previousKcd":"J02.9","previousNote":"인후통, 발열 없음","today":"침 삼킬 때 목이 아파요","label":"same","tags":["synonym"]}
+{"id":"C-003","previousKcd":"J02.9","previousNote":"인후통 및 연하통","today":"인후통이 다시 생겼어요","label":"same","tags":["same_wording"]}
+{"id":"C-004","previousKcd":"J02.9","previousNote":"인후통, 발열 없음","today":"목이 따가와요","label":"same","tags":["typo"]}
+{"id":"C-005","previousKcd":"J02.9","previousNote":"인후통, 발열 없음","today":"목구멍이 칼칼하고 아파요","label":"same","tags":["synonym","colloquial"]}
+{"id":"C-006","previousKcd":"J02.9","previousNote":"인후통, 발열 없음","today":"콧물이랑 기침이 나요","label":"related","tags":["related"]}
+{"id":"C-007","previousKcd":"J02.9","previousNote":"인후통, 발열 없음","today":"목이 아파서 고개를 못 돌리겠어요","label":"different","tags":["lookalike"]}
+{"id":"C-008","previousKcd":"J02.9","previousNote":"인후통 및 연하통","today":"목이 뻐근하고 어깨가 결려요","label":"different","tags":["lookalike"]}
+{"id":"C-009","previousKcd":"J02.9","previousNote":"인후통, 발열 없음","today":"허리가 아파요","label":"different","tags":["different"]}
+{"id":"C-010","previousKcd":"J02.9","previousNote":"인후통, 발열 없음","today":"목도 따갑고 허리도 아파요","label":"same","tags":["mixed"]}
+{"id":"C-011","previousKcd":"J02.9","previousNote":"인후통, 발열 없음","today":"그냥 몸이 안 좋아요","label":"different","tags":["vague"]}
+{"id":"C-012","previousKcd":"J02.9","previousNote":"인후통 및 연하통","today":"목 안이 부어서 말하기 힘들어요","label":"same","tags":["synonym"]}
+{"id":"C-013","previousKcd":"J06.9","previousNote":"콧물, 기침, 미열","today":"감기 기운이 있어요","label":"same","tags":["synonym"]}
+{"id":"C-014","previousKcd":"J06.9","previousNote":"콧물, 기침, 미열","today":"콧물이랑 기침이 나요","label":"same","tags":["same_wording"]}
+{"id":"C-015","previousKcd":"J06.9","previousNote":"상기도 감염 증상","today":"기침이 계속 나고 열이 조금 있어요","label":"same","tags":["synonym"]}
+{"id":"C-016","previousKcd":"J06.9","previousNote":"콧물, 기침, 미열","today":"감기걸린거 같아요 콧물나요","label":"same","tags":["colloquial"]}
+{"id":"C-017","previousKcd":"J06.9","previousNote":"콧물, 기침, 미열","today":"기칭이 나요","label":"same","tags":["typo"]}
+{"id":"C-018","previousKcd":"J06.9","previousNote":"콧물, 기침, 미열","today":"목이 따가워요","label":"related","tags":["related"]}
+{"id":"C-019","previousKcd":"J06.9","previousNote":"콧물, 기침, 미열","today":"재채기가 계속 나고 코가 간지러워요","label":"related","tags":["lookalike"]}
+{"id":"C-020","previousKcd":"J06.9","previousNote":"상기도 감염 증상","today":"열이 39도까지 나고 온몸이 쑤셔요","label":"related","tags":["lookalike"]}
+{"id":"C-021","previousKcd":"J06.9","previousNote":"콧물, 기침, 미열","today":"속이 쓰려요","label":"different","tags":["different"]}
+{"id":"C-022","previousKcd":"J06.9","previousNote":"콧물, 기침, 미열","today":"숨 쉴 때 가슴이 답답하고 쌕쌕거려요","label":"related","tags":["lookalike"]}
+{"id":"C-023","previousKcd":"J06.9","previousNote":"상기도 감염 증상","today":"두통이 자주 와요","label":"different","tags":["different"]}
+{"id":"C-024","previousKcd":"J06.9","previousNote":"콧물, 기침, 미열","today":"콧물","label":"same","tags":["short"]}
+{"id":"C-025","previousKcd":"J30.4","previousNote":"재채기, 맑은 콧물, 코막힘","today":"재채기가 계속 나요","label":"same","tags":["same_wording"]}
+{"id":"C-026","previousKcd":"J30.4","previousNote":"재채기, 맑은 콧물, 코막힘","today":"코가 막히고 간지러워요","label":"same","tags":["synonym"]}
+{"id":"C-027","previousKcd":"J30.4","previousNote":"알레르기 비염 증상 지속","today":"아침마다 맑은 콧물이 줄줄 나요","label":"same","tags":["synonym"]}
+{"id":"C-028","previousKcd":"J30.4","previousNote":"알레르기 비염 증상 지속","today":"비염이 또 도졌어요","label":"same","tags":["synonym"]}
+{"id":"C-029","previousKcd":"J30.4","previousNote":"재채기, 맑은 콧물, 코막힘","today":"제채기가 멈추질 않아요","label":"same","tags":["typo"]}
+{"id":"C-030","previousKcd":"J30.4","previousNote":"재채기, 맑은 콧물, 코막힘","today":"누런 콧물이 나고 열이 나요","label":"related","tags":["lookalike"]}
+{"id":"C-031","previousKcd":"J30.4","previousNote":"알레르기 비염 증상 지속","today":"눈이 가렵고 충혈됐어요","label":"related","tags":["related"]}
+{"id":"C-032","previousKcd":"J30.4","previousNote":"재채기, 맑은 콧물, 코막힘","today":"목이 따가워요","label":"related","tags":["related"]}
+{"id":"C-033","previousKcd":"J30.4","previousNote":"재채기, 맑은 콧물, 코막힘","today":"허리가 아파요","label":"different","tags":["different"]}
+{"id":"C-034","previousKcd":"J30.4","previousNote":"알레르기 비염 증상 지속","today":"속이 쓰려요","label":"different","tags":["different"]}
+{"id":"C-035","previousKcd":"J30.4","previousNote":"재채기, 맑은 콧물, 코막힘","today":"코피가 자주 나요","label":"related","tags":["lookalike"]}
+{"id":"C-036","previousKcd":"I10","previousNote":"혈압 관리, 기존 약 유지","today":"혈압약 상담 받고 싶어요","label":"same","tags":["same_wording"]}
+{"id":"C-037","previousKcd":"I10","previousNote":"혈압 145/92, 생활습관 상담","today":"집에서 잰 혈압이 조금 높아요","label":"same","tags":["synonym"]}
+{"id":"C-038","previousKcd":"I10","previousNote":"혈압 관리, 기존 약 유지","today":"혈압약 상담 받고시퍼요","label":"same","tags":["typo"]}
+{"id":"C-039","previousKcd":"I10","previousNote":"혈압 관리, 기존 약 유지","today":"고혈압 약이 다 떨어졌어요","label":"same","tags":["synonym"]}
+{"id":"C-040","previousKcd":"I10","previousNote":"혈압 145/92, 생활습관 상담","today":"혈압이 150 넘게 나와요","label":"same","tags":["synonym"]}
+{"id":"C-041","previousKcd":"I10","previousNote":"혈압 관리, 기존 약 유지","today":"뒷목이 뻐근하고 혈압이 오른 것 같아요","label":"same","tags":["colloquial"]}
+{"id":"C-042","previousKcd":"I10","previousNote":"혈압 관리, 기존 약 유지","today":"가슴이 타는 느낌이에요","label":"different","tags":["lookalike"]}
+{"id":"C-043","previousKcd":"I10","previousNote":"혈압 145/92, 생활습관 상담","today":"가슴이 두근거리고 숨이 차요","label":"related","tags":["lookalike"]}
+{"id":"C-044","previousKcd":"I10","previousNote":"혈압 관리, 기존 약 유지","today":"어지럽고 머리가 아파요","label":"related","tags":["vague"]}
+{"id":"C-045","previousKcd":"I10","previousNote":"혈압 관리, 기존 약 유지","today":"혈당이 높게 나와요","label":"different","tags":["lookalike"]}
+{"id":"C-046","previousKcd":"I10","previousNote":"혈압 145/92, 생활습관 상담","today":"허리가 아파요","label":"different","tags":["different"]}
+{"id":"C-047","previousKcd":"I10","previousNote":"혈압 관리, 기존 약 유지","today":"약 다시 받고 싶어요","label":"same","tags":["vague"]}
+{"id":"C-048","previousKcd":"E11.9","previousNote":"혈당 관리, 식이 상담","today":"혈당 수치 상담하고 싶어요","label":"same","tags":["same_wording"]}
+{"id":"C-049","previousKcd":"E11.9","previousNote":"공복혈당 측정 결과 확인","today":"당뇨약 먹고 있는데 질문이 있어요","label":"same","tags":["synonym"]}
+{"id":"C-050","previousKcd":"E11.9","previousNote":"공복혈당 측정 결과 확인","today":"공복 혈당이 140 나왔어요","label":"same","tags":["synonym"]}
+{"id":"C-051","previousKcd":"E11.9","previousNote":"혈당 관리, 식이 상담","today":"당뇨약 처방 다시 받고 싶어요","label":"same","tags":["synonym"]}
+{"id":"C-052","previousKcd":"E11.9","previousNote":"혈당 관리, 식이 상담","today":"혈당이 놉아요","label":"same","tags":["typo"]}
+{"id":"C-053","previousKcd":"E11.9","previousNote":"혈당 관리, 식이 상담","today":"발이 저리고 감각이 둔해요","label":"related","tags":["related"]}
+{"id":"C-054","previousKcd":"E11.9","previousNote":"혈당 관리, 식이 상담","today":"물을 많이 마시고 소변을 자주 봐요","label":"same","tags":["colloquial"]}
+{"id":"C-055","previousKcd":"E11.9","previousNote":"공복혈당 측정 결과 확인","today":"혈압이 높게 나와요","label":"different","tags":["lookalike"]}
+{"id":"C-056","previousKcd":"E11.9","previousNote":"혈당 관리, 식이 상담","today":"목이 따가워요","label":"different","tags":["different"]}
+{"id":"C-057","previousKcd":"E11.9","previousNote":"혈당 관리, 식이 상담","today":"상처가 잘 안 낫고 발에 염증이 생겼어요","label":"related","tags":["related"]}
+{"id":"C-058","previousKcd":"E11.9","previousNote":"공복혈당 측정 결과 확인","today":"갑상선 약 상담하고 싶어요","label":"related","tags":["lookalike"]}
+{"id":"C-059","previousKcd":"E11.9","previousNote":"혈당 관리, 식이 상담","today":"눈이 침침해요","label":"related","tags":["related"]}
+{"id":"C-060","previousKcd":"M54.5","previousNote":"요통, 방사통 없음","today":"허리가 또 아파요","label":"same","tags":["same_wording"]}
+{"id":"C-061","previousKcd":"M54.5","previousNote":"허리 통증, 물리치료 권유","today":"오래 앉아 있으면 허리가 뻐근해요","label":"same","tags":["synonym"]}
+{"id":"C-062","previousKcd":"M54.5","previousNote":"요통, 방사통 없음","today":"허리가 아퍼요","label":"same","tags":["typo"]}
+{"id":"C-063","previousKcd":"M54.5","previousNote":"요통, 방사통 없음","today":"요통이 심해졌어요","label":"same","tags":["same_wording"]}
+{"id":"C-064","previousKcd":"M54.5","previousNote":"요통, 방사통 없음","today":"허리부터 다리까지 저려요","label":"related","tags":["lookalike"]}
+{"id":"C-065","previousKcd":"M54.5","previousNote":"허리 통증, 물리치료 권유","today":"목이랑 어깨가 결려요","label":"related","tags":["related"]}
+{"id":"C-066","previousKcd":"M54.5","previousNote":"요통, 방사통 없음","today":"무릎이 아파요","label":"related","tags":["related"]}
+{"id":"C-067","previousKcd":"M54.5","previousNote":"요통, 방사통 없음","today":"허리가 아프고 소변 볼 때 따가워요","label":"different","tags":["lookalike","mixed"]}
+{"id":"C-068","previousKcd":"M54.5","previousNote":"허리 통증, 물리치료 권유","today":"속이 쓰려요","label":"different","tags":["different"]}
+{"id":"C-069","previousKcd":"M54.5","previousNote":"허리 통증, 물리치료 권유","today":"허리 삐끗했어요","label":"same","tags":["colloquial"]}
+{"id":"C-070","previousKcd":"M54.5","previousNote":"요통, 방사통 없음","today":"여기저기 아파요","label":"different","tags":["vague"]}
+{"id":"C-071","previousKcd":"K21.9","previousNote":"속쓰림, 야간 악화","today":"속이 쓰려요","label":"same","tags":["synonym"]}
+{"id":"C-072","previousKcd":"K21.9","previousNote":"위식도역류 증상","today":"밥 먹고 나면 가슴이 타는 느낌이에요","label":"same","tags":["synonym"]}
+{"id":"C-073","previousKcd":"K21.9","previousNote":"위식도역류 증상","today":"신물이 올라와요","label":"same","tags":["synonym"]}
+{"id":"C-074","previousKcd":"K21.9","previousNote":"속쓰림, 야간 악화","today":"속쓰림이 심해여","label":"same","tags":["typo"]}
+{"id":"C-075","previousKcd":"K21.9","previousNote":"속쓰림, 야간 악화","today":"누우면 목까지 시큼한 게 올라와요","label":"same","tags":["colloquial"]}
+{"id":"C-076","previousKcd":"K21.9","previousNote":"속쓰림, 야간 악화","today":"체한 것 같고 더부룩해요","label":"related","tags":["related"]}
+{"id":"C-077","previousKcd":"K21.9","previousNote":"위식도역류 증상","today":"배가 아프고 설사해요","label":"related","tags":["related"]}
+{"id":"C-078","previousKcd":"K21.9","previousNote":"속쓰림, 야간 악화","today":"가슴이 쥐어짜듯 아프고 식은땀이 나요","label":"different","tags":["lookalike"]}
+{"id":"C-079","previousKcd":"K21.9","previousNote":"위식도역류 증상","today":"두통이 자주 와요","label":"different","tags":["different"]}
+{"id":"C-080","previousKcd":"K21.9","previousNote":"속쓰림, 야간 악화","today":"허리가 아파요","label":"different","tags":["different"]}
+{"id":"C-081","previousKcd":"K21.9","previousNote":"위식도역류 증상","today":"목에 뭐가 걸린 느낌이에요","label":"related","tags":["lookalike"]}
+{"id":"C-082","previousKcd":"L20.9","previousNote":"팔 오금 가려움, 건조","today":"피부가 가려워요","label":"same","tags":["synonym"]}
+{"id":"C-083","previousKcd":"L20.9","previousNote":"팔 오금 가려움, 건조","today":"팔 접히는 곳이 빨갛고 간지러워요","label":"same","tags":["synonym"]}
+{"id":"C-084","previousKcd":"L20.9","previousNote":"아토피 피부염 악화","today":"아토피가 심해졌어요","label":"same","tags":["same_wording"]}
+{"id":"C-085","previousKcd":"L20.9","previousNote":"팔 오금 가려움, 건조","today":"피부가 가렵어요","label":"same","tags":["typo"]}
+{"id":"C-086","previousKcd":"L20.9","previousNote":"아토피 피부염 악화","today":"피부가 건조하고 긁으면 진물이 나요","label":"same","tags":["colloquial"]}
+{"id":"C-087","previousKcd":"L20.9","previousNote":"팔 오금 가려움, 건조","today":"갑자기 온몸에 두드러기가 났어요","label":"related","tags":["lookalike"]}
+{"id":"C-088","previousKcd":"L20.9","previousNote":"팔 오금 가려움, 건조","today":"발가락 사이가 갈라지고 가려워요","label":"related","tags":["lookalike"]}
+{"id":"C-089","previousKcd":"L20.9","previousNote":"아토피 피부염 악화","today":"코가 간지럽고 재채기가 나요","label":"different","tags":["lookalike"]}
+{"id":"C-090","previousKcd":"L20.9","previousNote":"팔 오금 가려움, 건조","today":"속이 쓰려요","label":"different","tags":["different"]}
+{"id":"C-091","previousKcd":"L20.9","previousNote":"아토피 피부염 악화","today":"얼굴에 여드름이 많이 났어요","label":"related","tags":["related"]}
+{"id":"C-092","previousKcd":"G43.9","previousNote":"편측 두통, 빛 과민","today":"머리 한쪽이 지끈거려요","label":"same","tags":["synonym"]}
+{"id":"C-093","previousKcd":"G43.9","previousNote":"편두통 반복","today":"두통이 자주 와요","label":"same","tags":["synonym"]}
+{"id":"C-094","previousKcd":"G43.9","previousNote":"편두통 반복","today":"편두통이 또 왔어요","label":"same","tags":["same_wording"]}
+{"id":"C-095","previousKcd":"G43.9","previousNote":"편측 두통, 빛 과민","today":"두퉁이 있어요","label":"same","tags":["typo"]}
+{"id":"C-096","previousKcd":"G43.9","previousNote":"편측 두통, 빛 과민","today":"머리가 깨질 것 같고 빛을 보면 더 아파요","label":"same","tags":["synonym"]}
+{"id":"C-097","previousKcd":"G43.9","previousNote":"편두통 반복","today":"어지러워서 서 있기 힘들어요","label":"related","tags":["lookalike"]}
+{"id":"C-098","previousKcd":"G43.9","previousNote":"편측 두통, 빛 과민","today":"머리를 부딪혀서 아파요","label":"different","tags":["lookalike"]}
+{"id":"C-099","previousKcd":"G43.9","previousNote":"편두통 반복","today":"뒷목이 뻐근해요","label":"related","tags":["lookalike"]}
+{"id":"C-100","previousKcd":"G43.9","previousNote":"편측 두통, 빛 과민","today":"속이 쓰려요","label":"different","tags":["different"]}
+{"id":"C-101","previousKcd":"G43.9","previousNote":"편두통 반복","today":"머리카락이 많이 빠져요","label":"different","tags":["lookalike"]}
+{"id":"C-102","previousKcd":"J02.9","previousNote":"인후통, 발열 없음","today":"피곤하고 기운이 없어요","label":"different","tags":["vague"]}
