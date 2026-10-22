@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import type { ReactNode } from "react";
+import Link from "next/link";
 import { DemoBanner } from "@/components/DemoBanner";
+import { Logo } from "@/components/Logo";
 import { MainNav } from "@/components/MainNav";
 import { RoleSwitch } from "@/components/RoleSwitch";
 import { TextSizeToggle } from "@/components/TextSizeToggle";
@@ -8,7 +10,7 @@ import { getRole } from "./role";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "재진 확인 콘솔 (데모)",
+  title: "솔 · 비대면진료 검토 (데모)",
   description: "비대면 진료 대상 확인과 처방 제한을 돕는 가상 데이터 데모",
 };
 
@@ -26,7 +28,11 @@ export default async function RootLayout({ children }: { children: ReactNode }) 
         <DemoBanner />
         <header className="border-b border-border bg-surface">
           <div className="mx-auto flex max-w-6xl flex-wrap items-center justify-between gap-2 px-4 py-3">
-            <p className="text-lg font-bold text-accent">재진 확인 콘솔</p>
+            <Link href="/" className="flex items-center gap-2 rounded">
+              <Logo className="h-8 w-8 flex-none" />
+              <span className="text-2xl leading-none font-black tracking-tight text-accent">솔</span>
+              <span className="text-text-muted">비대면진료 검토</span>
+            </Link>
             <MainNav />
             <div className="flex flex-wrap items-center gap-3">
               <RoleSwitch role={role} />
