@@ -221,9 +221,11 @@ async function Result({ query, today }: { query: z.infer<typeof QuerySchema>; to
 
       <StatusLine
         tone={rx.result === "allowed" ? "ok" : "danger"}
-        title={`${drug.name} ${query.days}일 · ${rx.result === "allowed" ? "처방 가능" : "처방 차단"}`}
+        title={`${drug.name} ${query.days}일 · ${rx.result === "allowed" ? "규칙상 차단 없음" : "규칙상 차단"}`}
       >
         <p>{prescriptionText(rx, CATEGORY_LABEL[drug.category], extensionUsed?.date ?? null)}</p>
+        {/* The check covers telehealth rules only; it must never read as approval of the prescription itself. */}
+        <p className="mt-1 text-text-muted">용량과 기간이 적절한지는 의사가 판단해요.</p>
       </StatusLine>
 
       <div className="rounded border border-border bg-surface p-4">
