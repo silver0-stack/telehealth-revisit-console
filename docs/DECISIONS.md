@@ -24,3 +24,14 @@ make the boundary day depend on the server's timezone. Request times keep a full
 ## D5. Own seeded PRNG instead of a faker library (2026-10-22)
 A 10-line mulberry32 function gives reproducible data. A faker library would add a dependency and
 risk producing realistic-looking names, phone numbers or addresses, which hard rule 1 forbids.
+
+## D6. Eligibility takes a confirmed KCD code, not free text (2026-10-22)
+`checkEligibility` compares `symptomKcdCode` with the visit's `kcdCode`. Turning the patient's free text
+into a code is the symptom matcher's job (M3/M4) plus a clinician's confirmation. Keeping that out of the
+rule function keeps it deterministic and testable (rules must be code, not AI): same input, same answer, no AI call.
+
+## D7. Eligibility returns a reason code, not just true/false (2026-10-22)
+"Not eligible" has four different fixes for staff: book an in-person visit (`NO_VISIT`,
+`ONLY_TELEHEALTH_VISITS`), check the symptom (`NO_MATCHING_SYMPTOM`), or note the visit was too long ago
+(`OUTSIDE_WINDOW`). The result also carries the rule version and evidence visit id for the audit log.
+The order of checks decides which reason wins when several apply; tests pin that order.
