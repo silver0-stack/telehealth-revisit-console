@@ -300,7 +300,7 @@ export default async function RulesAdminPage({ searchParams }: { searchParams: S
               <tr>
                 <th scope="col" className="px-3 py-2">버전</th>
                 <th scope="col" className="px-3 py-2">출처</th>
-                <th scope="col" className="px-3 py-2">재진 기간</th>
+                <th scope="col" className="px-3 py-2 whitespace-nowrap">재진 기간</th>
                 <th scope="col" className="px-3 py-2">처방 규칙</th>
                 <th scope="col" className="px-3 py-2">근거 / 변경 이유</th>
                 <th scope="col" className="px-3 py-2">이전 버전 대비</th>
@@ -320,10 +320,10 @@ export default async function RulesAdminPage({ searchParams }: { searchParams: S
                         </span>
                       ) : null}
                     </th>
-                    <td className="px-3 py-2">
+                    <td className="px-3 py-2 whitespace-nowrap">
                       {origin === "file" ? "규칙 파일" : `${savedBy ?? "관리자"} · ${savedAt ? formatSeoul(savedAt) : ""}`}
                     </td>
-                    <td className="px-3 py-2">{periodLabel(r.followUp.window)}</td>
+                    <td className="px-3 py-2 whitespace-nowrap">{periodLabel(r.followUp.window)}</td>
                     <td className="px-3 py-2">{prescriptionSummary(r)}</td>
                     <td className="px-3 py-2">{r.source}</td>
                     <td className="px-3 py-2 whitespace-nowrap">
