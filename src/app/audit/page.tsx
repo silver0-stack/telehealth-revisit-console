@@ -47,7 +47,7 @@ function ChangeSummary({ event }: { event: AuditEvent }) {
 export default async function AuditPage() {
   // In-memory state changes per request, so this page must never be prerendered at build time.
   await connection();
-  const events = listAuditEvents();
+  const events = await listAuditEvents();
   return (
     <>
       <h1 className="text-2xl font-bold">감사 로그</h1>
@@ -89,8 +89,10 @@ export default async function AuditPage() {
                       <Link href={`/reviews/${e.subject.id}`} className="font-mono text-accent underline">
                         {e.subject.id}
                       </Link>
-                    ) : (
+                    ) : e.subject.type === "rules" ? (
                       <span className="font-mono">규칙 {e.subject.id}</span>
+                    ) : (
+                      "데모 전체"
                     )}
                   </td>
                   <td className="px-3 py-2">

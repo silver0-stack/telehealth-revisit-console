@@ -72,6 +72,11 @@ describe("describeChange", () => {
     expect(rows?.[2]?.after).toContain("새로 차단 2");
   });
 
+  it("describes a demo reset", () => {
+    const rows = describeChange({ subject: { type: "demo", id: "reset" }, before: null, after: null });
+    expect(rows?.[0]?.label).toBe("초기화");
+  });
+
   it("returns null for a shape it does not know, so the page shows the raw JSON instead", () => {
     expect(describeChange({ subject: request, before: { status: "unknown" }, after: null })).toBeNull();
     expect(describeChange({ subject: rules, before: null, after: { version: "v3" } })).toBeNull();

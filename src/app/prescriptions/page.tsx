@@ -51,7 +51,7 @@ export default async function PrescriptionsPage({ searchParams }: { searchParams
 
   const source = getRecordSource();
   const [patients, today] = await Promise.all([source.listPatients(), source.getToday()]);
-  const rules = getRules();
+  const rules = await getRules();
 
   return (
     <>
@@ -176,7 +176,7 @@ async function Result({ query, today }: { query: z.infer<typeof QuerySchema>; to
     );
   }
 
-  const rules = getRules();
+  const rules = await getRules();
   const [visits, history] = await Promise.all([source.listVisits(patient.id), source.listPrescriptions(patient.id)]);
   const eligibility = checkEligibility(
     {

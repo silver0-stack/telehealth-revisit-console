@@ -1,3 +1,4 @@
+import { z } from "zod";
 import { periodEnd, toSeoulDate } from "./dates.ts";
 import type { Rules } from "./rules.ts";
 import type { Patient, Sido, Visit } from "./types.ts";
@@ -32,6 +33,25 @@ export type EligibilityResult =
   | { kind: "follow_up"; ruleVersion: string; evidenceVisitId: string; windowEnd: string }
   | { kind: "first_visit"; ruleVersion: string; notFollowUp: NotFollowUpReason; region: RegionCheck }
   | { kind: "not_allowed"; ruleVersion: string; notFollowUp: NotFollowUpReason; region: "OUTSIDE_REGION" };
+
+const NotFollowUpReasonSchema = z.enum(["NO_VISIT", "ONLY_TELEHEALTH_VISITS", "NO_MATCHING_SYMPTOM", "OUTSIDE_WINDOW"]);
+
+// Results are stored with approved reviews, so reading one back from storage is a boundary.
+export const EligibilityResultSchema = z.discriminatedUnion("kind", [
+  z.object({ kind: z.literal("follow_up"), ruleVersion: z.string(), evidenceVisitId: z.string(), windowEnd: z.string() }),
+  z.object({
+    kind: z.literal("first_visit"),
+    ruleVersion: z.string(),
+    notFollowUp: NotFollowUpReasonSchema,
+    region: z.enum(["NOT_REQUIRED", "SAME_REGION", "EXCEPTION_CATEGORY", "OUTSIDE_REGION"]),
+  }),
+  z.object({
+    kind: z.literal("not_allowed"),
+    ruleVersion: z.string(),
+    notFollowUp: NotFollowUpReasonSchema,
+    region: z.literal("OUTSIDE_REGION"),
+  }),
+]) satisfies z.ZodType<EligibilityResult>;
 
 export function checkEligibility(input: EligibilityInput, rules: Rules): EligibilityResult {
   const ruleVersion = rules.version;

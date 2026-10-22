@@ -2,6 +2,7 @@ import type { EligibilityResult, NotFollowUpReason, RegionCheck } from "@/domain
 import type { PrescriptionCheck } from "@/domain/prescription";
 import type { AuditAction } from "@/domain/audit";
 import type { ReviewError, ReviewState } from "@/domain/review";
+import type { Role } from "@/domain/roles";
 import type { Period } from "@/domain/rules";
 import type { MatchLabel, MatcherInfo } from "@/domain/symptom";
 import type { DrugCategory } from "@/domain/types";
@@ -93,12 +94,13 @@ export const REVIEW_STATUS: Record<ReviewState["status"], { icon: string; text: 
   approved: { icon: "✓", text: "승인" },
 };
 
-export const REVIEW_ERROR_TEXT: Record<ReviewError | "INVALID_INPUT" | "NOT_FOUND", string> = {
+export const REVIEW_ERROR_TEXT: Record<ReviewError | "INVALID_INPUT" | "NOT_FOUND" | "FORBIDDEN_ROLE", string> = {
   ALREADY_APPROVED: "이미 승인한 요청이라 바꿀 수 없어요.",
   NO_SUGGESTION_TO_APPROVE: "미리 고른 제안이 없어요. 진단 코드를 고르고 \"수정하고 승인\"을 누르세요.",
   HOLD_REASON_REQUIRED: "보류 이유를 적어 주세요.",
   INVALID_INPUT: "입력값이 올바르지 않아요. 진단 코드를 목록에서 다시 고르세요.",
   NOT_FOUND: "요청을 찾을 수 없어요. 검토 목록에서 다시 고르세요.",
+  FORBIDDEN_ROLE: "검토 결정은 의사만 할 수 있어요. 화면 위에서 역할을 \"의사\"로 바꾸세요.",
 };
 
 export const AUDIT_ACTION_TEXT: Record<AuditAction, string> = {
@@ -106,6 +108,18 @@ export const AUDIT_ACTION_TEXT: Record<AuditAction, string> = {
   "review.edit_approve": "수정하고 승인",
   "review.hold": "보류",
   "rules.save": "규칙 새 버전 저장",
+  "demo.reset": "데모 초기화",
+};
+
+export const ROLE_LABEL: Record<Role, string> = {
+  doctor: "의사",
+  admin: "관리자",
+};
+
+/** Who the audit log names for each role. The demo has no real users. */
+export const ROLE_ACTOR: Record<Role, string> = {
+  doctor: "데모 의사",
+  admin: "데모 관리자",
 };
 
 export const PRESCRIPTION_REASON_SHORT: Record<PrescriptionCheck["reason"], string> = {

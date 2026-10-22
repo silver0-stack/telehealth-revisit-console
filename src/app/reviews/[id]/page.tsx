@@ -8,8 +8,11 @@ import {
   regionText,
   REVIEW_ERROR_TEXT,
   REVIEW_STATUS,
+  ROLE_LABEL,
   suggestionBadge,
 } from "@/components/labels";
+import { getRole } from "@/app/role";
+import { can } from "@/domain/roles";
 import { ProbabilityList } from "@/components/ProbabilityList";
 import { StatusLine, type Tone } from "@/components/StatusLine";
 import { getRecordSource } from "@/data";
@@ -56,9 +59,9 @@ export default async function ReviewDetailPage({ params, searchParams }: Props) 
   const visits = await source.listVisits(patient.id);
   const visitById = new Map(visits.map((v) => [v.id, v]));
   const { suggestion, candidates, minConfidence } = await getSuggestion(request, toSeoulDate(request.requestedAt));
-  const review = getReview(request.id);
+  const [review, rules, role] = await Promise.all([getReview(request.id), getRules(), getRole()]);
+  const canDecide = can(role, "review.decide");
   const status = REVIEW_STATUS[review.state.status];
-  const rules = getRules();
   const preselected = suggestion.kind === "preselect" ? suggestion.candidate : null;
   const shown = suggestion.kind === "preselect" ? suggestion.candidate : suggestion.kind === "needs_review" ? suggestion.best : null;
 
@@ -226,63 +229,74 @@ export default async function ReviewDetailPage({ params, searchParams }: Props) 
             ) : null}
           </div>
         ) : (
-          <div className="mt-2 grid gap-4 md:grid-cols-3">
-            <form action={reviewAction} className="rounded border border-border bg-surface p-4">
-              <input type="hidden" name="requestId" value={request.id} />
-              <input type="hidden" name="intent" value="approve" />
-              <h3 className="font-semibold">제안대로</h3>
-              <p className="mt-1 text-text-muted">
-                {preselected ? `${kcdLabel(preselected.kcdCode)}로 확정해요.` : "미리 고른 제안이 없어서 쓸 수 없어요."}
-              </p>
-              <button
-                type="submit"
-                disabled={!preselected}
-                className={`${buttonClass} mt-3 bg-accent text-accent-contrast disabled:cursor-not-allowed disabled:opacity-50`}
-              >
-                승인
-              </button>
-            </form>
-
-            <form action={reviewAction} className="rounded border border-border bg-surface p-4">
-              <input type="hidden" name="requestId" value={request.id} />
-              <input type="hidden" name="intent" value="edit_approve" />
-              <label htmlFor="kcdCode" className="font-semibold">
-                진단 코드 직접 고르기
-              </label>
-              <select id="kcdCode" name="kcdCode" required defaultValue="" className={inputClass}>
-                <option value="" disabled>
-                  코드를 고르세요
-                </option>
-                {Object.entries(KCD_NAMES).map(([code, name]) => (
-                  <option key={code} value={code}>
-                    {code} {name}
+          <>
+            {canDecide ? null : (
+              <div className="mt-2">
+                <StatusLine tone="warn" title={`${ROLE_LABEL[role]} 역할에서는 볼 수만 있어요`}>
+                  승인, 수정하고 승인, 보류는 의사만 할 수 있어요. 화면 위에서 역할을 &ldquo;의사&rdquo;로 바꾸세요.
+                </StatusLine>
+              </div>
+            )}
+            {/* A disabled fieldset turns off every control inside it; the server action checks the role too. */}
+            <fieldset disabled={!canDecide} className="mt-2 grid gap-4 disabled:opacity-60 md:grid-cols-3">
+              <legend className="sr-only">검토 결정</legend>
+              <form action={reviewAction} className="rounded border border-border bg-surface p-4">
+                <input type="hidden" name="requestId" value={request.id} />
+                <input type="hidden" name="intent" value="approve" />
+                <h3 className="font-semibold">제안대로</h3>
+                <p className="mt-1 text-text-muted">
+                  {preselected ? `${kcdLabel(preselected.kcdCode)}로 확정해요.` : "미리 고른 제안이 없어서 쓸 수 없어요."}
+                </p>
+                <button
+                  type="submit"
+                  disabled={!preselected}
+                  className={`${buttonClass} mt-3 bg-accent text-accent-contrast disabled:cursor-not-allowed disabled:opacity-50`}
+                >
+                  승인
+                </button>
+              </form>
+  
+              <form action={reviewAction} className="rounded border border-border bg-surface p-4">
+                <input type="hidden" name="requestId" value={request.id} />
+                <input type="hidden" name="intent" value="edit_approve" />
+                <label htmlFor="kcdCode" className="font-semibold">
+                  진단 코드 직접 고르기
+                </label>
+                <select id="kcdCode" name="kcdCode" required defaultValue="" className={inputClass}>
+                  <option value="" disabled>
+                    코드를 고르세요
                   </option>
-                ))}
-              </select>
-              <button type="submit" className={`${buttonClass} mt-3 bg-accent text-accent-contrast`}>
-                수정하고 승인
-              </button>
-            </form>
-
-            <form action={reviewAction} className="rounded border border-border bg-surface p-4">
-              <input type="hidden" name="requestId" value={request.id} />
-              <input type="hidden" name="intent" value="hold" />
-              <label htmlFor="reason" className="font-semibold">
-                보류 이유
-              </label>
-              <input
-                id="reason"
-                name="reason"
-                required
-                maxLength={200}
-                placeholder="예: 환자에게 증상 추가 확인 필요"
-                className={inputClass}
-              />
-              <button type="submit" className={`${buttonClass} mt-3 border border-border bg-surface text-text`}>
-                보류
-              </button>
-            </form>
-          </div>
+                  {Object.entries(KCD_NAMES).map(([code, name]) => (
+                    <option key={code} value={code}>
+                      {code} {name}
+                    </option>
+                  ))}
+                </select>
+                <button type="submit" className={`${buttonClass} mt-3 bg-accent text-accent-contrast`}>
+                  수정하고 승인
+                </button>
+              </form>
+  
+              <form action={reviewAction} className="rounded border border-border bg-surface p-4">
+                <input type="hidden" name="requestId" value={request.id} />
+                <input type="hidden" name="intent" value="hold" />
+                <label htmlFor="reason" className="font-semibold">
+                  보류 이유
+                </label>
+                <input
+                  id="reason"
+                  name="reason"
+                  required
+                  maxLength={200}
+                  placeholder="예: 환자에게 증상 추가 확인 필요"
+                  className={inputClass}
+                />
+                <button type="submit" className={`${buttonClass} mt-3 border border-border bg-surface text-text`}>
+                  보류
+                </button>
+              </form>
+            </fieldset>
+          </>
         )}
       </section>
     </>

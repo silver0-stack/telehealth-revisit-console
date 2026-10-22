@@ -1,3 +1,5 @@
+import { z } from "zod";
+
 // Types shared by every symptom matcher (rule-based or AI). They live in the domain so the
 // review logic can use them without depending on any matcher implementation.
 
@@ -36,6 +38,27 @@ export type Suggestion =
   | { kind: "needs_review"; best: MatchCandidate | null }
   /** No in-person visit to compare with. */
   | { kind: "no_candidates" };
+
+// Suggestions are stored so every server instance shows the clinician the same numbers (D15),
+// which makes reading one back from storage a boundary.
+const MatchLabelSchema = z.enum(MATCH_LABELS);
+
+export const MatchCandidateSchema = z.object({
+  visitId: z.string(),
+  kcdCode: z.string(),
+  match: z.object({
+    label: MatchLabelSchema,
+    probabilities: z.object({ same: z.number(), related: z.number(), different: z.number() }),
+    matcher: z.object({ kind: z.enum(["rules", "ai"]), id: z.string(), version: z.string() }),
+    explanation: z.string().nullable(),
+  }),
+}) satisfies z.ZodType<MatchCandidate>;
+
+export const SuggestionSchema = z.discriminatedUnion("kind", [
+  z.object({ kind: z.literal("preselect"), candidate: MatchCandidateSchema }),
+  z.object({ kind: z.literal("needs_review"), best: MatchCandidateSchema.nullable() }),
+  z.object({ kind: z.literal("no_candidates") }),
+]) satisfies z.ZodType<Suggestion>;
 
 export function topProbability(match: SymptomMatch): number {
   return Math.max(...MATCH_LABELS.map((l) => match.probabilities[l]));

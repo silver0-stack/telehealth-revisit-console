@@ -2,7 +2,9 @@ import type { Metadata } from "next";
 import type { ReactNode } from "react";
 import { DemoBanner } from "@/components/DemoBanner";
 import { MainNav } from "@/components/MainNav";
+import { RoleSwitch } from "@/components/RoleSwitch";
 import { TextSizeToggle } from "@/components/TextSizeToggle";
+import { getRole } from "./role";
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -10,7 +12,8 @@ export const metadata: Metadata = {
   description: "비대면 진료 대상 확인과 처방 제한을 돕는 가상 데이터 데모",
 };
 
-export default function RootLayout({ children }: { children: ReactNode }) {
+export default async function RootLayout({ children }: { children: ReactNode }) {
+  const role = await getRole();
   return (
     <html lang="ko">
       <body>
@@ -25,7 +28,10 @@ export default function RootLayout({ children }: { children: ReactNode }) {
           <div className="mx-auto flex max-w-6xl flex-wrap items-center justify-between gap-2 px-4 py-3">
             <p className="text-lg font-bold text-accent">재진 확인 콘솔</p>
             <MainNav />
-            <TextSizeToggle />
+            <div className="flex flex-wrap items-center gap-3">
+              <RoleSwitch role={role} />
+              <TextSizeToggle />
+            </div>
           </div>
         </header>
         <main id="main" className="mx-auto max-w-6xl px-4 py-6">

@@ -3,7 +3,14 @@ import { IsoDateTimeSchema } from "./types.ts";
 
 // One entry per human decision. Entries are append-only: nothing in the app edits or deletes them.
 
-export const AuditActionSchema = z.enum(["review.approve", "review.edit_approve", "review.hold", "rules.save"]);
+export const AuditActionSchema = z.enum([
+  "review.approve",
+  "review.edit_approve",
+  "review.hold",
+  "rules.save",
+  // Demo only: a public demo needs a way back to the starting state. A real audit log is never cleared.
+  "demo.reset",
+]);
 export type AuditAction = z.infer<typeof AuditActionSchema>;
 
 const ProbabilitiesSchema = z.object({ same: z.number(), related: z.number(), different: z.number() });
@@ -25,7 +32,7 @@ export const AuditEventSchema = z.object({
   at: IsoDateTimeSchema,
   actor: z.string().min(1),
   action: AuditActionSchema,
-  subject: z.object({ type: z.enum(["request", "rules"]), id: z.string() }),
+  subject: z.object({ type: z.enum(["request", "rules", "demo"]), id: z.string() }),
   before: z.json().nullable(),
   after: z.json().nullable(),
   suggestion: AuditSuggestionSchema.nullable(),

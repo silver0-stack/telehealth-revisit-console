@@ -13,8 +13,9 @@ import type { AuditSuggestion } from "@/domain/audit";
 import { toSeoulDate } from "@/domain/dates";
 import { checkEligibility } from "@/domain/eligibility";
 import { applyReviewAction, type ReviewAction } from "@/domain/review";
-
-const ACTOR = "데모 의사";
+import { can } from "@/domain/roles";
+import { ROLE_ACTOR } from "@/components/labels";
+import { getRole } from "@/app/role";
 
 const FormSchema = z.discriminatedUnion("intent", [
   z.object({ intent: z.literal("approve"), requestId: z.string() }),
@@ -41,12 +42,14 @@ function toAuditSuggestion({ suggestion, minConfidence }: SuggestionRecord): Aud
   };
 }
 
-// Server actions accept any POST, not only this form. The demo has no login (see README);
-// a real app would check here that the user is a clinician allowed to review this request.
+// Server actions accept any POST, not only this form, so the role is checked here and not only by
+// disabling buttons. The demo has no login (see README): the role comes from the on-screen switch.
 export async function reviewAction(formData: FormData) {
   const parsed = FormSchema.safeParse(Object.fromEntries(formData));
   const requestId = String(formData.get("requestId") ?? "");
   const back = `/reviews/${encodeURIComponent(requestId)}`;
+  const role = await getRole();
+  if (!can(role, "review.decide")) redirect(`${back}?error=FORBIDDEN_ROLE`);
   if (!parsed.success) redirect(`${back}?error=INVALID_INPUT`);
   const form = parsed.data;
 
@@ -67,12 +70,12 @@ export async function reviewAction(formData: FormData) {
         ? { type: "edit_approve", kcdCode: form.kcdCode }
         : { type: "hold", reason: form.reason };
 
-  const current = getReview(request.id);
+  const current = await getReview(request.id);
   const transition = applyReviewAction(current.state, action);
   if (!transition.ok) redirect(`${back}?error=${transition.error}`);
   const next = transition.next;
 
-  const rules = getRules();
+  const rules = await getRules();
   const eligibility =
     next.status === "approved"
       ? checkEligibility(
@@ -87,9 +90,9 @@ export async function reviewAction(formData: FormData) {
         )
       : null;
 
-  saveReview(request.id, { state: next, eligibility });
-  appendAuditEvent({
-    actor: ACTOR,
+  await saveReview(request.id, { state: next, eligibility });
+  await appendAuditEvent({
+    actor: ROLE_ACTOR[role],
     action: form.intent === "approve" ? "review.approve" : form.intent === "edit_approve" ? "review.edit_approve" : "review.hold",
     subject: { type: "request", id: request.id },
     before: current.state,

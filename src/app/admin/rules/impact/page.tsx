@@ -13,7 +13,7 @@ const selectClass = "mt-1 block rounded border border-border bg-surface px-3 py-
 
 export default async function RuleImpactPage({ searchParams }: { searchParams: SearchParams }) {
   const { from, to } = await searchParams;
-  const versions = listRuleVersions().map((e) => e.rules);
+  const versions = (await listRuleVersions()).map((e) => e.rules);
   const fromRules = versions.find((r) => r.version === from);
   const toRules = versions.find((r) => r.version === to);
   // Default to the most recent change, which is the question people usually have.

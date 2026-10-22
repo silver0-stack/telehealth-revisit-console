@@ -2,6 +2,8 @@ import { z } from "zod";
 import { findDrug } from "../data/drugs.ts";
 import { KCD_NAMES } from "../data/kcd.ts";
 import type { AuditEvent } from "../domain/audit.ts";
+import { EligibilityResultSchema } from "../domain/eligibility.ts";
+import { ReviewStateSchema } from "../domain/review.ts";
 import { DrugCategorySchema } from "../domain/types.ts";
 import { CATEGORY_LABEL, ELIGIBILITY_TITLE, NOT_FOLLOW_UP_SHORT, REVIEW_STATUS } from "./labels.ts";
 
@@ -12,22 +14,7 @@ import { CATEGORY_LABEL, ELIGIBILITY_TITLE, NOT_FOLLOW_UP_SHORT, REVIEW_STATUS }
 
 export type ChangeRow = { label: string; before: string | null; after: string };
 
-const ReviewStateSchema = z.discriminatedUnion("status", [
-  z.object({ status: z.literal("pending") }),
-  z.object({ status: z.literal("held"), reason: z.string() }),
-  z.object({ status: z.literal("approved"), kcdCode: z.string(), editedSuggestion: z.boolean() }),
-]);
-
-const EligibilitySchema = z.discriminatedUnion("kind", [
-  z.object({ kind: z.literal("follow_up"), ruleVersion: z.string(), evidenceVisitId: z.string(), windowEnd: z.string() }),
-  z.object({
-    kind: z.enum(["first_visit", "not_allowed"]),
-    ruleVersion: z.string(),
-    notFollowUp: z.enum(["NO_VISIT", "ONLY_TELEHEALTH_VISITS", "NO_MATCHING_SYMPTOM", "OUTSIDE_WINDOW"]),
-  }),
-]);
-
-const ReviewAfterSchema = z.intersection(ReviewStateSchema, z.object({ eligibility: EligibilitySchema.optional() }));
+const ReviewAfterSchema = z.intersection(ReviewStateSchema, z.object({ eligibility: EligibilityResultSchema.optional() }));
 
 const RulesSnapshotSchema = z.object({
   version: z.string(),
@@ -52,7 +39,14 @@ const RulesAfterSchema = RulesSnapshotSchema.extend({
 });
 
 export function describeChange(event: Pick<AuditEvent, "subject" | "before" | "after">): ChangeRow[] | null {
-  return event.subject.type === "request" ? describeReview(event.before, event.after) : describeRules(event.before, event.after);
+  switch (event.subject.type) {
+    case "request":
+      return describeReview(event.before, event.after);
+    case "rules":
+      return describeRules(event.before, event.after);
+    case "demo":
+      return [{ label: "초기화", before: null, after: "검토 결정, 이전 감사 로그, 관리자가 저장한 규칙 버전을 지움" }];
+  }
 }
 
 function describeReview(beforeJson: unknown, afterJson: unknown): ChangeRow[] | null {

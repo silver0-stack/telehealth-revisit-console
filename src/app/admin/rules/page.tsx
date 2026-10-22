@@ -1,16 +1,18 @@
 import Link from "next/link";
 import { formatSeoul } from "@/components/format";
 import { ImpactReport } from "@/components/ImpactReport";
-import { CATEGORY_LABEL, periodLabel } from "@/components/labels";
+import { getRole } from "@/app/role";
+import { CATEGORY_LABEL, periodLabel, ROLE_LABEL } from "@/components/labels";
 import { StatusLine } from "@/components/StatusLine";
 import { getRecordSource } from "@/data";
 import { DRUGS, findDrug } from "@/data/drugs";
 import { computeImpact } from "@/data/impact";
 import { KCD_NAMES } from "@/data/kcd";
 import { getRules, listRuleVersions } from "@/data/rules";
+import { can } from "@/domain/roles";
 import type { Rules } from "@/domain/rules";
 import { DrugCategorySchema } from "@/domain/types";
-import { saveRulesAction } from "./actions";
+import { resetDemoAction, saveRulesAction } from "./actions";
 import { draftFromForm, parseRuleForm, readerFromSearchParams, type RuleForm } from "./form";
 
 type SearchParams = Promise<{ [key: string]: string | string[] | undefined }>;
@@ -24,6 +26,8 @@ const ERROR_TEXT: Record<string, string> = {
   extendedTimesPerPatient: "예외 사용 횟수는 0~10 사이 숫자로 적어 주세요.",
   note: "변경 이유를 5~200자로 적어 주세요. 버전 기록에 남아요.",
   STALE_PREVIEW: "미리보기 뒤에 다른 버전이 저장됐어요. 지금 규칙 기준으로 다시 미리보기 하세요.",
+  FORBIDDEN_ROLE: "규칙 저장과 데모 초기화는 관리자만 할 수 있어요. 화면 위에서 역할을 \"관리자\"로 바꾸세요.",
+  RESET_CONFIRM: "초기화하려면 지워지는 내용을 확인했다는 칸에 체크하세요.",
 };
 
 const RESTRICTED_CATEGORIES = DrugCategorySchema.options.filter((c) => c !== "general");
@@ -56,9 +60,9 @@ function formDefaults(rules: Rules, draft: RuleForm | null): Omit<RuleForm, "bas
 
 export default async function RulesAdminPage({ searchParams }: { searchParams: SearchParams }) {
   const params = await searchParams;
-  const { saved, error, preview } = params;
-  const rules = getRules();
-  const versions = listRuleVersions();
+  const { saved, error, preview, reset } = params;
+  const [rules, versions, role] = await Promise.all([getRules(), listRuleVersions(), getRole()]);
+  const isAdmin = can(role, "rules.save");
   const errorFields = typeof error === "string" ? error.split(",") : [];
 
   // Step 1 of saving: the form is sent with GET and shown here as a preview. Saving is a separate
@@ -81,6 +85,11 @@ export default async function RulesAdminPage({ searchParams }: { searchParams: S
       </p>
 
       <div className="mt-4 space-y-3" aria-live="polite">
+        {reset === "1" ? (
+          <StatusLine tone="ok" title="데모를 처음 상태로 되돌렸어요">
+            모든 요청이 다시 검토 대기예요. 초기화 기록은 감사 로그의 첫 줄에 남았어요.
+          </StatusLine>
+        ) : null}
         {typeof saved === "string" ? (
           <StatusLine tone="ok" title={`${saved} 버전으로 저장했어요`}>
             처방 확인과 검토 화면이 이제 {saved} 규칙을 써요. 저장 기록은 감사 로그에 남았어요.
@@ -135,6 +144,13 @@ export default async function RulesAdminPage({ searchParams }: { searchParams: S
               kcdNames={KCD_NAMES}
             />
           </div>
+          {isAdmin ? null : (
+            <div className="mt-6">
+              <StatusLine tone="warn" title={`${ROLE_LABEL[role]} 역할에서는 미리보기만 할 수 있어요`}>
+                새 버전 저장은 관리자만 할 수 있어요. 화면 위에서 역할을 &ldquo;관리자&rdquo;로 바꾸세요.
+              </StatusLine>
+            </div>
+          )}
           <form action={saveRulesAction} className="mt-6 flex flex-wrap items-center gap-3">
             <input type="hidden" name="baseVersion" value={draft.baseVersion} />
             {draft.blockedCategories.map((c) => (
@@ -148,7 +164,11 @@ export default async function RulesAdminPage({ searchParams }: { searchParams: S
             <input type="hidden" name="extendedMaxDays" value={draft.extendedMaxDays} />
             <input type="hidden" name="extendedTimesPerPatient" value={draft.extendedTimesPerPatient} />
             <input type="hidden" name="note" value={draft.note} />
-            <button type="submit" className="rounded bg-accent px-4 py-2 font-semibold text-accent-contrast">
+            <button
+              type="submit"
+              disabled={!isAdmin}
+              className="rounded bg-accent px-4 py-2 font-semibold text-accent-contrast disabled:cursor-not-allowed disabled:opacity-50"
+            >
               이대로 새 버전으로 저장
             </button>
             <Link href="/admin/rules" className="text-accent underline">
@@ -320,7 +340,33 @@ export default async function RulesAdminPage({ searchParams }: { searchParams: S
             </tbody>
           </table>
         </div>
-        <p className="mt-2 text-text-muted">관리자 화면에서 저장한 버전은 데모 서버를 다시 켜면 사라져요.</p>
+        <p className="mt-2 text-text-muted">관리자 화면에서 저장한 버전은 데모 초기화를 하면 지워져요.</p>
+      </section>
+
+      <section className="mt-8" aria-labelledby="reset-heading">
+        <h2 id="reset-heading" className="text-xl font-bold">
+          데모 초기화
+        </h2>
+        <p className="mt-1 text-text-muted">
+          공개 데모라서 다른 방문자가 이미 요청을 승인했을 수 있어요. 처음 상태로 되돌리면 모든 요청이 다시 검토 대기가 돼요.
+        </p>
+        {isAdmin ? (
+          <form action={resetDemoAction} className="mt-2 space-y-3 rounded border border-border bg-surface p-4">
+            <label className="flex items-start gap-2">
+              <input type="checkbox" name="confirm" required className="mt-1.5" />
+              <span>
+                검토 결정, 감사 로그, 관리자가 저장한 규칙 버전이 지워지는 것을 확인했어요. (AI 제안은 남겨 둬요.)
+              </span>
+            </label>
+            <button type="submit" className="rounded border border-status-danger px-4 py-2 font-semibold text-status-danger">
+              데모 초기화
+            </button>
+          </form>
+        ) : (
+          <p className="mt-2 rounded border border-dashed border-border p-4">
+            초기화는 관리자만 할 수 있어요. 화면 위에서 역할을 &ldquo;관리자&rdquo;로 바꾸세요.
+          </p>
+        )}
       </section>
     </>
   );

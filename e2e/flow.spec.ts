@@ -66,6 +66,15 @@ test("보류: holding needs a reason and is shown on the request", async ({ page
   await expect(page.getByText(/이유: 환자에게 증상 추가 확인 필요/)).toBeVisible();
 });
 
+test("역할: an admin can look at a review but only a doctor can decide it", async ({ page }) => {
+  await page.goto("/reviews/R-0003");
+  await page.getByRole("button", { name: "관리자" }).click();
+  await expect(page.getByRole("button", { name: "관리자" })).toHaveAttribute("aria-pressed", "true");
+  await expect(page.getByText("관리자 역할에서는 볼 수만 있어요")).toBeVisible();
+  await expect(page.getByRole("button", { name: "수정하고 승인" })).toBeDisabled();
+  await expect(page.getByRole("button", { name: "보류", exact: true })).toBeDisabled();
+});
+
 test("감사 로그: every decision above was recorded with the suggestion shown at the time", async ({ page }) => {
   await page.goto("/audit");
   const rows = page.locator("tbody tr");
@@ -77,8 +86,9 @@ test("감사 로그: every decision above was recorded with the suggestion shown
   await expect(rows.filter({ hasText: "R-0002" })).toContainText("보류: 환자에게 증상 추가 확인 필요");
 });
 
-test("규칙: a new version can only be saved after its impact preview", async ({ page }) => {
+test("규칙: a new version can only be saved by an admin, after its impact preview", async ({ page }) => {
   await page.goto("/admin/rules");
+  await page.getByRole("button", { name: "관리자" }).click();
   await expect(page.getByRole("button", { name: "이대로 새 버전으로 저장" })).toHaveCount(0);
 
   await page.getByLabel(/이부프로펜/).check();
@@ -95,4 +105,23 @@ test("규칙 비교: moving from the 30-day placeholder to the draft rules shows
   await page.goto("/admin/rules/impact?from=v1&to=v2");
   await expect(page.locator("dl > div").filter({ hasText: "새로 재진이 됨" })).toContainText("27건");
   await expect(page.locator("dl > div").filter({ hasText: "비대면진료 불가로" })).toContainText("2건");
+});
+
+test("데모 초기화: an admin brings back the starting state, and the reset itself is logged", async ({ page }) => {
+  await page.goto("/admin/rules");
+  await expect(page.getByText("초기화는 관리자만 할 수 있어요")).toBeVisible();
+  await page.getByRole("button", { name: "관리자" }).click();
+
+  await page.getByLabel(/지워지는 것을 확인했어요/).check();
+  await page.getByRole("button", { name: "데모 초기화" }).click();
+  await expect(page.getByText("데모를 처음 상태로 되돌렸어요")).toBeVisible();
+  await expect(page.getByRole("heading", { name: "지금 적용 중: v2" })).toBeVisible();
+
+  await page.goto("/audit");
+  const rows = page.locator("tbody tr");
+  await expect(rows).toHaveCount(1);
+  await expect(rows.first()).toContainText("데모 초기화");
+
+  await page.goto("/reviews/R-0012");
+  await expect(page.getByText("검토 대기")).toBeVisible();
 });

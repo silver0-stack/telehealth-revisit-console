@@ -1,3 +1,5 @@
+import { z } from "zod";
+
 // State of a clinician's review of one telehealth request. Kept as a tiny pure state machine so
 // "what can happen next" is decided in one tested place, not scattered across buttons.
 
@@ -5,6 +7,13 @@ export type ReviewState =
   | { status: "pending" }
   | { status: "held"; reason: string }
   | { status: "approved"; kcdCode: string; editedSuggestion: boolean };
+
+// Reviews are stored outside the process (database), so reading one back is a boundary.
+export const ReviewStateSchema = z.discriminatedUnion("status", [
+  z.object({ status: z.literal("pending") }),
+  z.object({ status: z.literal("held"), reason: z.string() }),
+  z.object({ status: z.literal("approved"), kcdCode: z.string(), editedSuggestion: z.boolean() }),
+]) satisfies z.ZodType<ReviewState>;
 
 export type ReviewAction =
   /** "승인": accept the pre-selected suggestion as is. */
