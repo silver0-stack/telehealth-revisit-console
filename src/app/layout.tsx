@@ -2,11 +2,12 @@ import type { Metadata } from "next";
 import localFont from "next/font/local";
 import type { ReactNode } from "react";
 import Link from "next/link";
-import { DemoBanner } from "@/components/DemoBanner";
+import { DemoBadge, DemoBanner } from "@/components/DemoBanner";
 import { Logo } from "@/components/Logo";
 import { MainNav } from "@/components/MainNav";
 import { RoleSwitch } from "@/components/RoleSwitch";
 import { TextSizeToggle } from "@/components/TextSizeToggle";
+import { isBannerCollapsed } from "./banner";
 import { getRole } from "./role";
 
 // Pretendard 1.3.9 (SIL OFL, license next to the file), self-hosted so the page never calls a font CDN.
@@ -25,7 +26,7 @@ export const metadata: Metadata = {
 };
 
 export default async function RootLayout({ children }: { children: ReactNode }) {
-  const role = await getRole();
+  const [role, bannerCollapsed] = await Promise.all([getRole(), isBannerCollapsed()]);
   return (
     <html lang="ko" className={pretendard.variable}>
       <body>
@@ -35,14 +36,17 @@ export default async function RootLayout({ children }: { children: ReactNode }) 
         >
           본문으로 건너뛰기
         </a>
-        <DemoBanner />
+        {bannerCollapsed ? null : <DemoBanner />}
         <header className="border-b border-border bg-surface">
           <div className="mx-auto flex max-w-6xl flex-wrap items-center justify-between gap-2 px-4 py-3">
-            <Link href="/" className="flex items-center gap-2 rounded">
-              <Logo className="h-8 w-8 flex-none" />
-              <span className="text-2xl leading-none font-black tracking-tight text-accent">솔</span>
-              <span className="text-text-muted">비대면진료 검토</span>
-            </Link>
+            <div className="flex flex-wrap items-center gap-3">
+              <Link href="/" className="flex items-center gap-2 rounded">
+                <Logo className="h-8 w-8 flex-none" />
+                <span className="text-2xl leading-none font-black tracking-tight text-accent">솔</span>
+                <span className="text-text-muted">비대면진료 검토</span>
+              </Link>
+              {bannerCollapsed ? <DemoBadge /> : null}
+            </div>
             <MainNav />
             <div className="flex flex-wrap items-center gap-3">
               <RoleSwitch role={role} />

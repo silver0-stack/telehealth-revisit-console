@@ -16,6 +16,20 @@ test("오늘 할 일 shows the open work, oldest request first, and keyboard use
   await expect(page.getByRole("link", { name: "본문으로 건너뛰기" })).toBeFocused();
 });
 
+test("synthetic-data notice folds into a header badge and opens again, and is never gone", async ({ page }) => {
+  await page.goto("/reviews");
+  await page.getByRole("button", { name: "안내 접기" }).click();
+  await expect(page.getByText("모든 데이터는 가상입니다")).toHaveCount(0);
+  await expect(page.getByRole("button", { name: "가상 데이터" })).toBeVisible();
+
+  // The folded state is remembered on the next screen too.
+  await page.goto("/audit");
+  await expect(page.getByRole("button", { name: "가상 데이터" })).toBeVisible();
+
+  await page.getByRole("button", { name: "가상 데이터" }).click();
+  await expect(page.getByText("모든 데이터는 가상입니다")).toBeVisible();
+});
+
 test("text size toggle enlarges the whole page and says its state", async ({ page }) => {
   await page.goto("/");
   const toggle = page.getByRole("button", { name: /큰 글씨/ });

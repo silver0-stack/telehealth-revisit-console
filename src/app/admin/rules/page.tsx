@@ -311,7 +311,7 @@ export default async function RulesAdminPage({ searchParams }: { searchParams: S
                 const previous = versions[i - 1]?.rules.version;
                 return (
                   <tr key={r.version} className="border-b border-border align-top last:border-0">
-                    <th scope="row" className="px-3 py-2 font-mono">
+                    <th scope="row" className="px-3 py-2 font-mono whitespace-nowrap">
                       {r.version}
                       {r.version === rules.version ? (
                         <span className="flex items-center gap-1 font-sans text-sm text-status-ok">
