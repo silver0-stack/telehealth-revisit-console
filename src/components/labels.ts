@@ -107,3 +107,21 @@ export const AUDIT_ACTION_TEXT: Record<AuditAction, string> = {
   "review.hold": "보류",
   "rules.save": "규칙 새 버전 저장",
 };
+
+export const PRESCRIPTION_REASON_SHORT: Record<PrescriptionCheck["reason"], string> = {
+  ALLOWED: "차단 없음",
+  ALLOWED_FIRST_VISIT_EXTENSION: "초진 예외로 허용",
+  TELEHEALTH_NOT_ALLOWED: "비대면진료 불가",
+  BLOCKED_CATEGORY: "금지 분류",
+  BLOCKED_DRUG: "개별 차단 약",
+  FIRST_VISIT_OVER_MAX_DAYS: "초진 일수 초과",
+  EXTENSION_NEEDS_HISTORY: "이력 확인 필요",
+  EXTENSION_OVER_MAX_DAYS: "예외 일수 초과",
+  EXTENSION_ALREADY_USED: "예외 이미 사용",
+};
+
+export const ELIGIBILITY_SHORT: Record<EligibilityResult["kind"], string> = {
+  follow_up: "일반(재진)",
+  first_visit: "초진",
+  not_allowed: "불가",
+};

@@ -34,7 +34,8 @@ pnpm dev                     # http://localhost:3000
 | `/reviews` | Telehealth requests. Each one compares the patient's words with earlier in-person visits and suggests a match; the clinician chooses 승인 / 수정하고 승인 / 보류 |
 | `/audit` | Append-only log of every human decision, with the suggestion, probabilities and matcher version shown at the time |
 | `/prescriptions` | Checks whether a request is follow-up (일반) or first-visit (초진) telehealth, and whether a drug and day count are allowed |
-| `/admin/rules` | Edits the telehealth prescription blocklist and day limits; every save becomes a new rule version |
+| `/admin/rules` | Edits the telehealth prescription blocklist and day limits. Shows who is affected first; only then can it be saved as a new rule version |
+| `/admin/rules/impact` | Compares any two rule versions (e.g. v1 → v2: 30 days → 6 months turns 27 first-visit scenarios into follow-ups) |
 
 ## Demo limitations
 
@@ -57,5 +58,5 @@ pnpm dev                     # http://localhost:3000
 - [x] M2 Restricted drugs (blocklist, first-visit day limits, versioned admin screen)
 - [x] M3 Review flow (rule-based matcher, clinician review, audit log)
 - [x] M4 Jev + evaluation (Jev: 0 wrong pre-selections vs 7 for the rule-based baseline, see [eval/README.md](eval/README.md))
-- [ ] M5 Rule-change impact preview
+- [x] M5 Rule-change impact preview (`diffRules`, preview before save, version comparison)
 - [ ] M6 E2E, accessibility, write-up

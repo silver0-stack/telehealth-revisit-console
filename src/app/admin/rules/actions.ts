@@ -2,64 +2,36 @@
 
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
-import { z } from "zod";
 import { appendAuditEvent } from "@/data/audit-log";
+import { computeImpact } from "@/data/impact";
 import { getRules, saveRuleVersion } from "@/data/rules";
-import { DrugCategorySchema, DrugSchema } from "@/domain/types";
+import { draftFromForm, parseRuleForm, readerFromFormData } from "./form";
 
-const FormSchema = z
-  .object({
-    blockedCategories: z.array(DrugCategorySchema),
-    blockedDrugCodes: z.array(DrugSchema.shape.code),
-    limitEnabled: z.boolean(),
-    maxDays: z.coerce.number().int().min(1).max(365),
-    extendedMaxDays: z.coerce.number().int().min(1).max(365),
-    extendedTimesPerPatient: z.coerce.number().int().min(0).max(10),
-    note: z.string().trim().min(5).max(200),
-  })
-  .refine((d) => !d.limitEnabled || d.extendedMaxDays >= d.maxDays, { path: ["extendedMaxDays"] });
-
-// Server actions can be called by any POST request, not only this form. The demo has no login
-// (see README), so this is where a real app would check that the user is an admin.
+// Only reachable from the preview screen's confirm button, so a version is saved only after its
+// impact was shown. Server actions accept any POST; the demo has no login (see README), so this is
+// where a real app would check that the user is an admin.
 export async function saveRulesAction(formData: FormData) {
-  const parsed = FormSchema.safeParse({
-    blockedCategories: formData.getAll("blockedCategories"),
-    blockedDrugCodes: formData.getAll("blockedDrugCodes"),
-    limitEnabled: formData.get("limitEnabled") === "on",
-    maxDays: formData.get("maxDays"),
-    extendedMaxDays: formData.get("extendedMaxDays"),
-    extendedTimesPerPatient: formData.get("extendedTimesPerPatient"),
-    note: formData.get("note") ?? "",
-  });
+  const parsed = parseRuleForm(readerFromFormData(formData));
   if (!parsed.success) {
     const fields = [...new Set(parsed.error.issues.map((i) => String(i.path[0])))];
     redirect(`/admin/rules?error=${encodeURIComponent(fields.join(","))}`);
   }
 
-  const { version: baseVersion, ...base } = getRules();
-  const d = parsed.data;
-  const saved = saveRuleVersion(
-    {
-      ...base,
-      source: `관리자 화면에서 수정 (${baseVersion} 기반): ${d.note}`,
-      prescription: {
-        blockedCategories: d.blockedCategories,
-        blockedDrugCodes: d.blockedDrugCodes,
-        firstVisitLimit: d.limitEnabled
-          ? { maxDays: d.maxDays, extendedMaxDays: d.extendedMaxDays, extendedTimesPerPatient: d.extendedTimesPerPatient }
-          : null,
-      },
-    },
-    "데모 관리자",
-  );
+  const current = getRules();
+  // Someone saved another version after this preview was made: the preview no longer shows the
+  // real impact, so refuse instead of saving on stale information.
+  if (current.version !== parsed.data.baseVersion) redirect(`/admin/rules?error=STALE_PREVIEW`);
+
+  const saved = saveRuleVersion(draftFromForm(current, parsed.data), "데모 관리자");
+  const impact = await computeImpact(current, saved);
   appendAuditEvent({
     actor: "데모 관리자",
     action: "rules.save",
     subject: { type: "rules", id: saved.version },
-    before: { version: baseVersion, prescription: base.prescription },
-    after: { version: saved.version, prescription: saved.prescription },
+    before: { version: current.version, prescription: current.prescription },
+    after: { version: saved.version, prescription: saved.prescription, impactCounts: impact.counts },
     suggestion: null,
-    decision: d.note,
+    decision: parsed.data.note,
   });
 
   revalidatePath("/admin/rules");

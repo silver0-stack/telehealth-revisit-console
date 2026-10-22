@@ -109,3 +109,16 @@ unavailable on Hobby (Pro and Enterprise only); acceptable here only because eve
 On the 102-case evaluation, Jev's answers at 0.8 and above were right 97% of the time and produced no wrong
 pre-selection; its three wrong "same" answers all scored 0.49–0.63. Answers at 0.7–0.8 were right 82% of the time.
 0.8 stays, and A13 now has evidence behind it. Re-run the evaluation before changing the model version or threshold.
+
+## D22. Impact is measured on "what if they asked today?" scenarios (2026-10-22)
+The demo has only 26 real requests, too few to show a rule change. `diffRules` instead asks, for every patient:
+"if you requested telehealth today for each condition you were seen for in person, or for a new symptom, what
+would each rule version say?" and "if your latest prescription per drug were repeated by telehealth?". It is a
+pure function of the rules and the records, so the same comparison always gives the same list. The scenarios
+are written on the screen next to the numbers so nobody mistakes them for real requests.
+
+## D23. A new rule version can only be saved from its preview (2026-10-22)
+The edit form only offers "영향 미리보기" (GET). Saving is a second button on the preview, carrying the same
+values as hidden fields plus the version the preview was based on. If another version was saved in between,
+the save is refused (`STALE_PREVIEW`) because the impact shown is no longer true. The audit entry for the save
+includes the impact counts.
